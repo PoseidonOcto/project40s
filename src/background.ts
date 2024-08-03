@@ -5,6 +5,7 @@ function makeOrange(color: string): void {
 }
 
 chrome.action.onClicked.addListener((tab) => {
+
     active = !active;
     const color = active ? 'orange' : 'white';
     chrome.scripting.executeScript({
