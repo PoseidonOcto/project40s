@@ -1,21 +1,5 @@
+/// <reference types="chrome"/>
 import Tab = chrome.tabs.Tab;
-
-let active = false;
-
-function makeOrange(color: string): void {
-    document.body.style.backgroundColor = color;
-}
-
-chrome.action.onClicked.addListener((tab) => {
-
-    active = !active;
-    const color = active ? 'orange' : 'white';
-    chrome.scripting.executeScript({
-        target: {tabId: tab.id ? tab.id : -1},
-        func: makeOrange,
-        args: [color]
-    }).then();
-});
 
 type Option<T> = {value: T} | null;
 // type TabActivationInfo = {url: URL, lastAccessed: number};
@@ -65,6 +49,7 @@ chrome.tabs.onUpdated.addListener((_, __, tab) => {
     if (!tab.active) {
         return;
     }
+    console.log(tabDurationDatabase);
 
     if (trackedTab != null) {
         console.assert(trackedTab.value.url != undefined, "trackedTabs should not have pending URLs");
@@ -75,17 +60,16 @@ chrome.tabs.onUpdated.addListener((_, __, tab) => {
     updateTrackedTab(tab);
 })
 
-// const TRACK_ACTIVE_TAB = 'TRACK_ACTIVE_TAB';
+export default {}
+
+
+
+
+
 //
-// // Check if alarm exists to avoid resetting the timer.
-// // The alarm might be removed when the browser session restarts.
-// async function createAlarm() {
-//     const alarm = await chrome.alarms.get(TRACK_ACTIVE_TAB);
-//     if (typeof alarm === 'undefined') {
-//         chrome.alarms.create(TRACK_ACTIVE_TAB, {
-//             periodInMinutes: 1/60,
-//             when: 0
-//         });
-//         updateTip();
-//     }
+// function polling() {
+//   // console.log("polling");
+//   setTimeout(polling, 1000 * 30);
 // }
+// 
+// polling();
