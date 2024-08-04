@@ -6,7 +6,9 @@
   "action": {},"action": {},
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "tabs",
+    "alarms"
   ],
   "background": {
     "service_worker": "background.js"
