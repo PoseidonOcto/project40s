@@ -9,15 +9,21 @@ const Popup = () => {
     chrome.action.setBadgeText({ text: count.toString() });
   }, [count]);
 
+  // Technically would not update if the page redirects while the popup is open.
+  //   However, this is a rare occurance, and likely would not impact user experience.
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       setCurrentURL(tabs[0].url);
+      // console.log("onPopup: ");
+      // tabs.forEach((tab) => {console.log(tab);});
     });
   }, []);
 
   const changeBackground = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const tab = tabs[0];
+      // console.log("onBackground: ");
+      // tabs.forEach((tab) => {console.log(tab);});
       if (tab.id) {
         chrome.tabs.sendMessage(
           tab.id,
