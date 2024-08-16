@@ -19,6 +19,7 @@ const Popup = () => {
         });
     }, []);
 
+
     const changeBackground = () => {
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             const tab = tabs[0];
@@ -38,6 +39,11 @@ const Popup = () => {
         });
     };
 
+    const authenticationButton = () => {
+      let userID = chrome.identity.getAuthToken();
+      console.log(userID);
+    }
+
     return (
         <>
             <ul style={{ minWidth: "700px" }}>
@@ -51,6 +57,7 @@ const Popup = () => {
                 count up
             </button>
             <button onClick={changeBackground}>change background</button>
+            <button onClick={authenticationButton}>Authentication</button>
         </>
     );
 };
