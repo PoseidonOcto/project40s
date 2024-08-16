@@ -7,11 +7,38 @@ let trackedTab: Option<Tab> = null;
 type TabDurationDatabase = {[key: string]: number}
 const tabDurationDatabase: TabDurationDatabase = {};
 
-function logDuration(url: string, duration: number, tabDatabase: TabDurationDatabase) {
-    if (!(url in tabDatabase)) {
-        tabDatabase[url] = 0;
-    }
-    tabDatabase[url] += duration;
+
+function logDuration(url: string, duration: number) {
+    // Get current durations and update to new ones.
+    chrome.storage.sync.get(
+        {
+            urlDurations: "a",
+        },
+        (rawItems) => {
+            // Saves options to chrome.storage.sync.
+            const items = JSON.parse(rawItems['urlDurations']);
+            if (!(url in items)) {
+                items[url] = 0;
+            }
+            items[url] += duration;
+
+            chrome.storage.sync.set(
+                {
+                    urlDurations: JSON.stringify(items),
+                },
+                () => {
+                    // Update status to let user know options were saved.
+                    console.log("Tab duration saved.");
+                    // const id = setTimeout(() => {
+                    //     setStatus("");
+                    // }, 1000);
+                    // return () => clearTimeout(id);
+                    return;
+                }
+            );
+        }
+    );
+
 }
 
 function updateTrackedTab(tab: Tab) {
@@ -38,7 +65,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     console.log(tabDurationDatabase);
     if (trackedTab != null) {
         console.assert(trackedTab.value.url != undefined, "trackedTabs should not have pending URLs");
-        logDuration(<string>trackedTab.value.url, Date.now() - <number>trackedTab.value.lastAccessed, tabDurationDatabase);
+        logDuration(<string>trackedTab.value.url, Date.now() - <number>trackedTab.value.lastAccessed);
 
         trackedTab = null;
     }
@@ -53,7 +80,7 @@ chrome.tabs.onUpdated.addListener((_, __, tab) => {
 
     if (trackedTab != null) {
         console.assert(trackedTab.value.url != undefined, "trackedTabs should not have pending URLs");
-        logDuration(<string>trackedTab.value.url, Date.now() - <number>trackedTab.value.lastAccessed, tabDurationDatabase);
+        logDuration(<string>trackedTab.value.url, Date.now() - <number>trackedTab.value.lastAccessed);
 
         trackedTab = null;
     }
