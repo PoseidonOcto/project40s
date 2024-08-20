@@ -87,6 +87,21 @@ chrome.tabs.onUpdated.addListener((_, __, tab) => {
     updateTrackedTab(tab);
 })
 
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.authentication === "true") {
+            chrome.identity.getAuthToken({interactive: true}, (result: any) => {console.log(result.token)});
+        }
+        console.log(sender.tab ?
+                    "from a content script:" + sender.tab.url :
+                    "from the extension");
+        sendResponse("tester2");
+        // if (request.greeting === "hello") {
+        //     sendResponse({farewell: "goodbye"}) 
+        // };
+    }
+);
+
 export default {}
 
 

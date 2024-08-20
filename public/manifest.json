@@ -1,14 +1,18 @@
 {
   "manifest_version": 3,
 
-  "name": "Chrome Extension TypeScript Starter",
-  "description": "Chrome Extension, TypeScript, Visual Studio Code",
-  "version": "1.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwI4sE0Qtz0dBZOtsHHwWSg4KQFbAl6I5yyG/uiA3FwgSQkaZ7NHmI892q8z2eY2dm2E0sxBLGwzbKtt+pdHb8xfZQ5uW43sIv/cRCX6qi53jTRbj8lVwXUD3Uf0rh/M/N7Eaiq+BxhcCEQaDJVYciw22/4LmCSiu477d9bY5mJan/I0u/YpAcHD8bZkBjDnjbGAmFOu1Re8D0mQh5D/efDhWupiZCCgKCAIdqKde/WqZF7cvmvjeEwucL+UHF4B7ylaEIfenVhzerDw4rr0Ox/iaETSghSxLnASO92kVnU07n8YQ4h0fyrPUaaMwjtRvyO4Bv5icy/qgoB6u2ESNfwIDAQAB",
+  "name": "Project40S Chrome Extension",
+  "description": "Detect misinformation with the help of the misinfo mavericks.",
+  "version": "0.0.0.1",
+  "icons": {
+    "128": "images/project40s.png"
+  },
 
   "options_page": "options.html",
 
   "action": {
-    "default_icon": "icon.png",
+    "default_icon": "images/project40s.png",
     "default_popup": "popup.html"
   },
 
@@ -24,8 +28,13 @@
   },
 
   "permissions": [
-    "storage"
+    "storage",
+    "identity"
   ],
+  "oauth2": {
+    "client_id": "684280919387-sbfdfhlilvsdhialaktqmr5ndboof7nn.apps.googleusercontent.com",
+	"scopes":["https://www.googleapis.com/auth/userinfo.email"]
+  },
 
   "host_permissions": [
     "<all_urls>"

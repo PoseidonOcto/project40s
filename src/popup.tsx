@@ -39,9 +39,18 @@ const Popup = () => {
         });
     };
 
+
+    const onCallbackFromAuthentication = (result: any) => {
+        console.log(result.token);
+    }
+
     const authenticationButton = () => {
-      let userID = chrome.identity.getAuthToken();
-      console.log(userID);
+        (async () => {
+            const response = await chrome.runtime.sendMessage({authentication: "true"});
+            // do something with response here, not outside the function
+            console.log(response);
+        })();
+        //chrome.identity.getAuthToken({interactive: true}, onCallbackFromAuthentication);
     }
 
     return (
