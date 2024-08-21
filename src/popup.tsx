@@ -71,39 +71,6 @@ const Popup = () => {
     //      In this manner, it might make multiple useful searches.
     const queryChatGPT = (query: string, relatedInfo: string) => {
 
-        //Simulate the tool call response
-        // const response = {
-        //     choices: [
-        //         {
-        //             message: {
-        //                 role: 'tool',
-        //                 tool_calls: [
-        //                     { 
-        //                         id: "search_for_information",
-        //                         'function': {
-        //                             'name': 'search_for_information',
-        //                             'arguments': '{"args":"args"}'
-        //                         },
-        //                         'type': 'function'}
-        //
-        //                     }
-        //                 ]
-        //             }
-        //         }
-        //     ]
-        // };
-
-        // Create a message containing the result of the function call
-        const function_call_result_message = {
-            role: "tool",
-            content: JSON.stringify({
-                'query_to_search': query,
-                'information_related_to_user_query': relatedInfo
-            }),
-            tool_call_id: response.choices[0].message.tool_calls[0].id
-        };
-
-
         // TODO make secure!!! Should not be in code!!!
         const OPENAI_API_KEY = "sk-svcacct-JHSMzMYNZRVwWuQk3kJ3d0K0F3EuJZP7XbCoI9lB6A6Q6zxbzL4F7PSjumV923F1uMqitGWgjuFV-sDsT3BlbkFJ2YGDJYbL73J-FXGLAZf_DgLACHHlJgH8OiWDTOnXPKyIjtCGUdPALJ3e4g5iIigyHoceAjm_yVgKGbcA";
 
@@ -125,8 +92,6 @@ const Popup = () => {
                         'role': 'user',
                         'content': query
                     },
-                    response.choices[0].message,
-                    function_call_result_message
                 ],
                 'tools': [
                     {
@@ -149,15 +114,82 @@ const Popup = () => {
                         }
                     }
                 ],
-                'tool_choice': 'none',
+                'tool_choice': {'type': 'function', 'function': {'name': 'search_for_information'}}
             })
         };
-        // OLD: 'tool_choice': {'type': 'function', 'function': {'name': 'search_for_information'}}
 
         fetch('https://api.openai.com/v1/chat/completions', gptRequest)
                 .then((response) => response.json())
-                .then(function(data) {
-                    console.log(data);
+                .then(function(response) {
+                    console.assert(response.finish_reason == "tool_calls");
+
+                    // Create a message containing the result of the function call
+                    const function_call_result_message = {
+                        role: "tool",
+                        content: JSON.stringify({
+                            'query_to_search': query,
+                            'information_related_to_user_query': relatedInfo
+                        }),
+                        tool_call_id: response.choices[0].message.tool_calls[0].id
+                    };
+
+
+                    // TODO make secure!!! Should not be in code!!!
+                    const OPENAI_API_KEY = "sk-svcacct-JHSMzMYNZRVwWuQk3kJ3d0K0F3EuJZP7XbCoI9lB6A6Q6zxbzL4F7PSjumV923F1uMqitGWgjuFV-sDsT3BlbkFJ2YGDJYbL73J-FXGLAZf_DgLACHHlJgH8OiWDTOnXPKyIjtCGUdPALJ3e4g5iIigyHoceAjm_yVgKGbcA";
+
+                    // TODO half of these are string for no reason?
+                    let gptRequest = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + OPENAI_API_KEY
+                        },
+                        body: JSON.stringify({
+                            'model': 'gpt-4o-mini',
+                            'messages': [
+                                {
+                                    'role': 'system',
+                                    'content': 'You are a helpful assistant.'
+                                },
+                                {
+                                    'role': 'user',
+                                    'content': query
+                                },
+                                response.choices[0].message,
+                                function_call_result_message
+                            ],
+                            'tools': [
+                                {
+                                    'type': 'function',
+                                    'strict': true,
+                                    'function': {
+                                        'name': 'search_for_information',
+                                        'description': 'Call this to search online for information related to the user\'s query',
+                                        'parameters': {
+                                            'type': 'object',
+                                            'properties': {
+                                                'query_to_search': {
+                                                    'type': 'string',
+                                                    'description': 'A query that will be searched online for relevant information',
+                                                },
+                                            },
+                                            'required': ['query_to_search'],
+                                            'additionalProperties': false,
+                                        },
+                                    }
+                                }
+                            ],
+                            'tool_choice': 'none',
+                        })
+                    };
+
+                    fetch('https://api.openai.com/v1/chat/completions', gptRequest)
+                            .then((response) => response.json())
+                            .then(function(data) {
+                                console.log(data);
+
+                            });
+
                 });
     }
 
