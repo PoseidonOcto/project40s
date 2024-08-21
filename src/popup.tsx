@@ -20,29 +20,25 @@ const Popup = () => {
     }, []);
 
 
-    const changeBackground = () => {
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            const tab = tabs[0];
-            // console.log("onBackground: ");
-            // tabs.forEach((tab) => {console.log(tab);});
-            if (tab.id) {
-                chrome.tabs.sendMessage(
-                    tab.id,
-                    {
-                        color: "#555555",
-                    },
-                    (msg) => {
-                        console.log("result message:", msg);
-                    }
-                );
-            }
-        });
-    };
+    // const changeBackground = () => {
+    //     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    //         const tab = tabs[0];
+    //         // console.log("onBackground: ");
+    //         // tabs.forEach((tab) => {console.log(tab);});
+    //         if (tab.id) {
+    //             chrome.tabs.sendMessage(
+    //                 tab.id,
+    //                 {
+    //                     color: "#555555",
+    //                 },
+    //                 (msg) => {
+    //                     console.log("result message:", msg);
+    //                 }
+    //             );
+    //         }
+    //     });
+    // };
 
-
-    const onCallbackFromAuthentication = (result: any) => {
-        console.log(result.token);
-    }
 
     const authenticationButton = () => {
         (async () => {
@@ -53,12 +49,43 @@ const Popup = () => {
         //chrome.identity.getAuthToken({interactive: true}, onCallbackFromAuthentication);
     }
 
+    const queryChatGPT = () => {
+        // TODO make secure!!! Should not be in code!!!
+        const OPENAI_API_KEY = "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";
+        let init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + OPENAI_API_KEY
+            },
+            body: JSON.stringify({
+                'model': 'gpt-4o-mini',
+                'messages': [
+                    {
+                        'role': 'system',
+                        'content': 'You are a helpful assistant.'
+                    },
+                    {
+                        'role': 'user',
+                        'content': 'Write a haiku that explains the concept of recursion.'
+                    }
+                ]
+            })
+        };
+        fetch('https://api.openai.com/v1/chat/completions', init)
+                .then((response) => response.json())
+                .then(function(data) {
+                    console.log(data);
+                });
+    };
+
     return (
         <>
             <ul style={{ minWidth: "700px" }}>
                 <li>Current URL: {currentURL}</li>
                 <li>Current Time: {new Date().toLocaleTimeString()}</li>
             </ul>
+            {/*
             <button
                 onClick={() => setCount(count + 1)}
                 style={{ marginRight: "5px" }}
@@ -66,7 +93,9 @@ const Popup = () => {
                 count up
             </button>
             <button onClick={changeBackground}>change background</button>
+            */}
             <button onClick={authenticationButton}>Authentication</button>
+            <button onClick={queryChatGPT}>Query ChatGPT</button>
         </>
     );
 };

@@ -107,7 +107,8 @@ chrome.runtime.onMessage.addListener(
                         });
 
 
-                console.log(token)});
+                console.log(token);
+            });
         }
         console.log(sender.tab ?
                     "from a content script:" + sender.tab.url :
