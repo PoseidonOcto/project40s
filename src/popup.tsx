@@ -49,14 +49,66 @@ const Popup = () => {
         //chrome.identity.getAuthToken({interactive: true}, onCallbackFromAuthentication);
     }
 
-    const queryChatGPT = (query: string | undefined) => {
+    const handleUserQuery = (query: string | undefined) => {
         if (query === undefined) {
             return;
         }
 
+        // Encode the raw query into a URL-like format.
+        const queryAsUrl = encodeURIComponent(query);
+
+        console.log(queryAsUrl);
+        // Search for related articles, and give to chatgpt.
+        fetch('https://s.jina.ai/' + queryAsUrl, {method: "GET",})
+                .then((response) => response.text())
+                .then((searchInfo) => {
+                    // Feed info retrieved from related articles to ChatGPT.
+                    queryChatGPT(query, searchInfo);
+                });
+    };
+
+    // TODO could possibly be improved by letting ChatGPT decide to use the tool itself. 
+    //      In this manner, it might make multiple useful searches.
+    const queryChatGPT = (query: string, relatedInfo: string) => {
+
+        //Simulate the tool call response
+        // const response = {
+        //     choices: [
+        //         {
+        //             message: {
+        //                 role: 'tool',
+        //                 tool_calls: [
+        //                     { 
+        //                         id: "search_for_information",
+        //                         'function': {
+        //                             'name': 'search_for_information',
+        //                             'arguments': '{"args":"args"}'
+        //                         },
+        //                         'type': 'function'}
+        //
+        //                     }
+        //                 ]
+        //             }
+        //         }
+        //     ]
+        // };
+
+        // Create a message containing the result of the function call
+        const function_call_result_message = {
+            role: "tool",
+            content: JSON.stringify({
+                'query_to_search': query,
+                'information_related_to_user_query': relatedInfo
+            }),
+            tool_call_id: response.choices[0].message.tool_calls[0].id
+        };
+
+
         // TODO make secure!!! Should not be in code!!!
-        const OPENAI_API_KEY = "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";
-        let init = {
+        const OPENAI_API_KEY = "sk-svcacct-JHSMzMYNZRVwWuQk3kJ3d0K0F3EuJZP7XbCoI9lB6A6Q6zxbzL4F7PSjumV923F1uMqitGWgjuFV-sDsT3BlbkFJ2YGDJYbL73J-FXGLAZf_DgLACHHlJgH8OiWDTOnXPKyIjtCGUdPALJ3e4g5iIigyHoceAjm_yVgKGbcA";
+
+        // TODO half of these are string for no reason?
+        let gptRequest = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,16 +124,42 @@ const Popup = () => {
                     {
                         'role': 'user',
                         'content': query
+                    },
+                    response.choices[0].message,
+                    function_call_result_message
+                ],
+                'tools': [
+                    {
+                        'type': 'function',
+                        'strict': true,
+                        'function': {
+                            'name': 'search_for_information',
+                            'description': 'Call this to search online for information related to the user\'s query',
+                            'parameters': {
+                                'type': 'object',
+                                'properties': {
+                                    'query_to_search': {
+                                        'type': 'string',
+                                        'description': 'A query that will be searched online for relevant information',
+                                    },
+                                },
+                                'required': ['query_to_search'],
+                                'additionalProperties': false,
+                            },
+                        }
                     }
-                ]
+                ],
+                'tool_choice': 'none',
             })
         };
-        fetch('https://api.openai.com/v1/chat/completions', init)
+        // OLD: 'tool_choice': {'type': 'function', 'function': {'name': 'search_for_information'}}
+
+        fetch('https://api.openai.com/v1/chat/completions', gptRequest)
                 .then((response) => response.json())
                 .then(function(data) {
                     console.log(data);
                 });
-    };
+    }
 
     // TODO put button in form? I think this is better practice?
     return (
@@ -100,7 +178,7 @@ const Popup = () => {
             <button onClick={changeBackground}>change background</button>
             */}
             <input name="query" onChange={(e) => setQueryText(e.target.value)}/>
-            <button type="submit" onClick={(_) => queryChatGPT(queryText)}>Query</button>
+            <button type="submit" onClick={(_) => handleUserQuery(queryText)}>Query</button>
             <button onClick={authenticationButton}>Authentication</button>
         </>
     );
