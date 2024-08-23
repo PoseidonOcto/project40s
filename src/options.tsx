@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import Style from "./style";
 
 
 
@@ -10,6 +11,7 @@ const Options = () => {
     const [color, setColor] = useState<string>("");
     const [status, setStatus] = useState<string>("");
     const [like, setLike] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         // Restores select box and checkbox state using the preferences
@@ -47,7 +49,7 @@ const Options = () => {
         if (query === undefined) {
             return;
         }
-
+        setIsLoading(true);
         // Encode the raw query into a URL-like format.
         const queryAsUrl = encodeURIComponent(query);
 
@@ -182,6 +184,7 @@ const Options = () => {
                     .then(function(data) {
                         console.log(data);
                         setQueryResult(data.choices[0].message.content);
+                        setIsLoading(false);
                     });
 
             });
@@ -189,6 +192,7 @@ const Options = () => {
 
     return (
         <>
+            <Style/>
             <div>
                 Favorite color: <select
                     value={color}
@@ -213,9 +217,9 @@ const Options = () => {
             <div>{status}</div>
             <button onClick={saveOptions}>Save</button>
             <input name="query" onChange={(e) => setQueryText(e.target.value)}/>
-            <button type="submit" onClick={(_) => handleUserQuery(queryText)}>Query</button>
-            {/*<div className="loadingIcon" style={{animation: "spin 1s linear infinite"}}></div>*/}
-            <p>some output: {queryResult}</p>
+            <button type="submit" className={isLoading ? "loadingButton" : "notLoadingButton"} onClick={(_) => handleUserQuery(queryText)}>Query</button>
+            {isLoading && <div className="loadingIcon">bruh</div>}
+            <p>{queryResult}</p>
         </>
     );
 };
