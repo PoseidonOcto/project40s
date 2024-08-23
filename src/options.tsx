@@ -8,43 +8,8 @@ import Style from "./style";
 const Options = () => {
     const [queryText, setQueryText] = useState<string>();
     const [queryResult, setQueryResult] = useState<string>();
-    const [color, setColor] = useState<string>("");
-    const [status, setStatus] = useState<string>("");
-    const [like, setLike] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        // Restores select box and checkbox state using the preferences
-        // stored in chrome.storage.
-        chrome.storage.sync.get(
-            {
-                favoriteColor: "red",
-                likesColor: true,
-            },
-            (items) => {
-                setColor(items.favoriteColor);
-                setLike(items.likesColor);
-            }
-        );
-    }, []);
-
-    const saveOptions = () => {
-        // Saves options to chrome.storage.sync.
-        chrome.storage.sync.set(
-            {
-                favoriteColor: color,
-                likesColor: like,
-            },
-            () => {
-                // Update status to let user know options were saved.
-                setStatus("Options saved.");
-                const id = setTimeout(() => {
-                    setStatus("");
-                }, 1000);
-                return () => clearTimeout(id);
-            }
-        );
-    };
     const handleUserQuery = (query: string | undefined) => {
         if (query === undefined) {
             return;
@@ -63,8 +28,11 @@ const Options = () => {
             });
     };
 
-    // TODO could possibly be improved by letting ChatGPT decide to use the tool itself.
-    //      In this manner, it might make multiple useful searches.
+    // !!!! NOTE !!!! This uses outdated, very messy code for querying chatGPT. 
+    // The updated code can be seen in './popup.tsx'.
+    // This code was only copied over to let another developer work on this page
+    // while the code was being fixed. Obviously, the code for querying chatGPT
+    // will only be in one place soon.
     const queryChatGPT = (query: string, relatedInfo: string) => {
 
         // TODO make secure!!! Should not be in code!!!
@@ -193,32 +161,9 @@ const Options = () => {
     return (
         <>
             <Style/>
-            <div>
-                Favorite color: <select
-                    value={color}
-                    onChange={(event) => setColor(event.target.value)}
-                >
-                    <option value="red">red</option>
-                    <option value="green">green</option>
-                    <option value="blue">blue</option>
-                    <option value="yellow">yellow</option>
-                </select>
-            </div>
-            <div>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={like}
-                        onChange={(event) => setLike(event.target.checked)}
-                    />
-                    I like colors.
-                </label>
-            </div>
-            <div>{status}</div>
-            <button onClick={saveOptions}>Save</button>
             <input name="query" onChange={(e) => setQueryText(e.target.value)}/>
             <button type="submit" className={isLoading ? "loadingButton" : "notLoadingButton"} onClick={(_) => handleUserQuery(queryText)}>Query</button>
-            {isLoading && <div className="loadingIcon">bruh</div>}
+            {isLoading && <div className="loadingIcon"></div>}
             <p>{queryResult}</p>
         </>
     );
