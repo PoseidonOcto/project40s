@@ -1,3 +1,17 @@
+enum QueryResultCategory {
+    Success,
+    FailureNoQuery,
+    FailureLength,
+    FailureContentFilter,
+    FailureUnexpected,
+}
+
+
+type QueryResult = {
+    category: QueryResultCategory;
+    response: string;
+}
+
 
 const queryJina = async (query: string): Promise<string> => {
     // Encode the raw query into a URL-like format.
@@ -68,9 +82,9 @@ const queryGPT = async (query: string, prevMsgs: any, forceResearch: boolean): P
 
 
 
-export const handleUserQuery = async (query: string | undefined): Promise<void> => {
+export const handleUserQuery = async (query: string | undefined): Promise<QueryResult> => {
     if (query === undefined) {
-        return;
+        return {category: QueryResultCategory.FailureNoQuery, response: ""};
     }
 
     const previousMessages: any[] = [];
@@ -83,18 +97,20 @@ export const handleUserQuery = async (query: string | undefined): Promise<void> 
 
         // Check if the conversation was too long for the context window
         if (response.choices[0].finish_reason === "length") {
-            console.log("Error: The conversation was too long for the context window.");
-            // Handle the error as needed, e.g., by truncating the conversation or asking for clarification
-            break;
+            // TODO Maybe truncating the conversation?
+            return {
+                category: QueryResultCategory.FailureLength, 
+                response: "Error: The conversation was too long for the context window."
+            };
         } else if (response.choices[0].finish_reason === "content_filter") {
             // The model's output included copyrighted material (or similar)
-            console.log("Error: The content was filtered due to policy violations.");
-            // Handle the error as needed, e.g., by modifying the request or notifying the user
-            break;
+            // TODO maybe modifying the request?
+            return {
+                category: QueryResultCategory.FailureContentFilter, 
+                response: "Error: The content was filtered due to policy violations."
+            };
         } else if (response.choices[0].finish_reason === "tool_calls") {
             // The model has made a tool_call
-            console.log("Model made a tool call.");
-            // Your code to handle tool calls
             const toolCall = response.choices[0].message.tool_calls[0];
             const args = JSON.parse(toolCall.function.arguments);
 
@@ -117,14 +133,17 @@ export const handleUserQuery = async (query: string | undefined): Promise<void> 
 
         } else if (response.choices[0].finish_reason === "stop") {
             // The model was just responding directly to the user
-            console.log("Model responded directly to the user.");
-            console.log(response);
-            break;
+            console.assert(response.choices.length == 1);
+            return {
+                category: QueryResultCategory.Success,
+                response: response.choices[0].message.content
+            };
         } else {
             // Catch any other case, this is unexpected
-            console.log("Unexpected finish_reason:", response.choices[0].message.finish_reason);
-            // Handle unexpected cases as needed
-            break;
+            return {
+                category: QueryResultCategory.FailureUnexpected,
+                response: "Unexpected finish_reason: " + response.choices[0].message.finish_reason
+            };
         }
     }
 }

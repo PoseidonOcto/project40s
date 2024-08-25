@@ -17,11 +17,15 @@ const Popup = () => {
         //chrome.identity.getAuthToken({interactive: true}, onCallbackFromAuthentication);
     }
 
+    const logQueryResult = async (query: string | undefined): Promise<void> => {
+        console.log((await handleUserQuery(query)).response);
+    }
+
     // TODO put button in form? I think this is better practice?
     return (
         <>
             <input name="query" onChange={(e) => setQueryText(e.target.value)}/>
-            <button type="submit" onClick={(_) => handleUserQuery(queryText)}>Query</button>
+            <button type="submit" onClick={(_) => logQueryResult(queryText)}>Query</button>
             <button onClick={authenticationButton}>Authentication</button>
         </>
     );
