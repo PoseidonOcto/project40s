@@ -29,7 +29,9 @@
 
   "permissions": [
     "storage",
-    "identity"
+    "identity",
+    "contextMenus"
+
   ],
   "oauth2": {
     "client_id": "684280919387-sbfdfhlilvsdhialaktqmr5ndboof7nn.apps.googleusercontent.com",

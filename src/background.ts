@@ -120,6 +120,14 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+chrome.runtime.onInstalled.addListener(function () {
+    chrome.contextMenus.create({
+        title: "Detect Disinformation",
+        contexts: ['all'],
+        id: 'detect',
+    });
+});
+
 export default {}
 
 
