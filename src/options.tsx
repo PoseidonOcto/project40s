@@ -26,6 +26,28 @@ const Options = () => {
                     onClick={(_) => awaitUserQuery(queryText)}>Query</button>
             {isLoading && <div className="loadingIcon">bruh</div>}
             <p>{queryResult}</p>
+            <p>-------------------------------------------------------------------------------------</p>
+            <hr/>
+            <div>
+                <p>Fun <br/> Survey <br/> Time</p>
+                <div className='survey'>
+                    <label>
+                        <input type='checkbox'/> Left
+                    </label>
+                    <br/>
+                    <label>
+                        <input type='checkbox'/> Right
+                    </label>
+                    <br/>
+                    <label>
+                        <input type='checkbox'/> Authoritarian
+                    </label>
+                    <br/>
+                    <label>
+                        <input type='checkbox'/> Libertarian
+                    </label>
+                </div>
+            </div>
         </>
     );
 };
