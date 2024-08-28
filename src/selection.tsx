@@ -24,35 +24,33 @@ const Selection = () => {
         //@ts-ignore: We know this property exists
         awaitUserQuery(self.queryText);
     }, []);
-    // const [queryText, setQueryText] = useState<string>();
-    //
-    // const logQueryResult = async (query: string | undefined): Promise<void> => {
-    //     console.log((await handleUserQuery(query)).response);
-    // }
 
     // TODO put button in form? I think this is better practice?
     //
     const selectionPopupStyle: React.CSSProperties = {
         bottom: 0, 
         right: 0, 
-        width: "20%", 
-        height: "15svh", 
+        display: "flex",
+        // width: "20%", 
+        // height: "15svh", 
         position: "fixed" as "fixed",  // Expects non-string type
         backgroundColor: "lightgreen",
         zIndex: 2147483647,
+        padding: "1%",
+    }
+
+    const textareaStyle: React.CSSProperties = {
+        width: "30vw",
+        height: "15vh",
+        padding: "5%",
     }
     return (
         <>
             <Style/>
             <div style={selectionPopupStyle}>
                 {isLoading && <div className="loadingIcon"></div>}
-                <p>{queryResult}</p>
+                {!isLoading && <textarea value={queryResult} style={textareaStyle}/>}
             </div>
-            {/* 
-            <input name="query" onChange={(e) => setQueryText(e.target.value)}/>
-            <button type="submit" onClick={(_) => logQueryResult(queryText)}>Query</button>
-            <button onClick={authenticationButton}>Authentication</button>
-            */}
         </>
     );
 };
