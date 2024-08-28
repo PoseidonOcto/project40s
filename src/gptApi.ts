@@ -32,7 +32,9 @@ const queryGPT = async (query: string, prevMsgs: any, forceResearch: boolean): P
         'messages': [
             {
                 'role': 'system',
-                'content': 'You are a helpful assistant.'
+                'content': 'You are a helpful assistant. The user will input a claim. Your job is to take the user\'s claim, and '
+                            + 'tell the user whether it is true or false. You should output "True" or "False" followed by an explanation'
+                            + 'of why the claim is true or false.'
             },
             {
                 'role': 'user',
