@@ -87,6 +87,7 @@ const tabDurationDatabase: TabDurationDatabase = {};
 //     updateTrackedTab(tab);
 // })
 
+// Authentication proof of concept.
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.authentication === "true") {
@@ -120,12 +121,37 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+// Create context menu.
 chrome.runtime.onInstalled.addListener(function () {
     chrome.contextMenus.create({
-        title: "Detect Disinformation",
+        title: "Detect Disinformation in: \"%s\"",
         contexts: ['all'],
         id: 'detect',
     });
+});
+
+chrome.contextMenus.onClicked.addListener((item, tab) => {
+    if (tab === undefined) {
+        console.error("Tab undefined on contextMenu click.");
+        return;
+    }
+    if (tab.id === undefined) {
+        console.error("Tab id undefined on contextMenu click.");
+        return;
+    }
+
+    chrome.scripting.executeScript({
+            // Set selected text as window variable.
+            target : {tabId : tab.id},
+            args: [{queryText: item.selectionText}],
+            func: (funcArgs) => Object.assign(self, funcArgs),
+        }).then(() => {
+            chrome.scripting.executeScript({
+                    // Inject selection component.
+                    target: {tabId: tab.id!}, 
+                    files: [ "js/selection.js" ]
+                });
+        });
 });
 
 export default {}
