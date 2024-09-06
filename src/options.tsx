@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import Style from "./style";
+import "./style.css"
 import {handleUserQuery} from "./gptApi";
 
 
@@ -20,7 +20,6 @@ const Options = () => {
 
     return (
         <>
-            <Style/>
             <input name="query" onChange={(e) => setQueryText(e.target.value)}/>
             <button type="submit" className={isLoading ? "loadingButton" : "notLoadingButton"} disabled={isLoading}
                     onClick={(_) => awaitUserQuery(queryText)}>Query</button>

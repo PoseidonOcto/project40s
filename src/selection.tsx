@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Style from "./style";
+import "./style.css"
 import { createRoot } from "react-dom/client";
 import {handleUserQuery} from "./gptApi";
 
@@ -46,7 +46,6 @@ const Selection = () => {
     }
     return (
         <>
-            <Style/>
             <div style={selectionPopupStyle}>
                 {isLoading && <div className="loadingIcon"></div>}
                 {!isLoading && <textarea value={queryResult} style={textareaStyle}/>}
