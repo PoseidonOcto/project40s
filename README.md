@@ -30,7 +30,7 @@ npm run watch
 Run this once, leave the window open, and every time you make a change it will automatically rebuild.
 
 After certain changes, you will need to reload the extension.
-![Image displaying how to reload extension](docs/extension-reload-symbol.png)
+> <img src="docs/extension-reload-symbol.png" width="200"/>
 
 | Extension component           | Requires extension reload |
 | ----------------------------- | ------------------------- |
@@ -40,6 +40,7 @@ After certain changes, you will need to reload the extension.
 | The popup                     | No                        |
 | Options page                  | No                        |
 | Other extension HTML pages    | No                        |
+
 Source: https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world
 
 NOTE: For the options page, you will still need to refresh the page.
