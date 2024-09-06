@@ -20,7 +20,7 @@ npm install
 ```
 
 Load the extension in chrome - in the chrome extensions page, load `dist` directory.
-(see https://betterprogramming.pub/creating-chrome-extensions-with-typescript-914873467b65#:~:text=5.%20Load%20the%20extension)
+> (see https://betterprogramming.pub/creating-chrome-extensions-with-typescript-914873467b65#:~:text=5.%20Load%20the%20extension)
 
 ## Build (Development)
 
