@@ -30,7 +30,7 @@ npm run watch
 Run this once, leave the window open, and every time you make a change it will automatically rebuild.
 
 After certain changes, you will need to reload the extension.
-> <img src="docs/extension-reload-symbol.png" width="200"/>
+> <img src="docs/extension-reload-symbol.png" width="50%"/>
 
 | Extension component           | Requires extension reload |
 | ----------------------------- | ------------------------- |
@@ -41,18 +41,16 @@ After certain changes, you will need to reload the extension.
 | Options page                  | No                        |
 | Other extension HTML pages    | No                        |
 
-Source: https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world
+> Source: https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world
 
 NOTE: For the options page, you will still need to refresh the page.
 
 
 ## Build (Production)
-<details>
-    <summary>You don't have any need for this command.</summary>
-    ```
-    npm run build
-    ```
-</details>
+You don't have any need for this command.
+```
+npm run build
+```
 
 ## Other References
 Used the template 'https://github.com/chibat/chrome-extension-typescript-starter' (many thanks).
