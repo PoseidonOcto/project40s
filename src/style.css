@@ -1,3 +1,87 @@
+:root {
+    --side-bar-background: #F9F6FB;
+    --dashboard-background-top: #ABCBED;
+    --dashboard-background-bottom: #DDCDE9;
+}
+
+#root, body, html {
+    height: 100%;
+}
+
+.icon-holder * {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 10px;
+}
+
+.icon-holder img {
+    margin: auto;
+    height: 40px;
+}
+
+#document-icon {
+    width: 25px;
+}
+
+#education-icon {
+    width: 30px;
+}
+
+#button-holder {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1px;
+}
+
+.flexbox-container {
+    height: 97.5%;
+    position: relative;
+    display: flex;
+    gap: 0.5%;
+}
+
+.sidebar-container {
+    align-items: center;
+    justify-content: start;
+    display: flex;
+    flex-direction: column;
+    padding: 1%;
+    border-radius: 5px;
+    width: 7.5%;
+    background-color: var(--side-bar-background);
+}
+
+.icon-holder a:link {
+    color: black;
+
+    text-decoration: none;
+}
+.icon-holder a:visited {
+    color: black;
+    text-decoration: none;
+}
+.icon-holder a:hover {
+    color: black;
+    text-decoration: none;
+}
+.icon-holder a:active {
+    color: black;
+    text-decoration: none;
+}
+
+
+.outlet {
+    width: 92.5%;
+    border-radius: 5px;
+    background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom));
+}
+
+
 .loadingIcon {
     border: 10px solid #f3f3f3;
     border-top: 10px solid #3498db;
@@ -24,5 +108,5 @@
 
 .notLoadingButton {
     background-color: #DCDCDC;
-    color: #0000000;
+    color: #000000;
 }
