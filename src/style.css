@@ -8,35 +8,7 @@
     height: 100%;
 }
 
-.icon-holder * {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 10px;
-}
-
-.icon-holder img {
-    margin: auto;
-    height: 40px;
-}
-
-#document-icon {
-    width: 25px;
-}
-
-#education-icon {
-    width: 30px;
-}
-
-#button-holder {
-    position: absolute;
-    bottom: 0;
-    padding-bottom: 1%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1px;
-}
+/* Sidebar */
 
 .flexbox-container {
     height: 97.5%;
@@ -56,9 +28,39 @@
     background-color: var(--side-bar-background);
 }
 
+/* Sidebar Icons */
+
+.icon-holder {
+    height: 80px;
+}
+
+.icon-holder * {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 5px;
+}
+
+.icon-holder img {
+    margin: auto;
+    height: 40px;
+}
+
+#document-icon {
+    width: 40px;
+}
+
+#education-icon {
+    width: 40px;
+}
+
+
+#dashboard, #education, #preferences {
+    height: 75px;
+}
+
 .icon-holder a:link {
     color: black;
-
     text-decoration: none;
 }
 .icon-holder a:visited {
@@ -74,13 +76,93 @@
     text-decoration: none;
 }
 
+/* Logout Button Styling */
+
+#button-holder {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1px;
+}
+
+#logout-button {
+    background-color: white;
+    border-radius: 5px;
+}
+
+
+/* Outlet Box*/
 
 .outlet {
     width: 92.5%;
     border-radius: 5px;
     background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom));
+    padding: 1%;
 }
 
+/* Education Page */
+
+/* Preferences Page */
+
+#options-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#options-text {
+    width: 75%
+}
+#options {
+    width: 75%;
+    float: right;
+}
+
+.btn-group button {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    padding: 10px 24px;
+    cursor: auto; /* Pointer/hand icon */
+}
+
+.btn-group button:first-child {
+    border-bottom-left-radius: 10px ;
+    border-top-left-radius: 10px;
+    border-right: none;
+}
+
+.btn-group {
+    float: right;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.btn-group button:nth-child(2) {
+    border-bottom-right-radius: 10px ;
+    border-top-right-radius: 10px;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+
+.btn-group button:hover {
+    background-color: grey;
+}
+
+
+
+/* Loading Icon */
 
 .loadingIcon {
     border: 10px solid #f3f3f3;
@@ -110,3 +192,4 @@
     background-color: #DCDCDC;
     color: #000000;
 }
+

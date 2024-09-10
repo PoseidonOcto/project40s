@@ -17,7 +17,7 @@ const Sidebar = () => {
                         <div className="icon-holder">
                             <Link to={`dashboard`} id="dashboard">
                                 <img src="../images/dashboard-icon.png" alt="dashboard-icon" id="document-icon"></img>
-                                <br/> {location.pathname === "/dashboard" ? <p>Dashboard &larr;</p> : <p>Dashboard</p>}
+                                <br/> {location.pathname === "/dashboard" ? <p><strong>Dashboard</strong></p> : <p>Dashboard</p>}
                             </Link><br/>
                         </div>
                     </div>
@@ -25,7 +25,15 @@ const Sidebar = () => {
                         <div className="icon-holder">
                             <Link to={`education`} id="education">
                                 <img src="../images/education-icon.png" alt="education-icon" id="education-icon"></img>
-                                <br/> {location.pathname === "/education" ? <p>Education &larr;</p> : <p>Education</p>}
+                                <br/> {location.pathname === "/education" ? <p><strong>Education</strong></p> : <p>Education</p>}
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="arrow-icon-container">
+                        <div className="icon-holder">
+                            <Link to={`preferences`} id="preferences">
+                                <img src="../images/gear-icon.png" alt="preferences-icon" id="preferences-icon"></img> {/* https://www.flaticon.com/free-icon/gear_1160356 */}
+                                <br/> {location.pathname === "/preferences" ? <p><strong>Preferences</strong></p> : <p>Preferences</p>}
                             </Link>
                         </div>
                     </div>
@@ -36,8 +44,7 @@ const Sidebar = () => {
                     </div>
                 </div>
                 <div className="outlet">
-                    <h1>The page selected is output here</h1>
-                    <h3>(Dashboard by default)</h3>
+                    {/* Putting anything here will be above the outlet */}
                     <Outlet />
                 </div>
             </div>

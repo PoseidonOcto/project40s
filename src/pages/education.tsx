@@ -5,6 +5,7 @@ import "../style.css"
 const Education = () => {
     return (
         <>
+            <h1>Education</h1>
             <div>Education takes place here!</div>
         </>
     );
