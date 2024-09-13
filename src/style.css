@@ -28,6 +28,17 @@
     background-color: var(--side-bar-background);
 }
 
+.collapsed-sidebar-container {
+    align-items: center;
+    justify-content: start;
+    display: flex;
+    flex-direction: column;
+    padding: 1%;
+    border-radius: 5px;
+    width: 15%;
+    background-color: var(--side-bar-background);
+}
+
 /* Sidebar Icons */
 
 .icon-holder {
@@ -36,7 +47,7 @@
 
 .icon-holder * {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     line-height: 5px;
 }
@@ -114,10 +125,11 @@
 }
 
 #options-text {
-    width: 75%
+    width: 100%
 }
+
 #options {
-    width: 75%;
+    width: 100%;
     float: right;
 }
 
