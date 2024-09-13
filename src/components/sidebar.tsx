@@ -10,32 +10,32 @@ const Sidebar = () => {
     return (
         <>
             <div className="flexbox-container">
-                <div className={sideBarVisible ? "sidebar-container" : "collapsed-siderbar-container"}>
+                <div className={sideBarVisible ? "sidebar-container" : "collapsed-sidebar-container"}>
                     <div className="icon-holder">
-                        <img src="../images/hamburger-icon.png" alt="menu-icon" onClick={() => setSideBarClicked(!sideBarVisible)}></img>
+                        <img src="../images/hamburger-icon.png" alt="menu-icon" id="hamburger-icon" onClick={() => setSideBarClicked(!sideBarVisible)}></img>
                         <br/>
                     </div>
                     <div className="arrow-icon-container">
                         <div className="icon-holder">
-                            <Link to={`dashboard`} id="dashboard">
+                            <Link to={`dashboard`} id="dashboard" onClick={() => {if (!sideBarVisible) {setSideBarClicked(true)}}}>
                                 <img src="../images/dashboard-icon.png" alt="dashboard-icon" id="document-icon"></img>
-                                <br/> {sideBarVisible ? (location.pathname === "/dashboard" ? <p><strong>Dashboard</strong></p> : <p>Dashboard</p>) : <p></p>}
+                                <br/> {sideBarVisible ? (location.pathname === "/dashboard" ? <p><strong>Dashboard</strong></p> : <p>Dashboard</p>) : <></>}
                             </Link><br/>
                         </div>
                     </div>
                     <div className="arrow-icon-container">
                         <div className="icon-holder">
-                            <Link to={`education`} id="education">
+                            <Link to={`education`} id="education" onClick={() => {if (!sideBarVisible) {setSideBarClicked(true)}}}>
                                 <img src="../images/education-icon.png" alt="education-icon" id="education-icon"></img>
-                                <br/> {sideBarVisible ? (location.pathname === "/education" ? <p><strong>Education</strong></p> : <p>Education</p>) : <p></p>}
+                                <br/> {sideBarVisible ? (location.pathname === "/education" ? <p><strong>Education</strong></p> : <p>Education</p>) : <></>}
                             </Link>
                         </div>
                     </div>
                     <div className="arrow-icon-container">
                         <div className="icon-holder">
-                            <Link to={`preferences`} id="preferences">
+                            <Link to={`preferences`} id="preferences" onClick={() => {if (!sideBarVisible) {setSideBarClicked(true)}}}>
                                 <img src="../images/gear-icon.png" alt="preferences-icon" id="preferences-icon"></img> {/* https://www.flaticon.com/free-icon/gear_1160356 */}
-                                <br/> {sideBarVisible ? (location.pathname === "/preferences" ? <p><strong>Preferences</strong></p> : <p>Preferences</p>) : <p></p>}
+                                <br/> {sideBarVisible ? (location.pathname === "/preferences" ? <p><strong>Preferences</strong></p> : <p>Preferences</p>) : <></>}
                             </Link>
                         </div>
                     </div>

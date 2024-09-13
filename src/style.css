@@ -24,7 +24,7 @@
     flex-direction: column;
     padding: 1%;
     border-radius: 5px;
-    width: 7.5%;
+    width: 15%;
     background-color: var(--side-bar-background);
 }
 
@@ -33,9 +33,9 @@
     justify-content: start;
     display: flex;
     flex-direction: column;
-    padding: 1%;
+    padding: 2%;
     border-radius: 5px;
-    width: 15%;
+    width: 5%;
     background-color: var(--side-bar-background);
 }
 
@@ -65,15 +65,24 @@
     width: 40px;
 }
 
+#hamburger-icon {
+    padding-top: 10px;
+}
 
 #dashboard, #education, #preferences {
     height: 75px;
+}
+
+.icon-holder p {
+    font-size: 100%;
+    padding: 10px;
 }
 
 .icon-holder a:link {
     color: black;
     text-decoration: none;
 }
+
 .icon-holder a:visited {
     color: black;
     text-decoration: none;
@@ -108,7 +117,7 @@
 /* Outlet Box*/
 
 .outlet {
-    width: 92.5%;
+    width: 100%;
     border-radius: 5px;
     background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom));
     padding: 1%;
