@@ -16,24 +16,24 @@ const Sidebar = () => {
                         <br/>
                     </div>
                     <div className="arrow-icon-container">
-                        <div className="icon-holder">
-                            <Link to={`dashboard`} id="dashboard" onClick={() => {if (!sideBarVisible) {setSideBarClicked(true)}}}>
+                        <div className="icon-holder" id={location.pathname === "/dashboard" ? "selected" : "not-selected"}>
+                            <Link to={`dashboard`} id="dashboard">
                                 <img src="../images/dashboard-icon.png" alt="dashboard-icon" id="document-icon"></img>
                                 <br/> {sideBarVisible ? (location.pathname === "/dashboard" ? <p><strong>Dashboard</strong></p> : <p>Dashboard</p>) : <></>}
                             </Link><br/>
                         </div>
                     </div>
                     <div className="arrow-icon-container">
-                        <div className="icon-holder">
-                            <Link to={`education`} id="education" onClick={() => {if (!sideBarVisible) {setSideBarClicked(true)}}}>
+                        <div className="icon-holder" id={location.pathname === "/education" ? "selected" : "not-selected"}>
+                            <Link to={`education`} id="education">
                                 <img src="../images/education-icon.png" alt="education-icon" id="education-icon"></img>
                                 <br/> {sideBarVisible ? (location.pathname === "/education" ? <p><strong>Education</strong></p> : <p>Education</p>) : <></>}
                             </Link>
                         </div>
                     </div>
                     <div className="arrow-icon-container">
-                        <div className="icon-holder">
-                            <Link to={`preferences`} id="preferences" onClick={() => {if (!sideBarVisible) {setSideBarClicked(true)}}}>
+                        <div className="icon-holder" id={location.pathname === "/preferences" ? "selected" : "not-selected"}>
+                            <Link to={`preferences`} id="preferences">
                                 <img src="../images/gear-icon.png" alt="preferences-icon" id="preferences-icon"></img> {/* https://www.flaticon.com/free-icon/gear_1160356 */}
                                 <br/> {sideBarVisible ? (location.pathname === "/preferences" ? <p><strong>Preferences</strong></p> : <p>Preferences</p>) : <></>}
                             </Link>
