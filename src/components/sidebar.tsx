@@ -13,7 +13,6 @@ const Sidebar = () => {
                 <div className={sideBarVisible ? "sidebar-container" : "collapsed-sidebar-container"}>
                     <div className="icon-holder">
                         <img src="../images/hamburger-icon.png" alt="menu-icon" id="hamburger-icon" onClick={() => setSideBarClicked(!sideBarVisible)}></img>
-                        <br/>
                     </div>
                     <div className="arrow-icon-container">
                         <div className="icon-holder" id={location.pathname === "/dashboard" ? "selected" : "not-selected"}>
