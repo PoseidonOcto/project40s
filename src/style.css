@@ -43,7 +43,6 @@ ul ul li, p, ol ul li {
 ol li {
     font-size: 1.1rem;
 }
-
 /* Sidebar */
 
 .flexbox-container {
@@ -114,6 +113,11 @@ ol li {
     flex-direction: row;
     align-items: center;
     line-height: 5px;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .icon-holder img:not(#hamburger-icon) {
@@ -296,3 +300,6 @@ td {
     color: #000000;
 }
 
+#disclaimer {
+    line-height: 1.75rem;
+}
