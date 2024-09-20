@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "../style.css"
 import {handleUserQuery} from "../gptApi";
+import {QueryResult, queryClaimBuster} from "../claimBusterApi";
 import { Outlet, Link } from "react-router-dom";
 
 
 
 const Dashboard = () => {
     const [queryText, setQueryText] = useState<string>();
-    const [queryResult, setQueryResult] = useState<string>();
+    const [queryResult, setQueryResult] = useState<any>(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
     const awaitUserQuery = async (query: string | undefined): Promise<void> => {
         setIsLoading(true);
-        setQueryResult((await handleUserQuery(query)).response);
+        setQueryResult(await queryClaimBuster(query));
         setIsLoading(false);
         return;
     }
@@ -25,7 +26,25 @@ const Dashboard = () => {
             <button type="submit" className={isLoading ? "loadingButton" : "notLoadingButton"} disabled={isLoading}
                     onClick={(_) => awaitUserQuery(queryText)}>Query</button>
             {isLoading && <div className="loadingIcon">bruh</div>}
-            <p>{queryResult}</p>
+            <div id="query-result">
+                {queryResult && queryResult.map((claimResult: QueryResult, i: number) => {
+                    return (
+                        <div id="query-result-individual" key={i}>
+                            <h4>Claim: {claimResult.claim}</h4>
+                            <p>We found the following database entries:</p>
+                            <ul>
+                            {claimResult.justification.map((entry, j: number) => {
+                                return (
+                                    <li key={j}>{entry.claim + "\n\nTruth Rating: " + entry.truth_rating}</li>
+                                );
+                            })}
+                            </ul>
+                        </div>
+                    );
+                })}
+                
+
+            </div>
             <hr/>
             <Link to={`education`}>Education is here!</Link>
             <hr/>
