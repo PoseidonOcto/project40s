@@ -278,7 +278,6 @@ td {
     width: 80px;
     height: 80px;
     animation: spin 1s linear infinite;
-    background-color: red;
 }
 @keyframes spin {
     0% {

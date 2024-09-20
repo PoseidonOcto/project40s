@@ -1,7 +1,5 @@
 const API_KEY = "2b6f69d7f6754bc1ba373005f1df6735";
 
-let input_claim = 'The sky is blue.';
-
 export type QueryResult = {
     claim: string;
     justification: {
@@ -20,16 +18,9 @@ export const queryClaimBuster = async (query: string | undefined): Promise<Query
     console.log("------ claims -------");
     console.log(claims);
     console.log("---------------------");
-    // 
-    // 
-    // const filtered = results.results.filter((result: any) => result.score > 0.5);
-    // console.log(filtered);
 
-    // const queried = await Promise.all(filtered.map((result: any) => factCheck(result.text)));
-    // console.log(queried);
-    // return queried;
-
-    // knowledge_bases seems unreliable, triggering off of simple definitions of words.
+    // Knowledge_bases seems unreliable, triggering to tell you the definition of simple english words.
+    // So here we just use "fact_matcher".
     const results = await Promise.all(claims.results
         .filter((result: any) => result.score > 0.8)
         .map((result: any) => factCheck(result.text, "fact_matcher")));
@@ -39,20 +30,6 @@ export const queryClaimBuster = async (query: string | undefined): Promise<Query
     console.log(tmp);
     console.log("---------------------");
     return tmp;
-        //.map((result: any) => {
-        //    return {
-        //        claim: result.claim,
-        //        justification: result.justification,
-        //    };
-        //});
-
-
-    // Print out the JSON payload the API sent back
-    // console.log(response.json());
-    // Print out the JSON payload the API sent back
-    // console.log(JSON.stringify(response.json(), null, 2));
-    //return response.json();
-    //return JSON.stringify(await factCheck(query), null, 2);
 }
 
 const factCheck = async(query: string, mode: "knowledge_bases" | "fact_matcher"): Promise<any> => {
@@ -78,16 +55,4 @@ const getClaims = async(query: string): Promise<any> => {
 
     return response.json();
 }
-
-
-// type QueryResult = {
-//     claim: string;
-//     origin: "Claim Matcher" | "Claim Checker - Knowledge Bases";
-//     justification: [{
-//         question: 
-// 
-//     }]
-// 
-// 
-// }
 
