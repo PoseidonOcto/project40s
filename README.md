@@ -17,6 +17,7 @@
 git clone https://github.com/PoseidonOcto/project40s.git
 cd project40s
 npm install
+npm run build
 ```
 
 Load the extension in chrome - in the chrome extensions page, load `dist` directory.
@@ -47,7 +48,6 @@ NOTE: For the options page, you will still need to refresh the page.
 
 
 ## Build (Production)
-You don't have any need for this command.
 ```
 npm run build
 ```
