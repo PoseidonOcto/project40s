@@ -29,7 +29,8 @@ export const fetchFactChecks = async (text: string) => {
     // over sentences.
     const claims = sentencize(text);
 
-    const factChecks: FactCheckResults = await fetch('http://192.168.1.3:5000/embedding', {
+    // http://192.168.1.3:5000/
+    const factChecks: FactCheckResults = await fetch('https://project40s-embedding-server-production.up.railway.app/embedding', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
