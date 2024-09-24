@@ -1,5 +1,6 @@
 import { fetchFactChecks } from "./factCheckApi";
 import { MessageMode } from "./types"
+import sentencize from "@stdlib/nlp-sentencize"
 
 // Message handlers should return a boolean with value
 // true if and only if they will call sendResponse asynchronously.
@@ -41,6 +42,26 @@ const handleAuthenticationMessage: MessageHandler = (_, __, ___) => {
     return false;
 }
 
+const getClaims = (text: string): string[] => {
+    const paragraph = text.split("\n")
+        .filter(hasEnoughWords)
+        .join(". ");
+
+    return sentencize(paragraph).filter(hasEnoughWords);
+}
+
+const hasEnoughWords = (text: string): boolean => {
+    const smallestSentenceLength = 5;
+    return text.trim().split(/\s+/).length >= smallestSentenceLength;
+}
+
+const handleTestingMessage: MessageHandler = (request, __, ___) => {
+    const claims = getClaims(request.text);
+    console.log(claims);
+    return false;
+}
+
+
 // If multiple event listeners, only the first listener to send a
 // response will have their response received. So we keep
 // all event listeners in one place.
@@ -52,6 +73,8 @@ chrome.runtime.onMessage.addListener(
                 return handleAuthenticationMessage(request, sender, sendResponse);
             case MessageMode.FactCheck:
                 return handleFactCheckMessage(request, sender, sendResponse);
+            case MessageMode.Testing:
+                return handleTestingMessage(request, sender, sendResponse);
             default:
                 console.error("Message with unexpected MessageMode received.");
                 return false;

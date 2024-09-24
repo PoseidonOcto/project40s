@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import "../style.css"
 import {handleUserQuery} from "../gptApi";
 import {QueryResult, queryClaimBuster} from "../claimBusterApi";
@@ -39,7 +39,7 @@ const Dashboard = () => {
                 {queryResult.status == 'error' && <h4>{queryResult.message}</h4>}
                 {queryResult.status == 'success' && queryResult.data!.length === 0 && <h4>No results found.</h4>}
                 {queryResult.status == 'success' && queryResult.data!.length !== 0
-                        && queryResult.data!.map((claimResult, i) => {
+                        && queryResult.data.map((claimResult, i) => {
                             return (
                                 <div id="query-result-individual" key={i}>
                                     <h4>Claim: {claimResult.claim}</h4>
@@ -47,9 +47,9 @@ const Dashboard = () => {
                                     <ul>
                                     {claimResult.responses.map((entry, j: number) => {
                                         return (
-                                            <>
-                                                <li key={j}>{entry.entity.claim}<br/><br/>{"Truth Rating: " + entry.entity.review}</li><br/>
-                                            </>
+                                            <Fragment key={j}>
+                                                <li>{entry.entity.claim}<br/><br/>{"Truth Rating: " + entry.entity.review}</li><br/>
+                                            </Fragment>
                                         );
                                     })}
                                     </ul>
