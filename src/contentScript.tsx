@@ -45,11 +45,11 @@ async function factCheckPageContents() {
     }
 
     // Commented out purely to avoid unnecessary use of API. Feel free to uncomment.
-    // const response = await chrome.runtime.sendMessage({
-    //     mode: MessageMode.FactCheck, claims: Array.from(newClaims), addToDatabase: true
-    // });
+    const response = await chrome.runtime.sendMessage({
+        mode: MessageMode.FactCheck, claims: Array.from(newClaims), addToDatabase: true
+    });
 
-    // console.log(response);
+    console.log(response);
 }
 
 /* 

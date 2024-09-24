@@ -5,11 +5,23 @@ import { MessageMode } from "./types"
 // true if and only if they will call sendResponse asynchronously.
 type MessageHandler = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => boolean;
 
+// TODO number can get out of sync because no lock on badge text.
 const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
     (async () => {
         console.assert(request.addToDatabase !== undefined); // We will use this param later.
         // TODO: Add found fact checks to the database, if they weren't there before.
-        sendResponse(await factCheckClaims(request.claims));
+        const factChecks = await factCheckClaims(request.claims);
+        console.log(factChecks);
+        if (factChecks.status !== 'success') {
+            return;
+        }
+
+        const old = Number(await chrome.action.getBadgeText({}));
+
+        // We don't await this so note that we can return before this is done.
+        chrome.action.setBadgeText({text: `${old + factChecks.data.length}`});
+
+        sendResponse(factChecks);
     })();
 
     return true;
@@ -63,6 +75,16 @@ chrome.runtime.onMessage.addListener(
         }
     }
 );
+
+/*
+ * These functions require both event listeners.
+ */
+chrome.runtime.onStartup.addListener(function () {
+    chrome.action.setBadgeBackgroundColor({color: [210, 43, 43, 255]});
+});
+chrome.runtime.onInstalled.addListener(function () {
+    chrome.action.setBadgeBackgroundColor({color: [210, 43, 43, 255]});
+});
 
 // Create context menu.
 chrome.runtime.onInstalled.addListener(function () {
