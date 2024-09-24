@@ -1,6 +1,5 @@
-import { fetchFactChecks } from "./factCheckApi";
+import { factCheckClaims } from "./factCheckApi";
 import { MessageMode } from "./types"
-import sentencize from "@stdlib/nlp-sentencize"
 
 // Message handlers should return a boolean with value
 // true if and only if they will call sendResponse asynchronously.
@@ -8,11 +7,9 @@ type MessageHandler = (message: any, sender: chrome.runtime.MessageSender, sendR
 
 const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
     (async () => {
-        if (request.text === undefined) {
-            sendResponse({ status: 'error', message: 'No text provided.', });
-            return;
-        }
-        sendResponse(await fetchFactChecks(request.text));
+        console.assert(request.addToDatabase !== undefined); // We will use this param later.
+        // TODO: Add found fact checks to the database, if they weren't there before.
+        sendResponse(await factCheckClaims(request.claims));
     })();
 
     return true;
@@ -42,25 +39,10 @@ const handleAuthenticationMessage: MessageHandler = (_, __, ___) => {
     return false;
 }
 
-const getClaims = (text: string): string[] => {
-    const paragraph = text.split("\n")
-        .filter(hasEnoughWords)
-        .join(". ");
-
-    return sentencize(paragraph).filter(hasEnoughWords);
-}
-
-const hasEnoughWords = (text: string): boolean => {
-    const smallestSentenceLength = 5;
-    return text.trim().split(/\s+/).length >= smallestSentenceLength;
-}
-
 const handleTestingMessage: MessageHandler = (request, __, ___) => {
-    const claims = getClaims(request.text);
-    console.log(claims);
+    console.log("Not doing anything right now.");
     return false;
 }
-
 
 // If multiple event listeners, only the first listener to send a
 // response will have their response received. So we keep

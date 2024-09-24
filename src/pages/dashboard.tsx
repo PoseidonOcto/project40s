@@ -3,7 +3,7 @@ import "../style.css"
 import {handleUserQuery} from "../gptApi";
 import {QueryResult, queryClaimBuster} from "../claimBusterApi";
 import { Outlet, Link } from "react-router-dom";
-import { fetchFactChecks, FactCheckResults } from "../factCheckApi";
+import { factCheckText, FactCheckResults } from "../factCheckApi";
 
 
 
@@ -17,13 +17,13 @@ const Dashboard = () => {
     const awaitUserQuery = async (query: string | undefined): Promise<void> => {
         setIsLoading(true);
         console.log(query);
-        setQueryResult(query !== undefined ? await fetchFactChecks(query) : {'status': 'error', 'message': 'No query provided.'});
+        setQueryResult(query !== undefined ? await factCheckText(query) : {'status': 'error', 'message': 'No query provided.'});
         setIsLoading(false);
         return;
     }
 
     const testingButton = async () => {
-        // setTestText(await fetchFactChecks());
+        // setTestText(await factCheckText());
     }
 
     return (
