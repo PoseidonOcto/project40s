@@ -1,22 +1,23 @@
 import { fetchFactChecks } from "./factCheckApi";
+import { MessageMode } from "./types"
 
-export enum MessageMode {
-    Authentication,
-    Testing,
-    FactCheck,
+// Message handlers should return a boolean with value
+// true if and only if they will call sendResponse asynchronously.
+type MessageHandler = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => boolean;
+
+const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
+    (async () => {
+        if (request.text === undefined) {
+            sendResponse({ status: 'error', message: 'No text provided.', });
+            return;
+        }
+        sendResponse(await fetchFactChecks(request.text));
+    })();
+
+    return true;
 }
 
-type MessageHandler = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => Promise<void>;
-
-const handleFactCheckMessage: MessageHandler = async (request, sender, sendResponse) => {
-    if (request.text === undefined) {
-        sendResponse({ status: 'error', message: 'No text provided.', });
-        return;
-    }
-    sendResponse(await fetchFactChecks(request.text));
-}
-
-const handleAuthenticationMessage: MessageHandler = async (request, sender, sendResponse) => {
+const handleAuthenticationMessage: MessageHandler = (_, __, ___) => {
     chrome.identity.getAuthToken({interactive: true}, (token: string | undefined, _: any) => {
         let init = {
             method: 'GET',
@@ -36,19 +37,24 @@ const handleAuthenticationMessage: MessageHandler = async (request, sender, send
 
         console.log(token);
     });
+
+    return false;
 }
 
+// If multiple event listeners, only the first listener to send a
+// response will have their response received. So we keep
+// all event listeners in one place.
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.mode) {
             // Authentication proof of concept.
             case MessageMode.Authentication:
-                handleAuthenticationMessage(request, sender, sendResponse);
-                break;
-            case MessageMode.Testing:
-                break;
+                return handleAuthenticationMessage(request, sender, sendResponse);
             case MessageMode.FactCheck:
-                handleFactCheckMessage(request, sender, sendResponse);
+                return handleFactCheckMessage(request, sender, sendResponse);
+            default:
+                console.error("Message with unexpected MessageMode received.");
+                return false;
         }
     }
 );
@@ -86,4 +92,4 @@ chrome.contextMenus.onClicked.addListener(async (item, tab) => {
     });
 });
 
-export default {}
+
