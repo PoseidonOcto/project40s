@@ -38,21 +38,29 @@ class TaskQueue {
 
 const TASK_QUEUE = new TaskQueue();
 
-// TODO number can get out of sync because no lock on badge text.
-const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
+/*
+ * ------------------------------
+ * Data flow
+ * ------------------------------
+ * Automatically detected claims
+ *  --> V
+ *
+ *
+ *
+ */
+const handleFactCheckMessage: MessageHandler = (request, _, __) => {
     TASK_QUEUE.enqueue(async () => {
         console.assert(request.addToDatabase !== undefined); // We will use this param later.
         const factChecks = await factCheckClaims(request.claims);
-        if (factChecks.status !== 'success') {
+        if (factChecks.status !== 'success' || factChecks.data.length === 0) {
             return;
         }
 
         const old = Number(await chrome.action.getBadgeText({}));
-
         await chrome.action.setBadgeText({text: `${old + factChecks.data.length}`});
 
         //await chrome.runtime.sendMessage({mode: MessageMode.SendFactCheckToPopup, factChecks: factChecks});
-        sendResponse(factChecks);
+        // sendResponse(factChecks);
     });
 
     return false;

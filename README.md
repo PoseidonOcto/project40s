@@ -10,6 +10,28 @@
 * dist: the output of the build (i.e. npm run ___). No need to change these files.
 * docs: images used for this readme
 
+## Data flow
+    ┌─────────────────────────┐                                                                        
+    │          Text           │                         ┌───────────────┐                  ┌──────────┐
+    │( Automatically scraped )│   ───────────────────►  │ Fact provider │ ───────────────► │ Database │
+    │(  or manually flagged  )│     ( broken into )     └───────────────┘  ( new facts )   └──────────┘
+    └─────────────────────────┘     (  sentences  )                                                    
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                             ( recently triggered facts )   ┌───────┐                                  
+                           ┌──────────────────────────────► │ Popup │                                  
+                           │                                └───────┘                                  
+          ┌──────────┐     │                                                                           
+          │ Database │ ────┤                                                                           
+          └──────────┘     │                                                                           
+                           │                                ┌───────────┐                              
+                           └──────────────────────────────► │ Dashboard │                              
+                                    ( all facts )           └───────────┘                              
+
 ## Setup
 
 [in the folder you wish the 'project40s' folder to be placed]
