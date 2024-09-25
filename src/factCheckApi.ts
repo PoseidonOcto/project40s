@@ -13,7 +13,7 @@ export type FactCheckResults = {
     message: string,
 }
 
-type FactCheckResultEntry = {
+export type FactCheckResultEntry = {
     distance: number,
     entity: {
         claim: string,

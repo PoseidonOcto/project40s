@@ -1,9 +1,5 @@
 import { factCheckClaims } from "./factCheckApi";
-import { MessageMode } from "./types"
-
-// Message handlers should return a boolean with value
-// true if and only if they will call sendResponse asynchronously.
-type MessageHandler = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => boolean;
+import { MessageMode, MessageHandler } from "./types"
 
 // TODO number can get out of sync because no lock on badge text.
 const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
@@ -11,16 +7,15 @@ const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
         console.assert(request.addToDatabase !== undefined); // We will use this param later.
         // TODO: Add found fact checks to the database, if they weren't there before.
         const factChecks = await factCheckClaims(request.claims);
-        console.log(factChecks);
         if (factChecks.status !== 'success') {
             return;
         }
 
         const old = Number(await chrome.action.getBadgeText({}));
 
-        // We don't await this so note that we can return before this is done.
-        chrome.action.setBadgeText({text: `${old + factChecks.data.length}`});
+        await chrome.action.setBadgeText({text: `${old + factChecks.data.length}`});
 
+        await chrome.runtime.sendMessage({mode: MessageMode.SendFactCheckToPopup, factChecks: factChecks});
         sendResponse(factChecks);
     })();
 
@@ -56,9 +51,14 @@ const handleTestingMessage: MessageHandler = (request, __, ___) => {
     return false;
 }
 
-// If multiple event listeners, only the first listener to send a
-// response will have their response received. So we keep
-// all event listeners in one place.
+/*
+ * If multiple event listeners, only the first listener to send a
+ * response will have their response received. So we keep
+ * all event listeners in one place.
+ *
+ * This listener will check every MessageMode and throw if an unexpected
+ * one is given to allow easier debugging.
+ */
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.mode) {
@@ -69,6 +69,9 @@ chrome.runtime.onMessage.addListener(
                 return handleFactCheckMessage(request, sender, sendResponse);
             case MessageMode.Testing:
                 return handleTestingMessage(request, sender, sendResponse);
+            case MessageMode.SendFactCheckToPopup:
+                console.log("This message is not for us.");
+                return false;
             default:
                 console.error("Message with unexpected MessageMode received.");
                 return false;
