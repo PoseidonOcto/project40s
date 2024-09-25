@@ -28,7 +28,7 @@ import { getClaims } from "./factCheckApi"
 // So there will be claims in here that are no longer in 'document.body.innerText'.
 let PROCESSED_CLAIMS: Set<string> = new Set();
 
-setInterval(factCheckPageContents, 3000)
+setInterval(factCheckPageContents, 10000)
 
 // TODO: Two things could turn up the same fact check; but only would
 // probably want to display it once?
@@ -44,12 +44,9 @@ async function factCheckPageContents() {
         return;
     }
 
-    // Commented out purely to avoid unnecessary use of API. Feel free to uncomment.
-    const response = await chrome.runtime.sendMessage({
+    chrome.runtime.sendMessage({
         mode: MessageMode.FactCheck, claims: Array.from(newClaims), addToDatabase: true
     });
-
-    console.log(response);
 }
 
 /* 

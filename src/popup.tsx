@@ -12,7 +12,7 @@ type FactCheckData = {
 const Popup = () => {
     const [factChecks, setFactChecks] = useState<Map<number, FactCheckData>>(new Map());
     const factChecksPointer = useRef<Map<number, FactCheckData>>(factChecks);
-    factChecksPointer.current = factChecks;
+    useEffect(() => {factChecksPointer.current = factChecks}, [factChecks]);
 
     useEffect(() => {
         chrome.runtime.onMessage.addListener(

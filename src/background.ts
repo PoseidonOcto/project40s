@@ -1,11 +1,47 @@
 import { factCheckClaims } from "./factCheckApi";
 import { MessageMode, MessageHandler } from "./types"
 
+/*
+ * Queue related code is written under the assumption
+ * that there is only one thread handling this code.
+ */
+class TaskQueue {
+    tasks: (() => Promise<void>)[];
+    isRunning: boolean
+
+    constructor() {
+        this.tasks = [];
+        this.isRunning = false;
+    }
+
+    async runQueue(): Promise<void> {
+        console.assert(!this.isRunning);
+        this.isRunning = true;
+        while (true) {
+            if (this.tasks.length === 0) {
+                break;
+            }
+
+            const nextTask = this.tasks.shift();
+            await nextTask!();
+        }
+        this.isRunning = false;
+    }
+
+    enqueue(task: () => Promise<void>) {
+        this.tasks.push(task);
+        if (!this.isRunning) {
+            this.runQueue();
+        }
+    }
+}
+
+const TASK_QUEUE = new TaskQueue();
+
 // TODO number can get out of sync because no lock on badge text.
 const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
-    (async () => {
+    TASK_QUEUE.enqueue(async () => {
         console.assert(request.addToDatabase !== undefined); // We will use this param later.
-        // TODO: Add found fact checks to the database, if they weren't there before.
         const factChecks = await factCheckClaims(request.claims);
         if (factChecks.status !== 'success') {
             return;
@@ -15,12 +51,13 @@ const handleFactCheckMessage: MessageHandler = (request, _, sendResponse) => {
 
         await chrome.action.setBadgeText({text: `${old + factChecks.data.length}`});
 
-        await chrome.runtime.sendMessage({mode: MessageMode.SendFactCheckToPopup, factChecks: factChecks});
+        //await chrome.runtime.sendMessage({mode: MessageMode.SendFactCheckToPopup, factChecks: factChecks});
         sendResponse(factChecks);
-    })();
+    });
 
-    return true;
+    return false;
 }
+
 
 const handleAuthenticationMessage: MessageHandler = (_, __, ___) => {
     chrome.identity.getAuthToken({interactive: true}, (token: string | undefined, _: any) => {
@@ -122,4 +159,6 @@ chrome.contextMenus.onClicked.addListener(async (item, tab) => {
     });
 });
 
-
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
