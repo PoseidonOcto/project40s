@@ -1,13 +1,18 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import { MessageMode } from "./types";
+import { MessageHandler, MessageMode } from "./types";
 import { FactCheckResults, FactCheckResultEntry } from "./factCheckApi";
 import "./style.css"
 import "./popup.css"
 
+type FactCheckData = {
+    triggeringText: Set<string>,
+} & FactCheckResultEntry['entity']
+
 const Popup = () => {
-    const [factChecks, setFactChecks] = useState<Map<number, FactCheckResultEntry['entity']>>(new Map());
-    const [queryResult, setQueryResult] = useState<FactCheckResults>({'status': 'error', 'message': 'No query provided yet.'});
+    const [factChecks, setFactChecks] = useState<Map<number, FactCheckData>>(new Map());
+    const factChecksPointer = useRef<Map<number, FactCheckData>>(factChecks);
+    factChecksPointer.current = factChecks;
 
     useEffect(() => {
         chrome.runtime.onMessage.addListener(
@@ -19,9 +24,25 @@ const Popup = () => {
                             return false;
                         }
 
-                        const newFactChecks = new Map();
-                        results.data.forEach(claimResults => claimResults.responses.forEach(entry => factChecks.set(entry.id, entry.entity)));
-                        setFactChecks(request.factChecks);
+                        // Have to use a pointer to factChecks here as the 'factChecks' reference doesn't
+                        // stay between renders. Additionally, we clone as it's best practice to mutate clone 
+                        // rather than old state.
+                        const newFactChecks = structuredClone(factChecksPointer.current);
+                        console.log(factChecksPointer.current);
+
+                        // Add all new fact checks to state.
+                        for (const claimResults of results.data) {
+                            for (const entry of claimResults.responses) {
+                                // If a fact check is already there, add the new claim that triggered it.
+                                if (newFactChecks.has(entry.id)) {
+                                    newFactChecks.get(entry.id)!.triggeringText.add(claimResults.claim);
+                                } else {
+                                    newFactChecks.set(entry.id, Object.assign({triggeringText: new Set([claimResults.claim])}, entry.entity));
+                                }
+                            }
+                        }
+                        setFactChecks(newFactChecks);
+
                         return false;
                     default:
                         // These messages are not for us.
@@ -51,28 +72,26 @@ const Popup = () => {
             <button onClick={testingButton}>Testing</button>
             <hr/>
 
-            <div id="query-result">
-                {queryResult.status == 'error' && <h4>{queryResult.message}</h4>}
-                {queryResult.status == 'success' && queryResult.data!.length === 0 && <h4>No results found.</h4>}
-                {queryResult.status == 'success' && queryResult.data!.length !== 0
-                        && queryResult.data.map((claimResult, i) => {
-                            return (
-                                <div id="query-result-individual" key={i}>
-                                    <h4>Claim: {claimResult.claim}</h4>
-                                    <p>We found the following database entries:</p>
-                                    <ul>
-                                    {claimResult.responses.map((entry, j: number) => {
-                                        return (
-                                            <Fragment key={j}>
-                                                <li>{entry.entity.claim}<br/><br/>{"Truth Rating: " + entry.entity.review}</li><br/>
-                                            </Fragment>
-                                        );
-                                    })}
-                                    </ul>
-                                </div>
-                            );
-                        })
-                }
+            <h3>Here are some fact checks that may be relevant to you</h3>
+            <div id="fact-checks">
+                {factChecks.size === 0 && <p>None</p>}
+                {factChecks.size !== 0 && Array.from(factChecks.values()).map((fact, i) => {
+                    return (
+                        <div id="fact-check" key={i}>
+                            <p>Claim: {fact.claim}</p>
+                            <p>Truth Status: {fact.review}</p>
+                            <p>Author: {fact.author_name}</p>
+                            <p>Author url: {fact.author_url}</p>
+                            <p>Source: {fact.url}</p>
+                            <p>This fact check was triggered by the following text:</p>
+                            <ol>
+                                {Array.from(fact.triggeringText.values())
+                                    .map((text, j) => <li key={j}>{text}</li>)
+                                }
+                            </ol>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
