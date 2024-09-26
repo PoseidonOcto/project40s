@@ -1,66 +1,19 @@
-import { factCheckClaims } from "./factCheckApi";
+import { updateDatabase } from "./factCheckApi";
 import { MessageMode, MessageHandler } from "./types"
-
-/*
- * Queue related code is written under the assumption
- * that there is only one thread handling this code.
- */
-class TaskQueue {
-    tasks: (() => Promise<void>)[];
-    isRunning: boolean
-
-    constructor() {
-        this.tasks = [];
-        this.isRunning = false;
-    }
-
-    async runQueue(): Promise<void> {
-        console.assert(!this.isRunning);
-        this.isRunning = true;
-        while (true) {
-            if (this.tasks.length === 0) {
-                break;
-            }
-
-            const nextTask = this.tasks.shift();
-            await nextTask!();
-        }
-        this.isRunning = false;
-    }
-
-    enqueue(task: () => Promise<void>) {
-        this.tasks.push(task);
-        if (!this.isRunning) {
-            this.runQueue();
-        }
-    }
-}
+import { TaskQueue } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
 
-/*
- * ------------------------------
- * Data flow
- * ------------------------------
- * Automatically detected claims
- *  --> V
- *
- *
- *
- */
 const handleFactCheckMessage: MessageHandler = (request, _, __) => {
     TASK_QUEUE.enqueue(async () => {
-        console.assert(request.addToDatabase !== undefined); // We will use this param later.
-        const factChecks = await factCheckClaims(request.claims);
-        if (factChecks.status !== 'success' || factChecks.data.length === 0) {
-            return;
+        console.assert(request.addToDatabase === undefined); // We won't use this param now (probably).
+        const unseenFactChecks = await updateDatabase(request.claims);
+
+        const oldNotifications = Number(await chrome.action.getBadgeText({}));
+        const newNotifications = oldNotifications + unseenFactChecks.size;
+        if (oldNotifications != newNotifications) {
+            await chrome.action.setBadgeText({text: `${newNotifications}`});
         }
-
-        const old = Number(await chrome.action.getBadgeText({}));
-        await chrome.action.setBadgeText({text: `${old + factChecks.data.length}`});
-
-        //await chrome.runtime.sendMessage({mode: MessageMode.SendFactCheckToPopup, factChecks: factChecks});
-        // sendResponse(factChecks);
     });
 
     return false;
@@ -114,11 +67,8 @@ chrome.runtime.onMessage.addListener(
                 return handleFactCheckMessage(request, sender, sendResponse);
             case MessageMode.Testing:
                 return handleTestingMessage(request, sender, sendResponse);
-            case MessageMode.SendFactCheckToPopup:
-                console.log("This message is not for us.");
-                return false;
             default:
-                console.error("Message with unexpected MessageMode received.");
+                // These messages are not for us.
                 return false;
         }
     }

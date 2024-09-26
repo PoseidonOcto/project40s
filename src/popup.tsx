@@ -1,9 +1,10 @@
 import React, { useEffect, useState, Fragment, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { MessageHandler, MessageMode } from "./types";
-import { FactCheckResults, FactCheckResultEntry } from "./factCheckApi";
+import { FactCheckResults, FactCheckResultEntry, getDatabase } from "./factCheckApi";
 import "./style.css"
 import "./popup.css"
+import { TaskQueue } from "./utils";
 
 type FactCheckData = {
     triggeringText: Set<string>,
@@ -11,45 +12,30 @@ type FactCheckData = {
 
 const Popup = () => {
     const [factChecks, setFactChecks] = useState<Map<number, FactCheckData>>(new Map());
-    const factChecksPointer = useRef<Map<number, FactCheckData>>(factChecks);
-    useEffect(() => {factChecksPointer.current = factChecks}, [factChecks]);
+    const taskQueue = useRef<TaskQueue>(new TaskQueue());
+
 
     useEffect(() => {
-        chrome.runtime.onMessage.addListener(
-            function(request, sender, sendResponse) {
-                switch (request.mode) {
-                    case MessageMode.SendFactCheckToPopup:
-                        const results: FactCheckResults = request.factChecks;
-                        if (results.status !== 'success') {
-                            return false;
-                        }
+        const updateData = () => taskQueue.current.enqueue((async () => {
+            // This is potentially unsynchronous (service worker could be setting badge text at same time),
+            // however fixing this would require enqueuing this task in the service workers task queue
+            // instead, and the notification number being a bit out of sync isn't too bad.
+            await chrome.action.setBadgeText({text: ""});
+            setFactChecks(await getDatabase())
+        }));
 
-                        // Have to use a pointer to factChecks here as the 'factChecks' reference doesn't
-                        // stay between renders. Additionally, we clone as it's best practice to mutate clone 
-                        // rather than old state.
-                        const newFactChecks = structuredClone(factChecksPointer.current);
-                        console.log(factChecksPointer.current);
+        updateData();
 
-                        // Add all new fact checks to state.
-                        for (const claimResults of results.data) {
-                            for (const entry of claimResults.responses) {
-                                // If a fact check is already there, add the new claim that triggered it.
-                                if (newFactChecks.has(entry.id)) {
-                                    newFactChecks.get(entry.id)!.triggeringText.add(claimResults.claim);
-                                } else {
-                                    newFactChecks.set(entry.id, Object.assign({triggeringText: new Set([claimResults.claim])}, entry.entity));
-                                }
-                            }
-                        }
-                        setFactChecks(newFactChecks);
-
-                        return false;
-                    default:
-                        // These messages are not for us.
-                        return false;
-                }
-            }
-        );
+        /*
+         * To communicate back and forth with the service worker,
+         * utilise the chrome.storage listener. Sending messages
+         * to the popup from the background script requires a
+         * handshake first - see: https://tinyurl.com/ynmtyy44
+         */
+        chrome.storage.onChanged.addListener((_, type) => {
+            console.assert(type === 'session');
+            updateData();
+        });
     }, []);
 
     const authenticationButton = () => {
@@ -66,10 +52,17 @@ const Popup = () => {
         })();
     }
 
+    const clearStorage = () => {
+        (async () => {
+            await chrome.storage.session.clear();
+        })();
+    }
+
     return (
         <div id='popup' className='outlet'>
             <button onClick={authenticationButton}>Authentication</button>
             <button onClick={testingButton}>Testing</button>
+            <button onClick={clearStorage}>Clear Storage</button>
             <hr/>
 
             <h3>Here are some fact checks that may be relevant to you</h3>

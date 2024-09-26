@@ -8,6 +8,11 @@ import { getClaims } from "./factCheckApi"
  */
 
 /*
+ * For testing automated fact checking try visiting "https://www.reddit.com/r/politics/"
+ * (allows testing scenario where all text is not immediately available, as you can scroll to load more).
+ */
+
+/*
  * Problem: wish to minimize unnecessary calls.
  *  Some possible approaches here:
  * ------------------------------
@@ -28,7 +33,7 @@ import { getClaims } from "./factCheckApi"
 // So there will be claims in here that are no longer in 'document.body.innerText'.
 let PROCESSED_CLAIMS: Set<string> = new Set();
 
-setInterval(factCheckPageContents, 10000)
+setInterval(factCheckPageContents, 3000)
 
 // TODO: Two things could turn up the same fact check; but only would
 // probably want to display it once?
@@ -45,7 +50,7 @@ async function factCheckPageContents() {
     }
 
     chrome.runtime.sendMessage({
-        mode: MessageMode.FactCheck, claims: Array.from(newClaims), addToDatabase: true
+        mode: MessageMode.FactCheck, claims: Array.from(newClaims)
     });
 }
 

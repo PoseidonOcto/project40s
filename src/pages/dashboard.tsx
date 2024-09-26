@@ -16,8 +16,9 @@ const Dashboard = () => {
 
     const awaitUserQuery = async (query: string | undefined): Promise<void> => {
         setIsLoading(true);
-        console.log(query);
-        setQueryResult(query !== undefined ? await factCheckText(query) : {'status': 'error', 'message': 'No query provided.'});
+        console.log("Currently does nothing");
+        // console.log(query);
+        // setQueryResult(query !== undefined ? await factCheckText(query) : {'status': 'error', 'message': 'No query provided.'});
         setIsLoading(false);
         return;
     }

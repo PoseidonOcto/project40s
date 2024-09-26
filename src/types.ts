@@ -6,7 +6,6 @@ export enum MessageMode {
     Authentication,
     Testing,
     FactCheck,
-    SendFactCheckToPopup,
 }
 
 // Message handlers should return a boolean with value
