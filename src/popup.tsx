@@ -58,6 +58,10 @@ const Popup = () => {
         })();
     }
 
+    // TODO the triggering text could be paired with a URL directing to the page
+    //  where it came from. This URL could even maybe link directly to the text.
+    // TODO the triggering piece of text needs to be kept a little bit more separate
+    //  from other triggering pieces, the kind of blend together.
     return (
         <div id='popup' className='outlet'>
             <button onClick={authenticationButton}>Authentication</button>
@@ -70,19 +74,22 @@ const Popup = () => {
                 {factChecks.size === 0 && <p>None</p>}
                 {factChecks.size !== 0 && Array.from(factChecks.values()).map((fact, i) => {
                     return (
-                        <div id="fact-check" key={i}>
-                            <p>Claim: {fact.claim}</p>
-                            <p>Truth Status: {fact.review}</p>
-                            <p>Author: {fact.author_name}</p>
-                            <p>Author url: {fact.author_url}</p>
-                            <p>Source: {fact.url}</p>
-                            <p>This fact check was triggered by the following text:</p>
-                            <ol>
-                                {Array.from(fact.triggeringText.values())
-                                    .map((text, j) => <li key={j}>{text}</li>)
-                                }
-                            </ol>
-                        </div>
+                        <Fragment key={i}>
+                            <div id="fact-check">
+                                <dl>
+                                    <dt className='claim'>Claim:<br/><i>{fact.claim}</i></dt>
+                                    <hr/>
+                                    <dd className='truth-status'>Truth Status: {fact.review}</dd>
+                                    <dd>Author: {fact.author_name} | <a href={fact.url}>Source</a></dd>
+                                    <br/>
+                                    <dd><u>Triggered by</u></dd>
+                                    {Array.from(fact.triggeringText.values())
+                                        .map((text, j) => <dd key={j}><i>{text}</i></dd>)
+                                    }
+                                </dl>
+                            </div>
+                            <hr/>
+                        </Fragment>
                     );
                 })}
             </div>
