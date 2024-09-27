@@ -59,7 +59,9 @@ DEADLINE: week 11
                         If a block is too small just add to 'other' block.
                             
 5. Miscellaneous css:
+    change education page to match hifi design
     fix up popup
+    make the css scale well (it is going to be displayed on a monitor at the expo)
 
 6. Complete user surveys:
     (a) Complete interview questions regarding usability
@@ -77,4 +79,18 @@ DEADLINE: week 11
         Will be opened upon extension installation.
         Probably just a youtube video would be easiest.
 
+9. Update privacy policy
+
 Optional: Publish extension to the chrome store
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Assigned Tasks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Alex:               1 & 6a
+Jackie:             2 & 3
+Angela & Sunny:     4a
+Aryan:              4b
+Jaspreet:           5 & 7b
+
+Unassigned (requiring other tasks to be complete): 6b, 7a, 8, 9
