@@ -1,0 +1,76 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Everything that needs to be done
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEADLINE: week 11
+
+Finish the misinformation detection:
+    update manual detection
+    display recently found differently
+    change to pull from database and store to database.
+
+Complete the database:
+    store all fields necessary for misinformation detection:
+
+        Table 1 (fact data):                    COMPOSITE_KEY: "id of user" and "id of claim".
+            id of user that detected claim  (number)
+            id of claim in vector database  (number)
+            url of triggering text          (string [can be huge])
+            triggering text                 (string [can be huge])
+            date that text was triggered    (number: milliseconds past epoch)
+
+        Table 2 (user interaction data):        COMPOSITE_KEY: "id of user" and "url".
+            id of user                      (number)
+            url of website                  (string)
+                // url will be clipped to host site i.e. "www.cnn.com" not "www.cnn.com/politics"
+            duration spent on that website  (number)
+            date spent duration on website  (number: milliseconds past epoch)
+                // yes this means a seperate entry each time they flick back
+                // could decide only get database entry if more than 30 seconds spent
+            clicks during duration          (number)
+
+        Table 3 (political leaning data):       PRIMARY_KEY: "url"
+            url of website                  (string)
+            political leaning of website    (ENUM)
+
+Complete the user interaction data collection:
+    Accurately track duration user spent on website and clicks.
+    Send data to database (when pushing a new url, also push the political leaning read from csv)
+
+Complete the dashboard:
+    Complete the storing of user interaction data in database.
+    Complete the graphs
+        
+        Graph 1 [the graph shown in hifi dashboard]:
+            Date versus duration spent online
+                Appliable filters / modes (buttons at bottom of graph):
+                    Can narrow the graph to a specific time region  (i.e. from 3pm june 23rd to 6pm june 23rd)
+
+                    Can filter by website                           (i.e. only show duration spent on instagram)
+                            ↕ (mutually exclusive)
+                    Can toggle displaying as a *stacked bar chart* 
+                        (two modes)
+                        - Each block is a different website
+                        - Each block is a different political leaning
+                            (i.e. a single bar could consist of blocks with "slightly left leaning", "center", and 'extremely right leaning")
+                            
+Complete user surveys:
+    Complete interview questions regarding usability
+    Conduct interviews (requires graphs && css done)
+
+Website recommendation page:
+    Review response from professor.
+    Review user surveys.
+    Compile list of websites from findings (if enough data).
+    Build website recommendation page.
+
+!!! (new item) !!!!
+Onboarding page:
+    A page explaining to the user how to use the extension.
+        Will be opened upon installation of extension.
+        Should be done before user testing.
+
+Miscellaneous css:
+    update dashboard hifi -> implement dashboard hifi
+    fix up popup
+
+Optional: Publish extension to the chrome store

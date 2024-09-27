@@ -9,10 +9,11 @@ const handleFactCheckMessage: MessageHandler = (request, _, __) => {
         console.assert(request.addToDatabase === undefined); // We won't use this param now (probably).
         const unseenFactChecks = await updateDatabase(request.claims);
 
-        const oldNotifications = Number(await chrome.action.getBadgeText({}));
-        const newNotifications = oldNotifications + unseenFactChecks.size;
-        if (oldNotifications != newNotifications) {
-            await chrome.action.setBadgeText({text: `${newNotifications}`});
+        // Update number of unseen fact checks.
+        const oldNum = Number(await chrome.action.getBadgeText({}));
+        const newNum = oldNum + unseenFactChecks.size;
+        if (oldNum != newNum) {
+            await chrome.action.setBadgeText({text: `${newNum}`});
         }
     });
 
@@ -67,6 +68,10 @@ chrome.runtime.onMessage.addListener(
                 return handleFactCheckMessage(request, sender, sendResponse);
             case MessageMode.Testing:
                 return handleTestingMessage(request, sender, sendResponse);
+            case MessageMode.AddingToDatabase:
+                // request.data
+                // Jackie do your fetch here.
+                return false;
             default:
                 // These messages are not for us.
                 return false;
@@ -116,7 +121,3 @@ chrome.contextMenus.onClicked.addListener(async (item, tab) => {
         files: [ "js/selection.js" ]
     });
 });
-
-function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}

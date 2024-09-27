@@ -33,6 +33,11 @@ import { getClaims } from "./factCheckApi"
 // So there will be claims in here that are no longer in 'document.body.innerText'.
 let PROCESSED_CLAIMS: Set<string> = new Set();
 
+// For jackie
+// chrome.runtime.sendMessage({mode: MessageMode.AddingToDatabase, data: ""});
+
+
+
 setInterval(factCheckPageContents, 3000)
 
 // TODO: Two things could turn up the same fact check; but only would

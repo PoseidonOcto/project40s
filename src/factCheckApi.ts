@@ -1,33 +1,5 @@
 import sentencize from "@stdlib/nlp-sentencize"
-
-type FactCheckIndex = Map<number, FactCheckData>;
-
-type FactCheckData = {
-    triggeringText: Set<string>,
-} & FactCheckResultEntry['entity'];
-
-export type FactCheckResults = {
-    status: 'success',
-    data: {
-        claim: string,
-        responses: FactCheckResultEntry[]
-    }[],
-} | {
-    status: 'error',
-    message: string,
-};
-
-export type FactCheckResultEntry = {
-    distance: number,
-    entity: {
-        claim: string,
-        author_name: string,
-        author_url: string,
-        review: string,
-        url: string,
-    },
-    id: number,
-};
+import { FactCheckData, FactCheckResults, FactCheckResultEntry, FactCheckIndex } from "./types"
 
 /*
  *

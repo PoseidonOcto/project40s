@@ -1,14 +1,12 @@
 import React, { useEffect, useState, Fragment, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import { MessageHandler, MessageMode } from "./types";
-import { FactCheckResults, FactCheckResultEntry, getDatabase } from "./factCheckApi";
+import { MessageMode } from "./types";
+import { getDatabase } from "./factCheckApi";
 import "./style.css"
+import "./facts.css"
 import "./popup.css"
 import { TaskQueue } from "./utils";
-
-type FactCheckData = {
-    triggeringText: Set<string>,
-} & FactCheckResultEntry['entity']
+import { FactCheckData } from "./types";
 
 const Popup = () => {
     const [factChecks, setFactChecks] = useState<Map<number, FactCheckData>>(new Map());
