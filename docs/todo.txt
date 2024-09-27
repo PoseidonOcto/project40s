@@ -37,7 +37,6 @@ Complete the user interaction data collection:
     Send data to database (when pushing a new url, also push the political leaning read from csv)
 
 Complete the dashboard:
-    Complete the storing of user interaction data in database.
     Complete the graphs
         
         Graph 1 [the graph shown in hifi dashboard]:
