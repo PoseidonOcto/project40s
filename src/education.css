@@ -1,0 +1,36 @@
+#education-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#education-image-holder {
+    -khtml-user-select: none;
+    -o-user-select: none;
+    height: 30%;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+#education-container h1 {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#education-container a {
+    color: red;
+}
+#education-header {
+    width: 100%;
+    height: 100%;
+}
+
+#education-container hr {
+    border: none;
+    border-top: 2px dashed black;
+    color: black;
+    height: 1px;
+    width: 100%;
+}
