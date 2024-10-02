@@ -42,3 +42,10 @@ export type FactCheckResultEntry = {
     id: number,
 };
 
+export type WebsiteInteractionEntry = {
+    user_id: number,
+    url: string,
+    duration: number,
+    date: number,
+    clicks: number
+};

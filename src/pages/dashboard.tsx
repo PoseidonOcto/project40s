@@ -7,7 +7,7 @@ import {QueryResult, queryClaimBuster} from "../claimBusterApi";
 import { Outlet, Link } from "react-router-dom";
 import { TaskQueue } from "../utils";
 import { getDatabase } from "../factCheckApi";
-
+import BarGraph from "../components/graph";
 
 
 const Dashboard = () => {
@@ -54,6 +54,7 @@ const Dashboard = () => {
 
     return (
         <>
+            <BarGraph />
             <h1>Dashboard</h1>
             <h3>[Under Development]</h3>
             <h4>Testing Test</h4>
