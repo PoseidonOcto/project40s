@@ -49,7 +49,6 @@ ol li {
     height: 97.5%;
     position: relative;
     display: flex;
-    gap: 0.5%;
 }
 
 .sidebar-container {
@@ -59,7 +58,8 @@ ol li {
     display: flex;
     flex-direction: column;
     padding: 1%;
-    border-radius: 5px;
+    border-radius-topleft: 5px;
+    border-radius-bottomright: 5px;
     width: 15%;
     background-color: var(--side-bar-background);
 }
@@ -71,7 +71,8 @@ ol li {
     display: flex;
     flex-direction: column;
     padding: 2%;
-    border-radius: 5px;
+    border-radius-topleft: 5px;
+    border-radius-bottomleft: 5px;
     width: 5%;
     background-color: var(--side-bar-background);
 }
@@ -175,43 +176,13 @@ ol li {
 
 .outlet {
     width: 100%;
-    border-radius: 5px;
+    border-radius-topright: 5px;
+    border-radius-bottomright: 5px;
     background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom));
     padding: 1%;
     overflow: auto;
 }
 
-/* Education Page */
-
-#two-column-container {
-    display: flex;
-}
-
-#column-one, #column-two {
-    width: 50%;
-}
-
-#column-one ul li, #column-two ul li {
-    font-size: 1.1rem;
-}
-
-table, th, td {
-    border: 1px solid black;
-    border-radius: 10px;
-}
-
-table {
-    width: 100%;
-}
-
-th {
-    font-size: 1.25rem;
-}
-
-td {
-    text-align: center;
-    font-size: 1rem;
-}
 /* Preferences Page */
 
 #options-container {

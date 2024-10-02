@@ -22,6 +22,7 @@
 #education-container a {
     color: red;
 }
+
 #education-header {
     width: 100%;
     height: 100%;
@@ -33,4 +34,95 @@
     color: black;
     height: 1px;
     width: 100%;
+}
+
+.step-container {
+    width: 400px;
+}
+
+.step-content {
+    margin: 5px;
+    padding: 10px 20px 10px 20px;
+    height: 75%;
+    width: 100%;
+    border-radius: 10px;
+    background-color: var(--side-bar-background);
+    font-size: 1.1rem;
+}
+
+.steps-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.steps-row {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    gap: 20%;
+    display: flex;
+    flex-direction: row;
+}
+
+.step-content h3 {
+    font-size: 1.1rem;
+}
+.step-content-row {
+    display: flex;
+    flex-direction: row;
+}
+.step-content-row ul {
+    width: 50%;
+    gap: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+.step-number {
+    position: relative;
+    top: 20px;
+    left: 5px;
+}
+
+#three-column-container {
+    gap: 10%;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    display: flex;
+}
+
+#column-one, #column-two, #column-three {
+    width: 50%;
+}
+
+#column-one ul li, #column-two ul li, #column-three ul li, #column-three li {
+    font-size: 1.1rem;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+table {
+    background-color: var(--hover-sidebar-background);
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+th {
+    background-color: var(--side-bar-background);
+    font-size: 1.25rem;
+}
+
+td {
+    background-color: var(--side-bar-background);
+    padding: 0 10px 0 10px;
+    text-align: center;
+    font-size: 1.1rem;
 }
