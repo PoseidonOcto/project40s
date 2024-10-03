@@ -1,14 +1,30 @@
 import sentencize from "@stdlib/nlp-sentencize"
 import { FactCheckData, FactCheckResults, FactCheckResultEntry, FactCheckIndex } from "./types"
 
+const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
+
+export const setSimilarityThreshold = async (similarity_theshold: number): Promise<void> => {
+    await chrome.storage.sync.set({similarity_threshold: similarity_theshold});
+}
+
+export const getSimilarityThreshold = async (): Promise<number> => {
+
+    const threshold = (await chrome.storage.sync.get(["similarity_threshold"])).similarity_threshold;
+    if (threshold === undefined) {
+        await chrome.storage.sync.set({similarity_threshold: DEFAULT_SIMILARITY_THRESHOLD});
+        return DEFAULT_SIMILARITY_THRESHOLD;
+    } 
+    return threshold;
+}
+
 /*
  *
  * Returns an index containing all previously unseen fact checks. Note that if a
  * new piece of text triggers a previously seen fact check, this piece of text
  * is stored in the database, but the associated fact check is not returned.
  */
-export const updateDatabase = async (claims: string[]): Promise<FactCheckIndex> => {
-    const incomingFactChecks = await factCheckClaims(claims);
+export const updateDatabase = async (claims: string[], similarityThreshold: number): Promise<FactCheckIndex> => {
+    const incomingFactChecks = await factCheckClaims(claims, similarityThreshold);
     if (incomingFactChecks === undefined || incomingFactChecks.size === 0) {
         return new Map();
     }
@@ -62,12 +78,12 @@ const hasEnoughWords = (text: string): boolean => {
     return text.trim().split(/\s+/).length >= smallestSentenceLength;
 }
 
-export const factCheckText = async (text: string): Promise<FactCheckIndex | undefined> => {
-    return await factCheckClaims(getClaims(text));
+export const factCheckText = async (text: string, similarityThreshold: number): Promise<FactCheckIndex | undefined> => {
+    return await factCheckClaims(getClaims(text), similarityThreshold);
 }
 
-export const factCheckClaims = async (claims: string[]): Promise<FactCheckIndex | undefined> => {
-    const response = await fetchFactChecks(claims);
+export const factCheckClaims = async (claims: string[], similarityThreshold: number): Promise<FactCheckIndex | undefined> => {
+    const response = await fetchFactChecks(claims, similarityThreshold);
     if (response.status !== 'success') {
         console.error(response);
         return undefined;
@@ -93,7 +109,7 @@ const sortById = (results: Extract<FactCheckResults, { status: 'success' }>): Fa
 }
 
 // TODO: We let our api fall asleep. While its waking up, this function returns 'Response status: 502' or 'Response status: 500'.
-const fetchFactChecks = async (claims: string[]): Promise<FactCheckResults> => {
+const fetchFactChecks = async (claims: string[], similarityThreshold: number): Promise<FactCheckResults> => {
     if (claims.length === 0) {
         console.log("WARNING: trying to fact check 0 claims.");
     }
@@ -106,7 +122,7 @@ const fetchFactChecks = async (claims: string[]): Promise<FactCheckResults> => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({'data': claims})
+            body: JSON.stringify({'data': claims, 'similarity_threshold': similarityThreshold})
         });
 
         if (!response.ok) {

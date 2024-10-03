@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import { MessageMode } from "./types";
+import { MessageMode, isDeveloperMode } from "./types";
 import { getDatabase } from "./factCheckApi";
 import "./style.css"
 import "./facts.css"
@@ -56,18 +56,30 @@ const Popup = () => {
         })();
     }
 
+    const openOptionsPage = () => {
+        chrome.runtime.sendMessage({mode: MessageMode.OpenOptionsPage});
+    }
+
     // TODO the triggering text could be paired with a URL directing to the page
     //  where it came from. This URL could even maybe link directly to the text.
     // TODO the triggering piece of text needs to be kept a little bit more separate
     //  from other triggering pieces, the kind of blend together.
     return (
         <div id='popup' className='outlet'>
-            <button onClick={authenticationButton}>Authentication</button>
-            <button onClick={testingButton}>Testing</button>
-            <button onClick={clearStorage}>Clear Storage</button>
+            {isDeveloperMode && 
+                <>
+                    <button onClick={authenticationButton}>Authentication</button>
+                    <button onClick={testingButton}>Testing</button>
+                    <button onClick={clearStorage}>Clear Storage</button>
+                </>
+            }
+            <div id='dashboard-button-container'>
+                <button id='dashboard-button' onClick={openOptionsPage}>Dashboard</button>
+            </div>
             <hr/>
 
-            <h3>Here are some fact checks that may be relevant to you</h3>
+
+            <h3>Here are some facts that may be relevant to you</h3>
             <div id="fact-checks">
                 {factChecks.size === 0 && <p>None</p>}
                 {factChecks.size !== 0 && Array.from(factChecks.values()).map((fact, i) => {

@@ -81,6 +81,12 @@ DEADLINE: week 11
 
 9. Update privacy policy
 
+10. Miscellaneous
+    dashboard should be selected by default on sidebar
+    sidebar should have less horizontal padding or the buttons should occupy the horizontal space.
+    finish settings page
+        Buttons are too far horizontally apart
+
 Optional: Publish extension to the chrome store
 
 
@@ -93,4 +99,29 @@ Angela & Sunny:     4a
 Aryan:              4b
 Jaspreet:           5 & 7b
 
-Unassigned (requiring other tasks to be complete): 6b, 7a, 8, 9
+Unassigned (requiring other tasks to be complete): 6b, 7a, 8, 9, 10
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Note for meeting (deletable)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+On 4(b), we still have to do:
+    Make x axis more readable (remove year unless needed?)
+    Allow option aggregating time spent on all websites
+    Stacked bar chart modes
+    Website buttons should be named nicely 
+        (i.e. CNN instead of edition.cnn.com; the actual website url could go below in small text)
+    Better date input - hifi version would be best, but maybe like railway with advanced option if we can't.
+    Move website filters below graph. Handle website filters scrolling off page.
+
+On 5, we still have to do:
+    Scaling needs some work
+        Headings should probably be centered at least on wide screens.
+        See issue with text escaping box.
+    All body text should probably be in white boxes
+    Text should probably not stretch so far horizontally
+    Numbers should be slightly bigger
+    Second level indent unnecessary
+
+

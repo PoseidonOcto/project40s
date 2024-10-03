@@ -7,6 +7,7 @@ export enum MessageMode {
     Testing,
     FactCheck,
     AddingToDatabase,
+    OpenOptionsPage,
 }
 
 // Message handlers should return a boolean with value
@@ -49,3 +50,5 @@ export type WebsiteInteractionEntry = {
     date: number,
     clicks: number
 };
+
+export const isDeveloperMode: boolean = false;

@@ -1,4 +1,4 @@
-import { updateDatabase } from "./factCheckApi";
+import { getSimilarityThreshold, updateDatabase } from "./factCheckApi";
 import { MessageMode, MessageHandler } from "./types"
 import { TaskQueue } from "./utils";
 
@@ -7,7 +7,7 @@ const TASK_QUEUE = new TaskQueue();
 const handleFactCheckMessage: MessageHandler = (request, _, __) => {
     TASK_QUEUE.enqueue(async () => {
         console.assert(request.addToDatabase === undefined); // We won't use this param now (probably).
-        const unseenFactChecks = await updateDatabase(request.claims);
+        const unseenFactChecks = await updateDatabase(request.claims, await getSimilarityThreshold());
 
         // Update number of unseen fact checks.
         const oldNum = Number(await chrome.action.getBadgeText({}));
@@ -71,6 +71,9 @@ chrome.runtime.onMessage.addListener(
             case MessageMode.AddingToDatabase:
                 // request.data
                 // Jackie do your fetch here.
+                return false;
+            case MessageMode.OpenOptionsPage:
+                chrome.runtime.openOptionsPage();
                 return false;
             default:
                 // These messages are not for us.
