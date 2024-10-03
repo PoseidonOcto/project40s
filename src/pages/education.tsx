@@ -13,15 +13,16 @@ const Education = () => {
                 <h1><i>Scroll to check how to <a>SPOT</a> fake news</i></h1>
                 <hr/>
                 <h2><i>TO SPOT FAKE NEWS:</i></h2>
-                <div id="steps-container"> {/* TODO replaced numbers with image icons*/}
+                <div id="steps-container">
                     <div className="steps-column">
                         <div className="steps-row">
                             <div id="step-one" className="step-container">
                                 <div className="step-number">
-                                    1
+                                    <img src="../images/1.png" className="number-icon"></img>
                                 </div>
                                 <div className="step-content">
                                     <h3>Check the source and the author</h3>
+                                    <br/>
                                     <ul>
                                         <li>Is the author trustworthy/credible?</li>
                                         <li>Is the site reliable with fact-based content when visiting an article</li>
@@ -30,10 +31,11 @@ const Education = () => {
                             </div>
                             <div id="step-two" className="step-container">
                                 <div className="step-number">
-                                    2
+                                    <img src="../images/2.png" className="number-icon"></img>
                                 </div>
                                 <div className="step-content">
                                     <h3>Look for obvious signs</h3>
+                                    <br/>
                                     <ul>
                                         <li>Check grammar, spelling mistakes, overall website design</li>
                                     </ul>
@@ -45,10 +47,11 @@ const Education = () => {
                         <div className="steps-row">
                             <div id="step-three" className="step-container">
                                 <div className="step-number">
-                                    3
+                                    <img src="../images/3.png" className="number-icon"></img>
                                 </div>
                                 <div className="step-content">
                                     <h3>Check other sources to compare</h3>
+                                    <br/>
                                     <ul>
                                         <li>Is same news being promoted by a reliable news company/agency?</li>
                                     </ul>
@@ -56,10 +59,11 @@ const Education = () => {
                             </div>
                             <div id="step-four" className="step-container">
                                 <div className="step-number">
-                                    4
+                                    <img src="../images/4.png" className="number-icon"></img>
                                 </div>
                                 <div className="step-content">
                                     <h3>Examine the evidence</h3>
+                                    <br/>
                                     <ul>
                                         <li>If the evidence proves that something definitely happened?</li>
                                         <li>Have the facts been selected to back up a particular viewpoint?</li>
@@ -72,10 +76,11 @@ const Education = () => {
                         <div className="steps-row">
                             <div id="step-five" className="step-container">
                                 <div className="step-number">
-                                    5
+                                    <img src="../images/5.png" className="number-icon"></img>
                                 </div>
                                 <div className="step-content">
                                     <h3>Use a fact-checking site</h3>
+                                    <br/>
                                     <div className="step-content-row">
                                         <ul>
                                             <li>Snopes</li>
@@ -90,10 +95,11 @@ const Education = () => {
                             </div>
                             <div id="step-six" className="step-container">
                                 <div className="step-number">
-                                    6
+                                    <img src="../images/6.png" className="number-icon"></img>
                                 </div>
                                 <div className="step-content">
                                     <h3>Develop a critical mindset</h3>
+                                    <br/>
                                     <ul>
                                         <li>Train yourself to identify fake news instantly!</li>
                                     </ul>
@@ -102,7 +108,6 @@ const Education = () => {
                         </div>
                     </div>
                 </div>
-            </div>
             <br/>
             <cite>You can find more information on the above from <a href="https://www.mindtools.com/a0g6bjj/how-to-spot-real-and-fake-news ">Mind Tools</a></cite>
             <br/>
@@ -126,10 +131,12 @@ const Education = () => {
                     </ul>
                 </div>
                 <div id="column-three">
-                    <li><strong>Satire or parody</strong></li>
-                    <ul><li>Articles written for entertainment </li></ul><br/>
-                    <li><strong>Poor quality journalism</strong></li>
-                    <ul><li>Can appear in many forms but can include lack of checking facts, biased takes on topics, plagiarism, etc</li></ul>
+                    <ul>
+                        <li><strong>Satire or parody</strong></li>
+                        <ul><li>Articles written for entertainment </li></ul><br/>
+                        <li><strong>Poor quality journalism</strong></li>
+                        <ul><li>Can appear in many forms but can include lack of checking facts, biased takes on topics, plagiarism, etc</li></ul>
+                    </ul>
                 </div>
             </div>
             <h2><i>Misinformation vs Disinformation</i></h2>
@@ -225,6 +232,7 @@ const Education = () => {
                 If you have any questions about this Privacy Policy, You can contact us:<br/>
 
                 By email: octopus0246@gmail.com</p>
+            </div>
         </>
     );
 };

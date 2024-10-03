@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import "../graph.css"
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { WebsiteInteractionEntry } from '../types';
@@ -222,36 +223,33 @@ const BarGraph = () => {
                         onClick={() => handleSiteClick(site)}
                         style={{
                             backgroundColor: site === siteUrl ? 'blue' : 'gray',
-                            color: 'white',
-                            margin: '5px',
-                            padding: '10px',
-                            border: 'none',
-                            cursor: 'pointer'
                         }}
                     >
                         {getWebsiteName(site)}
                     </button>
                 ))}
             </div>
-
+            <br/>
             <div>
                 <label>
-                    Start Date:
+                    Start Date:&nbsp;
                     <input
+                        className="date-select-input"
                         type="date"
                         value={startDate ? startDate.toISOString().split('T')[0] : ''}
                         max={currentDate}
                         onChange={(e) => setStartDate(new Date(e.target.value))}
-                    />
+                    />&nbsp;
                 </label>
                 <label>
-                    End Date:
+                    End Date:&nbsp;
                     <input
+                        className="date-select-input"
                         type="date"
                         value={endDate ? endDate.toISOString().split('T')[0] : ''}
                         max={currentDate}
                         onChange={(e) => setEndDate(new Date(e.target.value))}
-                    />
+                    />&nbsp;
                 </label>
             </div>
 

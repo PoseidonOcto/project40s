@@ -1,0 +1,15 @@
+button {
+    color: white;
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.date-select-input {
+    /*color: white;*/
+    /*background-color: gray;*/
+    border-radius: 5px;
+    /*border-color: gray;*/
+}

@@ -54,9 +54,8 @@ const Dashboard = () => {
 
     return (
         <>
-            <BarGraph />
             <h1>Dashboard</h1>
-            <h3>[Under Development]</h3>
+            <BarGraph />
             <h4>Testing Test</h4>
             <hr/>
             <h3>Here are some fact checks that may be relevant to you</h3>
