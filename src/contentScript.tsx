@@ -1,5 +1,5 @@
 import { MessageMode } from "./types";
-import { getClaims } from "./factCheckApi"
+import { getClaims, getSimilarityThreshold } from "./factCheckApi"
 
 
 /* 
@@ -49,6 +49,7 @@ async function factCheckPageContents() {
 
     PROCESSED_CLAIMS = union(PROCESSED_CLAIMS, newClaims);
     console.log(newClaims);
+    console.log(await getSimilarityThreshold());
 
     if (newClaims.size == 0) {
         return;

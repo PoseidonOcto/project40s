@@ -1,25 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../style.css"
-import { setSimilarityThreshold } from "../factCheckApi";
+import { getSimilarityThreshold, setSimilarityThreshold } from "../factCheckApi";
+import { Slider } from "@mui/material";
+import { TaskQueue } from "../utils";
 
 
 const Preferences = () => {
     const [threshold, setThreshold] = useState<number | undefined>(undefined);
+    const thresholdUpdateQueue = useRef<TaskQueue>(new TaskQueue());
 
-    const updateStoredThreshold = async (userInput: string) => {
-        const number = Number(userInput);
-        setThreshold(number);
-        await setSimilarityThreshold(number);
+    useEffect(() => {
+        thresholdUpdateQueue.current.enqueue(async () => {
+            setThreshold(await getSimilarityThreshold());
+        });
+    },[]);
+
+    const updateStoredThreshold = async (newThreshold: number) => {
+        thresholdUpdateQueue.current.enqueue(async () => {
+            await setSimilarityThreshold(newThreshold)
+        });
     }
 
+    // {getAriaValueText={'TODO'}}
     return (
         <>
             <h1>Preferences</h1>
             <div id="options-container">
-                <div>
-                    <p>Similarity Threshold</p>
-                    <input name="threshold" onChange={(e) => updateStoredThreshold(e.target.value)}/>
-
+                <div id="option">
+                    {threshold !== undefined && 
+                        <Slider
+                            aria-label="Small steps"
+                            defaultValue={threshold!}
+                            value={threshold!}
+                            step={0.05}
+                            marks
+                            min={0.5}
+                            max={1}
+                            valueLabelDisplay="auto"
+                            onChange={(_, newThreshold) => setThreshold(newThreshold as number)}
+                            onChangeCommitted={(_, newThreshold) => updateStoredThreshold(newThreshold as number)}
+                        />
+                    }
 
                 </div>
                 <div id="option-text">

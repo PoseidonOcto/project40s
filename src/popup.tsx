@@ -31,8 +31,9 @@ const Popup = () => {
          * handshake first - see: https://tinyurl.com/ynmtyy44
          */
         chrome.storage.onChanged.addListener((_, type) => {
-            console.assert(type === 'session');
-            updateData();
+            if (type === 'session') {
+                updateData();
+            }
         });
     }, []);
 
