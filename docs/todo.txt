@@ -4,11 +4,14 @@ Everything that needs to be done
 DEADLINE: week 11
 
 1. Finish the misinformation detection:
-    update manual detection
-    display recently found differently
-    change to pull from database and store to database.
-    allow setting fact check sensitivity in options
-    remove any claims referencing 'videos' or 'images'.
+    (a) update manual detection
+        change to pull from database and store to database.
+        allow setting fact check sensitivity in options
+        remove any claims referencing 'videos' or 'images'.
+
+    (b) display recently found differently
+        display facts found as the hi fidelity design describes.
+
 
 2. Complete the database:
     store all fields necessary for misinformation detection:
@@ -109,11 +112,11 @@ Assigned Tasks (week 10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DUE BY TUESDAY WEEK 11
 
-Alex:               1
+Alex:               1a
 Jackie:             2 & 3
 Angela & Sunny:     6b & 11
 Aryan:              4b
-Jaspreet:           7b
+Jaspreet:           1b & 7b
 
 Done: 6a, 5
 Unassigned (requiring other tasks to be complete): 7a, 8, 9, 10
