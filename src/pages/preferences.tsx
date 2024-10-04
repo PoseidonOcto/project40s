@@ -51,6 +51,7 @@ const Preferences = () => {
                         <button>Light</button>
                         <button>Dark</button>
                     </div>
+                <button onClick={() => console.log("test")}>TEST BUTTON</button>
                 </div>
             </div>
         </>
