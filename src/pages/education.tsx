@@ -115,28 +115,22 @@ const Education = () => {
             <h2><i>Fake News Types</i></h2>
             <div id="three-column-container">
                 <div id="column-one">
-                    <ul>
-                        <li><strong>Clickbait</strong></li>
-                        <ul><li>Stories or images distorted to increase traffic to a page</li></ul><br/>
-                        <li><strong>Propaganda</strong></li>
-                        <ul><li>Stories or images created to mislead audience to fit a political agenda or biased perspectives</li></ul>
-                    </ul>
+                    <h4>Clickbait</h4>
+                    <ul><li>Stories or images distorted to increase traffic to a page</li></ul><br/>
+                    <h4>Propaganda</h4>
+                    <ul><li>Stories or images created to mislead audience to fit a political agenda or biased perspectives</li></ul>
                 </div>
                 <div id="column-two">
-                    <ul>
-                        <li><strong>Misleading headlines</strong></li>
-                        <ul><li>Exaggerated headlines that may only be referred to a small portion of a greater story</li></ul><br/>
-                        <li><strong>Imposter content</strong></li>
-                        <ul><li>Genuine news sources being impersonated presenting untrue stories</li></ul>
-                    </ul>
+                    <h4>Misleading headlines</h4>
+                    <ul><li>Exaggerated headlines that may only be referred to a small portion of a greater story</li></ul><br/>
+                    <h4>Imposter content</h4>
+                    <ul><li>Genuine news sources being impersonated presenting untrue stories</li></ul>
                 </div>
                 <div id="column-three">
-                    <ul>
-                        <li><strong>Satire or parody</strong></li>
-                        <ul><li>Articles written for entertainment </li></ul><br/>
-                        <li><strong>Poor quality journalism</strong></li>
-                        <ul><li>Can appear in many forms but can include lack of checking facts, biased takes on topics, plagiarism, etc</li></ul>
-                    </ul>
+                    <h4>Satire or parody</h4>
+                    <ul><li>Articles written for entertainment </li></ul><br/>
+                    <h4>Poor quality journalism</h4>
+                    <ul><li>Can appear in many forms but can include lack of checking facts, biased takes on topics, plagiarism, etc</li></ul>
                 </div>
             </div>
             <h2><i>Misinformation vs Disinformation</i></h2>

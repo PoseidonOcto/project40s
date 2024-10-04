@@ -44,12 +44,12 @@
     align-content: center;
     margin: 5px;
     padding: 10px 20px 10px 20px;
-    height: 10vw;
-    min-height: 10vw;
+    min-height: 10em;
     width: 100%;
     border-radius: 10px;
     background-color: var(--side-bar-background);
-    font-size: 1.1rem;
+    font-size: 1.1em;
+    overflow: auto;
 }
 
 .steps-column {
@@ -58,6 +58,7 @@
 }
 
 .steps-row {
+    align-items: center;
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
@@ -82,25 +83,33 @@
     flex-direction: column;
 }
 
-.step-content-row ul li {
+.step-content ul li {
     gap: 5%;
+    font-size: 1rem;
+
 }
 
 .number-icon {
     position: relative;
     top: 25px;
     left: -15px;
-    width: 2.5vw;
-    height: 2.5vw;
+    width: 4vw;
+    height: 4vw;
 }
 
 #three-column-container {
+    background-color: var(--side-bar-background);
     gap: 10%;
-    max-width: fit-content;
+    padding: 0 2.5vw;
     margin-left: auto;
     margin-right: auto;
-    width: 75%;
+    width: 75vw;
     display: flex;
+    border-radius: 10px;
+}
+
+#three-column-container ul {
+    width: 100%;
 }
 
 #column-one, #column-two, #column-three {
