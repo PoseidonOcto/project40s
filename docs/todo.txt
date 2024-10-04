@@ -78,6 +78,7 @@ DEADLINE: week 11
     A video explaining how to use the extension (requires 1-7 done).
         Will be opened upon extension installation.
         Probably just a youtube video would be easiest.
+    User must consent to data being tracked.
 
 9. Update privacy policy
 
@@ -87,11 +88,13 @@ DEADLINE: week 11
     finish settings page
         Buttons are too far horizontally apart
 
+11. Work on report
+
 Optional: Publish extension to the chrome store
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Assigned Tasks
+Assigned Tasks (midsem)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Alex:               1 & 6a
 Jackie:             2 & 3
@@ -101,6 +104,19 @@ Jaspreet:           5 & 7b
 
 Unassigned (requiring other tasks to be complete): 6b, 7a, 8, 9, 10
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Assigned Tasks (week 10)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DUE BY TUESDAY WEEK 11
+
+Alex:               1
+Jackie:             2 & 3
+Angela & Sunny:     6b & 11
+Aryan:              4b
+Jaspreet:           7b
+
+Done: 6a, 5
+Unassigned (requiring other tasks to be complete): 7a, 8, 9, 10
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
