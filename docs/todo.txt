@@ -87,9 +87,9 @@ DEADLINE: week 11
 
 10. Miscellaneous
     dashboard should be selected by default on sidebar
-    sidebar should have less horizontal padding or the buttons should occupy the horizontal space.
     finish settings page
-        Buttons are too far horizontally apart
+    add user profile icon on the sidebar
+
 
 11. Work on report
 
@@ -116,10 +116,10 @@ Alex:               1a
 Jackie:             2 & 3
 Angela & Sunny:     6b & 11
 Aryan:              4b
-Jaspreet:           1b & 7b
+Jaspreet:           1b & 10 & 7b
 
 Done: 6a, 5
-Unassigned (requiring other tasks to be complete): 7a, 8, 9, 10
+Unassigned (requiring other tasks to be complete): 7a, 8, 9
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
