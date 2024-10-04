@@ -195,6 +195,10 @@ ol li {
     width: 100%
 }
 
+#option {
+    width: 100%;
+}
+
 #options {
     width: 100%;
     float: right;
