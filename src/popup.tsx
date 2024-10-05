@@ -53,6 +53,7 @@ const Popup = () => {
 
     const clearStorage = () => {
         (async () => {
+            await chrome.storage.sync.remove("similarity_threshold");
             await chrome.storage.session.clear();
         })();
     }

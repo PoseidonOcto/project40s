@@ -1,18 +1,19 @@
 import sentencize from "@stdlib/nlp-sentencize"
 import { FactCheckData, FactCheckResults, FactCheckResultEntry, FactCheckIndex } from "./types"
 
-const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
+export const MINIMUM_SIMILARITY_THRESHOLD = 0.6;
+export const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
+export const MAXIMUM_SIMILARITY_THRESHOLD = 0.95;
 
 export const setSimilarityThreshold = async (similarity_theshold: number): Promise<void> => {
+    console.assert(similarity_theshold >= MINIMUM_SIMILARITY_THRESHOLD && similarity_theshold <= MAXIMUM_SIMILARITY_THRESHOLD);
     await chrome.storage.sync.set({similarity_threshold: similarity_theshold});
 }
 
 export const getSimilarityThreshold = async (): Promise<number> => {
-
-    console.log(await chrome.storage.sync.get(["similarity_threshold"]));
     const threshold = (await chrome.storage.sync.get(["similarity_threshold"])).similarity_threshold;
     if (threshold === undefined) {
-        await chrome.storage.sync.set({similarity_threshold: DEFAULT_SIMILARITY_THRESHOLD});
+        await setSimilarityThreshold(DEFAULT_SIMILARITY_THRESHOLD);
         return DEFAULT_SIMILARITY_THRESHOLD;
     } 
     return threshold;
