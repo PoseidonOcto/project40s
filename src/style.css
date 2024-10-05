@@ -10,6 +10,10 @@
     height: 100%;
 }
 
+body {
+    margin: 0;
+}
+
 h1 {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -46,7 +50,7 @@ ol li {
 /* Sidebar */
 
 .flexbox-container {
-    height: 97.5%;
+    height: 100%;
     position: relative;
     display: flex;
 }
