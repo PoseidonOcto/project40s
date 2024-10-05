@@ -19,7 +19,6 @@ const Preferences = () => {
     },[]);
 
     const updateDisplayedThreshold = (newThreshold: number) => {
-        console.log(newThreshold);
         setSliderValue(-1 * newThreshold);
     }
 
