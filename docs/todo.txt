@@ -7,8 +7,7 @@ DEADLINE: week 11
     (a) update manual detection 
             (note: should display the new fact down bottom right, otherwise adds no utility).
         change to pull from database and store to database.
-        allow setting fact check sensitivity in options
-        remove any claims referencing 'videos' or 'images'.
+        Add url of triggering text.
 
     (b) display recently found differently
         display facts found as the hi fidelity design describes.
@@ -90,6 +89,7 @@ DEADLINE: week 11
     dashboard should be selected by default on sidebar
     finish settings page
     add user profile icon on the sidebar
+    create new OPENAI api key (last one is in commit history of a repo that might be public in future)
 
 
 11. Work on report
@@ -151,3 +151,9 @@ On 5, we still have to do:
     Second level indent unnecessary
 
 
+~~~~~~~~~~~~~~~~~~~
+Done list
+~~~~~~~~~~~~~~~~~~~
+1.
+        allow setting fact check sensitivity in options
+        remove any claims referencing 'videos' or 'images'.

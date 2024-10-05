@@ -9,6 +9,7 @@ export const setSimilarityThreshold = async (similarity_theshold: number): Promi
 
 export const getSimilarityThreshold = async (): Promise<number> => {
 
+    console.log(await chrome.storage.sync.get(["similarity_threshold"]));
     const threshold = (await chrome.storage.sync.get(["similarity_threshold"])).similarity_threshold;
     if (threshold === undefined) {
         await chrome.storage.sync.set({similarity_threshold: DEFAULT_SIMILARITY_THRESHOLD});
@@ -23,7 +24,9 @@ export const getSimilarityThreshold = async (): Promise<number> => {
  * new piece of text triggers a previously seen fact check, this piece of text
  * is stored in the database, but the associated fact check is not returned.
  */
-export const updateDatabase = async (claims: string[], similarityThreshold: number): Promise<FactCheckIndex> => {
+export const updateDatabase = async (claims: string[], url: string, similarityThreshold: number): Promise<FactCheckIndex> => {
+    // TODO: URL will be added once we get the database. Otherwise have to spend time making a Set that holds tuples.
+
     const incomingFactChecks = await factCheckClaims(claims, similarityThreshold);
     if (incomingFactChecks === undefined || incomingFactChecks.size === 0) {
         return new Map();
@@ -85,7 +88,7 @@ export const factCheckText = async (text: string, similarityThreshold: number): 
 export const factCheckClaims = async (claims: string[], similarityThreshold: number): Promise<FactCheckIndex | undefined> => {
     const response = await fetchFactChecks(claims, similarityThreshold);
     if (response.status !== 'success') {
-        console.error(response);
+        console.error(response.message);
         return undefined;
     }
 
