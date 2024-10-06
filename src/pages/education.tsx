@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../style.css"
-import "../education.css"
+import "./education.css"
 
 
 const Education = () => {

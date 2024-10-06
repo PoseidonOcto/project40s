@@ -48,8 +48,6 @@ async function factCheckPageContents() {
     const newClaims = difference(claimsFromPage, PROCESSED_CLAIMS);
 
     PROCESSED_CLAIMS = union(PROCESSED_CLAIMS, newClaims);
-    console.log(newClaims);
-    console.log(await getSimilarityThreshold());
 
     if (newClaims.size == 0) {
         return;

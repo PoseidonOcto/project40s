@@ -10,6 +10,10 @@
     height: 100%;
 }
 
+body {
+    margin: 0;
+}
+
 h1 {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -46,7 +50,7 @@ ol li {
 /* Sidebar */
 
 .flexbox-container {
-    height: 97.5%;
+    height: 100%;
     position: relative;
     display: flex;
 }
@@ -180,67 +184,6 @@ ol li {
     padding: 1%;
     overflow: auto;
 }
-
-/* Preferences Page */
-
-#options-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-#options-text {
-    width: 100%
-}
-
-#option {
-    width: 100%;
-}
-
-#options {
-    width: 100%;
-    float: right;
-}
-
-.btn-group button {
-    background-color: white;
-    border: 1px solid black;
-    color: black;
-    padding: 10px 24px;
-    cursor: auto; /* Pointer/hand icon */
-}
-
-.btn-group button:first-child {
-    border-bottom-left-radius: 10px ;
-    border-top-left-radius: 10px;
-    border-right: none;
-}
-
-.btn-group {
-    float: right;
-    display: flex;
-    flex-direction: row;
-}
-
-
-.btn-group button:nth-child(2) {
-    border-bottom-right-radius: 10px ;
-    border-top-right-radius: 10px;
-}
-
-.btn-group:after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-/* Add a background color on hover */
-
-.btn-group button:hover {
-    background-color: grey;
-}
-
-
 
 /* Loading Icon */
 

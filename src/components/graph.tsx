@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "../graph.css"
+import "./graph.css"
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { WebsiteInteractionEntry } from '../types';
@@ -219,6 +219,7 @@ const BarGraph = () => {
             <div>
                 {sites.map((site, index) => (
                     <button
+                        className="graph-button"
                         key={index}
                         onClick={() => handleSiteClick(site)}
                         style={{

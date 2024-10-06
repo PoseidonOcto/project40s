@@ -4,10 +4,10 @@ import { TaskQueue } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
 
-const handleFactCheckMessage: MessageHandler = (request, _, __) => {
+const handleFactCheckMessage: MessageHandler = (request, sender, __) => {
     TASK_QUEUE.enqueue(async () => {
-        console.assert(request.addToDatabase === undefined); // We won't use this param now (probably).
-        const unseenFactChecks = await updateDatabase(request.claims, await getSimilarityThreshold());
+        console.assert(sender.url !== undefined);  // Can this happen?
+        const unseenFactChecks = await updateDatabase(request.claims, sender.url!, await getSimilarityThreshold());
 
         // Update number of unseen fact checks.
         const oldNum = Number(await chrome.action.getBadgeText({}));

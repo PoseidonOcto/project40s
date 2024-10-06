@@ -1,17 +1,19 @@
 import sentencize from "@stdlib/nlp-sentencize"
 import { FactCheckData, FactCheckResults, FactCheckResultEntry, FactCheckIndex } from "./types"
 
-const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
+export const MINIMUM_SIMILARITY_THRESHOLD = 0.6;
+export const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
+export const MAXIMUM_SIMILARITY_THRESHOLD = 0.95;
 
 export const setSimilarityThreshold = async (similarity_theshold: number): Promise<void> => {
+    console.assert(similarity_theshold >= MINIMUM_SIMILARITY_THRESHOLD && similarity_theshold <= MAXIMUM_SIMILARITY_THRESHOLD);
     await chrome.storage.sync.set({similarity_threshold: similarity_theshold});
 }
 
 export const getSimilarityThreshold = async (): Promise<number> => {
-
     const threshold = (await chrome.storage.sync.get(["similarity_threshold"])).similarity_threshold;
     if (threshold === undefined) {
-        await chrome.storage.sync.set({similarity_threshold: DEFAULT_SIMILARITY_THRESHOLD});
+        await setSimilarityThreshold(DEFAULT_SIMILARITY_THRESHOLD);
         return DEFAULT_SIMILARITY_THRESHOLD;
     } 
     return threshold;
@@ -23,7 +25,9 @@ export const getSimilarityThreshold = async (): Promise<number> => {
  * new piece of text triggers a previously seen fact check, this piece of text
  * is stored in the database, but the associated fact check is not returned.
  */
-export const updateDatabase = async (claims: string[], similarityThreshold: number): Promise<FactCheckIndex> => {
+export const updateDatabase = async (claims: string[], url: string, similarityThreshold: number): Promise<FactCheckIndex> => {
+    // TODO: URL will be added once we get the database. Otherwise have to spend time making a Set that holds tuples.
+
     const incomingFactChecks = await factCheckClaims(claims, similarityThreshold);
     if (incomingFactChecks === undefined || incomingFactChecks.size === 0) {
         return new Map();
@@ -85,7 +89,7 @@ export const factCheckText = async (text: string, similarityThreshold: number): 
 export const factCheckClaims = async (claims: string[], similarityThreshold: number): Promise<FactCheckIndex | undefined> => {
     const response = await fetchFactChecks(claims, similarityThreshold);
     if (response.status !== 'success') {
-        console.error(response);
+        console.error(response.message);
         return undefined;
     }
 
