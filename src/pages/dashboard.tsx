@@ -67,15 +67,15 @@ const Dashboard = () => {
                         <Fragment key={i}>
                             <div id="fact-check">
                                 <dl>
+                                    <dt><u>Claim check has been triggered by: </u></dt>
+                                    {Array.from(fact.triggeringText.values())
+                                        .map((text, j) => <dd key={j}><i>{text}</i></dd>)
+                                    }
                                     <dt className='claim'>Claim:<br/><i>{fact.claim}</i></dt>
                                     <hr/>
                                     <dd className='truth-status'>Truth Status: {fact.review}</dd>
                                     <dd>Author: {fact.author_name} | <a href={fact.url}>Source</a></dd>
                                     <br/>
-                                    <dd><u>Triggered by</u></dd>
-                                    {Array.from(fact.triggeringText.values())
-                                        .map((text, j) => <dd key={j}><i>{text}</i></dd>)
-                                    }
                                 </dl>
                             </div>
                             <hr/>
