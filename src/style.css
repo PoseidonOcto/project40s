@@ -4,6 +4,8 @@
     --dashboard-background-bottom: #DDCDE9;
     --selected-side-bar-background: #D4D0D7;
     --hover-sidebar-background: #EDEAEF;
+    --triggered-background: #FEF7FF;
+    --triggered-claim-background: #E8DEF8;
 }
 
 #root, body, html {
