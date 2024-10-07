@@ -164,6 +164,7 @@ On 1b
         (it really stetches wide for my screen [and maybe the tutor's screen too!])
     Need cursor to change when hovering over 'click to see...'
     Truth status and Author should maybe be vertically aligned
+    Displays incorrectly in popup.
 
 
 ~~~~~~~~~~~~~~~~~~~
