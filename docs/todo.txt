@@ -96,6 +96,8 @@ DEADLINE: week 11
     dashboard should be selected by default on sidebar
     add user profile icon on the sidebar
     create new OPENAI api key (last one is in commit history of a repo that might be public in future)
+    make image displayed in chrome extension bigger.
+
 
 
 11. Work on report
