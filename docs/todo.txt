@@ -98,8 +98,6 @@ DEADLINE: week 11
     create new OPENAI api key (last one is in commit history of a repo that might be public in future)
     make image displayed in chrome extension bigger.
 
-
-
 11. Work on report
 
 Optional: Publish extension to the chrome store
@@ -138,7 +136,7 @@ Jaspreet:           8
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Note for meeting (deletable)
+Note for meeting (deletable) (week 10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 On 4(b), we still have to do:
     Make x axis more readable (remove year unless needed?)
@@ -157,6 +155,15 @@ On 5, we still have to do:
     Text should probably not stretch so far horizontally
     Numbers should be slightly bigger
     Second level indent unnecessary
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Note for meeting (deletable) (week 11)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+On 1b
+    Make width scale relative to font size not '%'.
+        (it really stetches wide for my screen [and maybe the tutor's screen too!])
+    Need cursor to change when hovering over 'click to see...'
+    Truth status and Author should maybe be vertically aligned
 
 
 ~~~~~~~~~~~~~~~~~~~
