@@ -9,6 +9,7 @@ import Dashboard from "./pages/dashboard";
 import Education from "./pages/education";
 import Sidebar from "./components/sidebar";
 import Preferences from "./pages/preferences";
+import Help from "./pages/help";
 
 const router = createHashRouter([
     {
@@ -31,6 +32,10 @@ const router = createHashRouter([
             {
                 path: "preferences",
                 element: <Preferences />,
+            },
+            {
+                path: "help",
+                element: <Help />,
             },
         ],
     },

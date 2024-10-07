@@ -51,4 +51,4 @@ export type WebsiteInteractionEntry = {
     clicks: number
 };
 
-export const isDeveloperMode: boolean = false;
+export const isDeveloperMode: boolean = true;

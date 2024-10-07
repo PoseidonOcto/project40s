@@ -12,16 +12,20 @@ DEADLINE: week 11
     (b) display recently found differently
         display facts found as the hi fidelity design describes.
 
+    (c) [time allowing]
+        allow user to consent to scraping of text but *not* storing of text.
+        In this case we simply don't save or display the triggering text / triggering urls.
+
 
 2. Complete the database:
     store all fields necessary for misinformation detection:
 
-        Table 1 (fact data):                    COMPOSITE_KEY: "id of user" and "id of claim".
+        Table 1 (fact data):                    COMPOSITE_KEY: "id of user", "id of claim", "url", and "text"
             id of user that detected claim  (number)
             id of claim in vector database  (number)
             url of triggering text          (string [can be huge])
             triggering text                 (string [can be huge])
-            date that text was triggered    (number: milliseconds past epoch)
+            last date text was triggered    (number: milliseconds past epoch)
 
         Table 2 (user interaction data):        COMPOSITE_KEY: "id of user" and "url".
             id of user                      (number)
@@ -82,12 +86,14 @@ DEADLINE: week 11
         Will be opened upon extension installation.
         Probably just a youtube video would be easiest.
     User must consent to data being tracked.
+        To do this, add a useEffect to every page that redirects you to a consent page if you haven't consented yet.
+        Popup will link to you this page as well.
+    Button on settings page to revoke permission to store data (deleting all data in database).
 
 9. Update privacy policy
 
 10. Miscellaneous
     dashboard should be selected by default on sidebar
-    finish settings page
     add user profile icon on the sidebar
     create new OPENAI api key (last one is in commit history of a repo that might be public in future)
 
@@ -157,3 +163,4 @@ Done list
 1.
         allow setting fact check sensitivity in options
         remove any claims referencing 'videos' or 'images'.
+        finish settings page

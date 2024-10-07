@@ -38,6 +38,14 @@ const Sidebar = () => {
                             </Link>
                         </div>
                     </div>
+                    <div className="arrow-icon-container">
+                        <div className="icon-holder" id={location.pathname === "/help" ? "selected" : "not-selected"}>
+                            <Link to={`help`} id="help">
+                                <img src="../images/gear-icon.png" alt="help-icon" id="help-icon"></img>
+                                <br/> {sideBarVisible ? (location.pathname === "/help" ? <p><strong>Help</strong></p> : <p>Help</p>) : <></>}
+                            </Link>
+                        </div>
+                    </div>
                 </div>
                 <div className="outlet">
                     {/* Putting anything here will be above the outlet */}

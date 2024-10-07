@@ -20,7 +20,6 @@ const handleFactCheckMessage: MessageHandler = (request, sender, __) => {
     return false;
 }
 
-
 const handleAuthenticationMessage: MessageHandler = (_, __, ___) => {
     chrome.identity.getAuthToken({interactive: true}, (token: string | undefined, _: any) => {
         let init = {
@@ -123,4 +122,12 @@ chrome.contextMenus.onClicked.addListener(async (item, tab) => {
         target: {tabId: tab.id!}, 
         files: [ "js/selection.js" ]
     });
+});
+
+chrome.runtime.onInstalled.addListener((details) => {
+    const internalUrl = chrome.runtime.getURL("options.html#/help");
+    if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+        chrome.tabs.create({ url: internalUrl }, function (tab) {
+        });
+    }
 });
