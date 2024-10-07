@@ -8,6 +8,7 @@ import { Outlet, Link } from "react-router-dom";
 import { TaskQueue } from "../utils";
 import { getDatabase } from "../factCheckApi";
 import BarGraph from "../components/graph";
+import FactDisplay from "../components/factDisplay";
 
 
 const Dashboard = () => {
@@ -60,29 +61,30 @@ const Dashboard = () => {
             <h4>Testing Test</h4>
             <hr/>
             <h3>Here are some fact checks that may be relevant to you</h3>
-            <div id="fact-checks">
-                {factChecks.size === 0 && <p>None</p>}
-                {factChecks.size !== 0 && Array.from(factChecks.values()).map((fact, i) => {
-                    return (
-                        <Fragment key={i}>
-                            <div id="fact-check">
-                                <dl>
-                                    <dt className='claim'>Claim:<br/><i>{fact.claim}</i></dt>
-                                    <hr/>
-                                    <dd className='truth-status'>Truth Status: {fact.review}</dd>
-                                    <dd>Author: {fact.author_name} | <a href={fact.url}>Source</a></dd>
-                                    <br/>
-                                    <dd><u>Triggered by</u></dd>
-                                    {Array.from(fact.triggeringText.values())
-                                        .map((text, j) => <dd key={j}><i>{text}</i></dd>)
-                                    }
-                                </dl>
-                            </div>
-                            <hr/>
-                        </Fragment>
-                    );
-                })}
-            </div>
+            <FactDisplay />
+            {/*<div id="fact-checks">*/}
+            {/*    {factChecks.size === 0 && <p>None</p>}*/}
+            {/*    {factChecks.size !== 0 && Array.from(factChecks.values()).map((fact, i) => {*/}
+            {/*        return (*/}
+            {/*            <Fragment key={i}>*/}
+            {/*                <div id="fact-check">*/}
+            {/*                    <dl>*/}
+            {/*                        <dt><u>Claim check has been triggered by: </u></dt>*/}
+            {/*                        {Array.from(fact.triggeringText.values())*/}
+            {/*                            .map((text, j) => <dd key={j}><i>{text}</i></dd>)*/}
+            {/*                        }*/}
+            {/*                        <dt className='claim'>Claim:<br/><i>{fact.claim}</i></dt>*/}
+            {/*                        <hr/>*/}
+            {/*                        <dd className='truth-status'>Truth Status: {fact.review}</dd>*/}
+            {/*                        <dd>Author: {fact.author_name} | <a href={fact.url}>Source</a></dd>*/}
+            {/*                        <br/>*/}
+            {/*                    </dl>*/}
+            {/*                </div>*/}
+            {/*                <hr/>*/}
+            {/*            </Fragment>*/}
+            {/*        );*/}
+            {/*    })}*/}
+            {/*</div>*/}
         </>
     );
 };

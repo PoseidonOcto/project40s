@@ -58,6 +58,16 @@ const Preferences = () => {
                         />
                     }
                 </div>
+                <div id="option-text">
+                    <div>Dark Mode Option:</div>
+                </div>
+                <div id="options">
+                    <div className="btn-group">
+                        <button>Light</button>
+                        <button>Dark</button>
+                    </div>
+                <button onClick={() => console.log("test")}>TEST BUTTON</button>
+                </div>
                 <br/>
                 <button onClick={resetToDefaultThreshold}>Reset to default</button>
             </div>
