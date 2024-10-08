@@ -1,5 +1,6 @@
-import sentencize from "@stdlib/nlp-sentencize"
-import { FactCheckData, FactCheckResults, FactCheckResultEntry, FactCheckIndex } from "./types"
+import { FactCheckData, FactCheckResults, FactCheckResultEntry, FactCheckIndex, APIResponse } from "./types"
+import { getOAuthToken } from "./background";
+import { getClaims } from "./utils";
 
 export const MINIMUM_SIMILARITY_THRESHOLD = 0.6;
 export const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
@@ -25,9 +26,11 @@ export const getSimilarityThreshold = async (): Promise<number> => {
  * new piece of text triggers a previously seen fact check, this piece of text
  * is stored in the database, but the associated fact check is not returned.
  */
-export const updateDatabase = async (claims: string[], url: string, similarityThreshold: number): Promise<FactCheckIndex> => {
+export const updateDatabase = async (claims: string[], url_of_trigger: string, similarityThreshold: number): Promise<FactCheckIndex> => {
     // TODO: URL will be added once we get the database. Otherwise have to spend time making a Set that holds tuples.
 
+    console.log(await getStoredFactChecks());
+    console.log(await sendFactChecks(claims, url_of_trigger, similarityThreshold));
     const incomingFactChecks = await factCheckClaims(claims, similarityThreshold);
     if (incomingFactChecks === undefined || incomingFactChecks.size === 0) {
         return new Map();
@@ -66,22 +69,6 @@ export const getDatabase = async (): Promise<FactCheckIndex> => {
     return databaseFactChecks;
 }
 
-// Splitting into sentences isn't necessarily the best way of
-// separating into seperate claims, as claims could be split
-// over sentences.
-export const getClaims = (text: string): string[] => {
-    const paragraph = text.split("\n")
-        .filter(hasEnoughWords)
-        .join(". ");
-
-    return sentencize(paragraph).filter(hasEnoughWords);
-}
-
-const hasEnoughWords = (text: string): boolean => {
-    const smallestSentenceLength = 5;
-    return text.trim().split(/\s+/).length >= smallestSentenceLength;
-}
-
 export const factCheckText = async (text: string, similarityThreshold: number): Promise<FactCheckIndex | undefined> => {
     return await factCheckClaims(getClaims(text), similarityThreshold);
 }
@@ -110,6 +97,69 @@ const sortById = (results: Extract<FactCheckResults, { status: 'success' }>): Fa
         }
     }
     return index;
+}
+
+const getStoredFactChecks = async (): Promise<APIResponse<FactCheckIndex>> => {
+    const response = await fetchFromAPI("facts/get", {
+        oauth_token: await getOAuthToken(),
+    });
+
+    if (response.status === 'error') {
+        return response;
+    }
+
+    const data = new Map();
+    for (const claim_with_results of response.data as any) {
+        data.set(claim_with_results['claim_id'], claim_with_results);
+    }
+    return {
+        status: 'success',
+        data: data,
+    }
+}
+
+async function fetchFromAPI<T>(endpoint: string, data: Object): Promise<APIResponse<T>> {
+    let results;
+    try {
+        const url = `https://project40s-embedding-server-production.up.railway.app/${endpoint}`;
+        const response =  await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        results = await response.json();
+    } catch (error) {
+        return {
+            status: 'error',
+            message: (error as Error).message
+        }
+    }
+
+    if (results.status != 'success') {
+        return results;
+    }
+
+    return results;
+}
+
+const sendFactChecks = async (claims: string[], url_of_trigger: string, similarityThreshold: number): Promise<APIResponse<number>> => {
+    if (claims.length === 0) {
+        console.log("WARNING: trying to fact check 0 claims.");
+    }
+
+    return await fetchFromAPI("facts/add", {
+        oauth_token: await getOAuthToken(), 
+        url_of_trigger: url_of_trigger, 
+        data: claims, 
+        similarity_threshold: similarityThreshold
+    });
 }
 
 // TODO: We let our api fall asleep. While its waking up, this function returns 'Response status: 502' or 'Response status: 500'.

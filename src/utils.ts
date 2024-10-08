@@ -1,3 +1,5 @@
+import sentencize from "@stdlib/nlp-sentencize"
+
 /*
  * Queue related code is written under the assumption
  * that there is only one thread handling this code.
@@ -36,3 +38,20 @@ export class TaskQueue {
 export function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+// Splitting into sentences isn't necessarily the best way of
+// separating into seperate claims, as claims could be split
+// over sentences.
+export const getClaims = (text: string): string[] => {
+    const paragraph = text.split("\n")
+        .filter(hasEnoughWords)
+        .join(". ");
+
+    return sentencize(paragraph).filter(hasEnoughWords);
+}
+
+const hasEnoughWords = (text: string): boolean => {
+    const smallestSentenceLength = 5;
+    return text.trim().split(/\s+/).length >= smallestSentenceLength;
+}
+

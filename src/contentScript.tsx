@@ -1,5 +1,5 @@
 import { MessageMode } from "./types";
-import { getClaims, getSimilarityThreshold } from "./factCheckApi"
+import { getClaims } from "./utils";
 
 
 /* 

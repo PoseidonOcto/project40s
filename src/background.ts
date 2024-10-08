@@ -4,7 +4,7 @@ import { TaskQueue, sleep } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
 
-const getOAuthToken = async (): Promise<string> => {
+export const getOAuthToken = async (): Promise<string> => {
     return (await chrome.identity.getAuthToken({interactive: true})).token!
 }
 

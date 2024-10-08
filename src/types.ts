@@ -19,7 +19,17 @@ export type FactCheckData = {
     triggeringText: Set<string>,
 } & FactCheckResultEntry['entity']
 
+export type FactCheckData2 = {
+    triggers: {
+        text: string,
+        url: string,
+        earliest_trigger_date: number,
+    }[],
+} & FactCheckResultEntry['entity']
+
 export type FactCheckIndex = Map<number, FactCheckData>;
+
+export type FactCheckIndex2 = Map<number, FactCheckData2>;
 
 export type FactCheckResults = {
     status: 'success',
@@ -53,3 +63,11 @@ export type WebsiteInteractionEntry = {
 };
 
 export const isDeveloperMode: boolean = true;
+
+export type APIResponse<T> = {
+    status: 'success',
+    data: T
+} | {
+    status: 'error',
+    message: string,
+}
