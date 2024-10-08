@@ -57,7 +57,7 @@ const handleTestingMessage: MessageHandler = (request, __, ___) => {
 
 const handleLogClick: MessageHandler = (request, sender, sendResponse) => {
     console.log("User clicked");
-
+    
     // Put any async code in here
     (async () => {
         await sleep(1000);
@@ -67,6 +67,18 @@ const handleLogClick: MessageHandler = (request, sender, sendResponse) => {
     // We return true to indicate we are going to send a response later, but its not ready right now!
     // i.e. indicating we are async
     return true;
+}
+
+// Print when we change urls for debugging.
+const handleUrlChange: MessageHandler = (request, sender, sendResponse) => {
+    console.log("URL change");
+
+    (async () => {
+        await sleep(1000);
+        sendResponse("URL change 1000ms ago");
+    })();
+
+    return false;
 }
 
 /*
@@ -90,7 +102,9 @@ chrome.runtime.onMessage.addListener(
             case MessageMode.AddingToDatabase:
                 // request.data
                 // Jackie do your fetch here.
-                return false;
+                return false; 
+            case MessageMode.UrlChange:
+                return handleUrlChange(request, sender, sendResponse);
             case MessageMode.OpenOptionsPage:
                 chrome.runtime.openOptionsPage();
                 return false;
