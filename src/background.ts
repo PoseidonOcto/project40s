@@ -1,6 +1,6 @@
 import { getSimilarityThreshold, updateDatabase } from "./factCheckApi";
 import { MessageMode, MessageHandler } from "./types"
-import { TaskQueue } from "./utils";
+import { TaskQueue, sleep } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
 
@@ -49,6 +49,20 @@ const handleTestingMessage: MessageHandler = (request, __, ___) => {
     return false;
 }
 
+const handleLogClick: MessageHandler = (request, sender, sendResponse) => {
+    console.log("User clicked");
+
+    // Put any async code in here
+    (async () => {
+        await sleep(1000);
+        sendResponse("User clicked 1000ms ago");
+    })();
+
+    // We return true to indicate we are going to send a response later, but its not ready right now!
+    // i.e. indicating we are async
+    return true;
+}
+
 /*
  * If multiple event listeners, only the first listener to send a
  * response will have their response received. So we keep
@@ -74,6 +88,8 @@ chrome.runtime.onMessage.addListener(
             case MessageMode.OpenOptionsPage:
                 chrome.runtime.openOptionsPage();
                 return false;
+            case MessageMode.LogClick:
+                return handleLogClick(request, sender, sendResponse);
             default:
                 // These messages are not for us.
                 return false;

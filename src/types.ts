@@ -8,6 +8,7 @@ export enum MessageMode {
     FactCheck,
     AddingToDatabase,
     OpenOptionsPage,
+    LogClick,
 }
 
 // Message handlers should return a boolean with value

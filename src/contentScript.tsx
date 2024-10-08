@@ -58,6 +58,18 @@ async function factCheckPageContents() {
     });
 }
 
+document.addEventListener('click', () => {
+    (async () => {
+        const response = await chrome.runtime.sendMessage({mode: MessageMode.LogClick}); 
+        console.log(response);
+    })();
+});
+
+
+
+
+
+
 /* 
  * The following set operations were copied from the following url.
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set#instance_methods
