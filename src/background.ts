@@ -4,6 +4,10 @@ import { TaskQueue, sleep } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
 
+const getOAuthToken = async (): Promise<string> => {
+    return (await chrome.identity.getAuthToken({interactive: true})).token!
+}
+
 const handleFactCheckMessage: MessageHandler = (request, sender, __) => {
     TASK_QUEUE.enqueue(async () => {
         console.assert(sender.url !== undefined);  // Can this happen?
@@ -45,7 +49,9 @@ const handleAuthenticationMessage: MessageHandler = (_, __, ___) => {
 }
 
 const handleTestingMessage: MessageHandler = (request, __, ___) => {
-    console.log("Not doing anything right now.");
+    (async () => {
+        console.log(await getOAuthToken());
+    })();
     return false;
 }
 
