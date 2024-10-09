@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./cleanslate.css"
 import "./style.css"
 import "./selection.css"
 import { createRoot } from "react-dom/client";
