@@ -187,7 +187,7 @@ ol li {
     height: 40px;
 }
 
-/* Outlet Box*/
+/* Outlet Box */
 
 .outlet {
     width: 100%;
@@ -230,4 +230,9 @@ ol li {
 
 #disclaimer {
     line-height: 1.75rem;
+}
+
+/* Selection popup */
+#selection-popup {
+    background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom));
 }

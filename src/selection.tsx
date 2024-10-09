@@ -1,42 +1,41 @@
 import React, { useEffect, useState } from "react";
 import "./style.css"
+import "./selection.css"
 import { createRoot } from "react-dom/client";
-import {handleUserQuery} from "./gptApi";
-
+import { APIResponse, MessageMode } from "./types";
 
 const Selection = () => {
-    const [queryResult, setQueryResult] = useState<string>();
-    const [isLoading, setIsLoading] = useState(false);
+    const [queryResult, setQueryResult] = useState<APIResponse<number> | undefined>(undefined);
 
-    const awaitUserQuery = async (query: string | undefined): Promise<void> => {
-        setIsLoading(true);
-        setQueryResult((await handleUserQuery(query)).response);
-        setIsLoading(false);
-        return;
-    }
-
+    /*
+     * Note in development mode, the query will be sent twice to the database
+     * due to the useEffect running twice, and the second one will hence always
+     * reveal no unseen facts. In production however, this will work fine.
+     */
     useEffect(() => {
         if (!self.hasOwnProperty('queryText')) {
-            // TODO handle
+            console.error("Selection popup opened without queryText.");
             return;
         }
 
         //@ts-ignore: We know this property exists
-        awaitUserQuery(self.queryText);
+        const query = self.queryText;
+        handleUserQuery(query);
     }, []);
 
-    // TODO put button in form? I think this is better practice?
-    //
+
+    const handleUserQuery = async (query: string | undefined): Promise<void> => {
+        if (query === undefined) {
+            console.error("User query was undefined.");
+            return;
+        }
+
+        setQueryResult(await chrome.runtime.sendMessage({
+            mode: MessageMode.FactCheck, claims: [query!]
+        }));
+    }
+
     const selectionPopupStyle: React.CSSProperties = {
-        bottom: 0, 
-        right: 0, 
-        display: "flex",
-        // width: "20%", 
-        // height: "15svh", 
-        position: "fixed" as "fixed",  // Expects non-string type
-        backgroundColor: "lightgreen",
-        zIndex: 2147483647,
-        padding: "1%",
     }
 
     const textareaStyle: React.CSSProperties = {
@@ -46,42 +45,29 @@ const Selection = () => {
     }
     return (
         <>
-            <div style={selectionPopupStyle}>
-                {isLoading && <div className="loadingIcon"></div>}
-                {!isLoading && <textarea value={queryResult} style={textareaStyle}/>}
+            <div id="selection-popup">
+                <h2>Manual Fact Detector</h2>
+                <hr/>
+                {queryResult === undefined && <div className="loadingIcon"></div>}
+                {queryResult !== undefined && queryResult.status === 'error' && <p>Something went wrong.</p>}
+                {queryResult !== undefined && queryResult!.status === 'success' && <p>{`Your query triggered ${queryResult.data} previously unseen facts.`}</p>}
             </div>
         </>
     );
 };
 
-const rootTarget = document.createElement("div");
-rootTarget.id = "project40s-selection";
+const SELECTION_ROOT_ID = "project40s-selection";
+const existingSelectionPopup = document.getElementById(SELECTION_ROOT_ID);
+if (existingSelectionPopup != null) {
+    existingSelectionPopup.remove();
+}
 
-// Make stay on top and cover screen
-// rootTarget.style.display = "block";
-// rootTarget.style.height = "100svh";
-// rootTarget.style.width = "100%";
-// rootTarget.style.top = "0px";
-// rootTarget.style.left = "0px";
-// rootTarget.style.maxHeight = "none";
-// rootTarget.style.maxWidth = "none";
-// rootTarget.style.minHeight = "unset";
-// rootTarget.style.minWidth = "unset";
-// rootTarget.style.position = "fixed";
-// rootTarget.style.zIndex = "2147483647";
-// //rootTarget.style.background = "transparent";
-// rootTarget.style.borderWidth = "0px";
-// // rootTarget.style.borderRadius = "0px";
-// rootTarget.style.margin = "0px";
-// //rootTarget.style.outline = "0px";
-// rootTarget.style.padding = "0px";
-// // rootTarget.style.overflowClipMargin = "content-box";
-// rootTarget.style.overflow = "clip";
-// rootTarget.style.pointerEvents = "none";
+const rootTarget = document.createElement("div");
+rootTarget.id = SELECTION_ROOT_ID;
 
 document.documentElement.appendChild(rootTarget);
 
-const root = createRoot(rootTarget!);
+const root = createRoot(rootTarget);
 
 root.render(
     <React.StrictMode>

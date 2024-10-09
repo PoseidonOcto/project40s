@@ -8,11 +8,12 @@ export const getOAuthToken = async (): Promise<string> => {
     return (await chrome.identity.getAuthToken({interactive: true})).token!
 }
 
-const handleFactCheckMessage: MessageHandler = (request, sender, __) => {
+const handleFactCheckMessage: MessageHandler = (request, sender, sendResponse) => {
     TASK_QUEUE.enqueue(async () => {
         console.assert(sender.url !== undefined);
 
         const response = await sendText(request.claims, sender.url!, await getSimilarityThreshold());
+        sendResponse(response);
         if (response.status === 'error') {
             console.error(response);
             return;
@@ -29,7 +30,7 @@ const handleFactCheckMessage: MessageHandler = (request, sender, __) => {
         await chrome.storage.session.set({'last_storage_update': Date.now()});
     });
 
-    return false;
+    return true;
 }
 
 const handleAuthenticationMessage: MessageHandler = (_, __, ___) => {

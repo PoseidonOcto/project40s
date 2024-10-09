@@ -1,0 +1,15 @@
+
+#selection-popup {
+    bottom: 0; 
+    right: 0; 
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background-color: lightgreen;
+    z-index: 2147483647;
+    padding: 1%;
+}
+
+#selection-popup hr {
+    margin: 0;
+}
