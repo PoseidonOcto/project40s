@@ -19,7 +19,6 @@ const Sidebar = () => {
                 console.error(response);
                 return;
             }
-            console.log(response);
 
             setImage(response.data);
         })();
