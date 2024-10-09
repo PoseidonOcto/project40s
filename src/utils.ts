@@ -54,7 +54,3 @@ const hasEnoughWords = (text: string): boolean => {
     const smallestSentenceLength = 5;
     return text.trim().split(/\s+/).length >= smallestSentenceLength;
 }
-
-export const getFaviconOfWebsite = (url: string): string => {
-    return `https://www.google.com/s2/favicons?sz=64&domain_url=${url}`
-}

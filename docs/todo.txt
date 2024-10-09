@@ -100,6 +100,8 @@ DEADLINE: week 11
 
 11. Work on report
 
+12. Test extension on new fresh setup with new google account.
+
 Optional: Publish extension to the chrome store
 
 

@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { FactCheckData2 } from "../types";
-import { getFaviconOfWebsite } from "../utils";
+import FaviconDisplay from "./faviconDisplay";
 
 /* 
  * Note since we never actually trigger a selection but rather pull text arbitrarily, 
@@ -20,7 +20,7 @@ const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData2['triggers']} 
                 {triggers.map((trigger, j) => {
                     return (
                         <Fragment key={j}>
-                            <img src={getFaviconOfWebsite(trigger.url)}/>
+                            <FaviconDisplay url={trigger.url}/>
                             <a id={"triggering-fact"} href={getLinkToHightlight(trigger.url, trigger.text)}><i>{'"' + trigger.text + '"'}</i></a>
                         </Fragment>
                     );
