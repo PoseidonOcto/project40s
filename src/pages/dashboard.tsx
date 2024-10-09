@@ -13,6 +13,7 @@ const Dashboard = () => {
             <hr/>
             <h2>Facts Checks</h2>
             <h4>Here are some fact checks we found relating to the content you've viewed.</h4>
+            <br/>
             <FactDisplay />
         </>
     );

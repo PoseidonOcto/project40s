@@ -39,8 +39,6 @@ export type WebsiteInteractionEntry = {
     clicks: number
 };
 
-export const isDeveloperMode: boolean = true;
-
 export type APIResponse<T> = {
     status: 'success',
     data: T
@@ -48,3 +46,5 @@ export type APIResponse<T> = {
     status: 'error',
     message: string,
 }
+
+export const isDeveloperMode: boolean = false;

@@ -36,9 +36,30 @@ let PROCESSED_CLAIMS: Set<string> = new Set();
 // For jackie
 // chrome.runtime.sendMessage({mode: MessageMode.AddingToDatabase, data: ""});
 
+const setPermission = async (hasPermission: boolean): Promise<void> => {
+    await chrome.storage.sync.set({permission: hasPermission});
+}
 
+const getPermission = async (): Promise<boolean> => {
+    const permission = (await chrome.storage.sync.get(["permission"])).permission;
+    if (permission === undefined) {
+        await setPermission(false);
+        return false;
+    } 
+    return permission;
+}
 
-setInterval(factCheckPageContents, 3000)
+(async () => {
+    if (await getPermission()) {
+        return;
+    }
+
+    const response = confirm("The 'Stop the cap' extension will scrape your screen for text, and will store this text in a database. Press OK to to grant permission.");
+    if (response) {
+        await setPermission(true);
+        setInterval(factCheckPageContents, 3000)
+    }
+})();
 
 // TODO: Two things could turn up the same fact check; but only would
 // probably want to display it once?

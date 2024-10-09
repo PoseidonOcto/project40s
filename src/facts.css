@@ -94,6 +94,11 @@ dt.claim i {
     border: none;
     width: 50em;
     border-radius: 0 0 10px 10px;
+    cursor: pointer;
+}
+
+#expand-fact-button:hover {
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 #fact-display-entry-container {

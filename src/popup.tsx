@@ -41,11 +41,10 @@ const Popup = () => {
                     <button onClick={clearStorage}>Clear Storage</button>
                 </>
             }
-            <div id='dashboard-button-container'>
-                <button id='dashboard-button' onClick={openOptionsPage}>Dashboard</button>
-            </div>
+            <button id='dashboard-button-container' onClick={openOptionsPage}><strong>Dashboard</strong></button>
             <hr/>
             <h3>Here are some facts that may be relevant to you</h3>
+            <br/>
             <FactDisplay />
         </div>
     );

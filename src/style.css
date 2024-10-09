@@ -106,7 +106,6 @@ ol li {
     margin-top: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    height: 80px;
 }
 
 .sidebar-container .arrow-icon-container .icon-holder {
@@ -149,7 +148,11 @@ ol li {
     padding-top: 10px;
 }
 
-#dashboard, #education, #preferences {
+#hamburger-icon-holder {
+    cursor: pointer;
+}
+
+#dashboard, #education, #preferences, #help {
     height: 75px;
 }
 
