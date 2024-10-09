@@ -27,7 +27,7 @@ DEADLINE: week 11
             triggering text                 (string [can be huge])
             last date text was triggered    (number: milliseconds past epoch)
 
-        Table 2 (user interaction data):        COMPOSITE_KEY: "id of user" and "url".
+        Table 2 (user interaction data):        COMPOSITE_KEY: "id of user", "url" and "date".
             id of user                      (number)
             url of website                  (string)
                 // url will be clipped to host site i.e. "www.cnn.com" not "www.cnn.com/politics"

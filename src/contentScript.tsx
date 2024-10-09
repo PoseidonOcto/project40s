@@ -51,6 +51,7 @@ const getPermission = async (): Promise<boolean> => {
 
 (async () => {
     if (await getPermission()) {
+        setInterval(factCheckPageContents, 3000)
         return;
     }
 
