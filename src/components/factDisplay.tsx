@@ -1,11 +1,11 @@
 import React, {Fragment, useEffect, useRef, useState} from "react";
-import { FactCheckData } from "../types";
-import {getDatabase} from "../factCheckApi";
+import { FactCheckIndex2 } from "../types";
+import { getStoredFacts } from "../factCheckApi";
 import { TaskQueue } from "../utils";
 import FactDisplayEntry from "./factDisplayEntry";
 
 const FactDisplay = () => {
-    const [factChecks, setFactChecks] = useState<Map<number, FactCheckData>>(new Map());
+    const [factChecks, setFactChecks] = useState<FactCheckIndex2>(new Map());
     const taskQueue = useRef<TaskQueue>(new TaskQueue());
     const [expandTriggeringFactDisplay, setTriggeringFactDisplay] = useState<boolean>(false);
 
@@ -15,7 +15,12 @@ const FactDisplay = () => {
             // however fixing this would require enqueuing this task in the service workers task queue
             // instead, and the notification number being a bit out of sync isn't too bad.
             await chrome.action.setBadgeText({text: ""});
-            setFactChecks(await getDatabase())
+            const response = await getStoredFacts();
+            if (response.status === 'success') {
+                setFactChecks(response.data);
+            } else {
+                console.error(response);
+            }
         }));
 
         updateData();
@@ -39,7 +44,7 @@ const FactDisplay = () => {
                 {factChecks.size === 0 && <p>None</p>}
                 {factChecks.size !== 0 && Array.from(factChecks.values()).map((fact, i) => {
                     return (
-                        <Fragment>
+                        <Fragment key={i}>
                             <div id="fact-check">
                                 <dl>
                                     <dt className='claim'>Claim:<br/>

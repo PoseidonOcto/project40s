@@ -1,4 +1,4 @@
-import { getSimilarityThreshold, updateDatabase } from "./factCheckApi";
+import { getSimilarityThreshold, sendText } from "./factCheckApi";
 import { MessageMode, MessageHandler } from "./types"
 import { TaskQueue, sleep } from "./utils";
 
@@ -10,12 +10,17 @@ export const getOAuthToken = async (): Promise<string> => {
 
 const handleFactCheckMessage: MessageHandler = (request, sender, __) => {
     TASK_QUEUE.enqueue(async () => {
-        console.assert(sender.url !== undefined);  // Can this happen?
-        const unseenFactChecks = await updateDatabase(request.claims, sender.url!, await getSimilarityThreshold());
+        console.assert(sender.url !== undefined);
+
+        const response = await sendText(request.claims, sender.url!, await getSimilarityThreshold());
+        if (response.status === 'error') {
+            console.error(response);
+            return;
+        }
 
         // Update number of unseen fact checks.
         const oldNum = Number(await chrome.action.getBadgeText({}));
-        const newNum = oldNum + unseenFactChecks.size;
+        const newNum = oldNum + response.data;
         if (oldNum != newNum) {
             await chrome.action.setBadgeText({text: `${newNum}`});
         }
