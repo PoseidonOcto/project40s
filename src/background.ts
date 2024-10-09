@@ -1,11 +1,43 @@
 import { getSimilarityThreshold, sendText } from "./factCheckApi";
-import { MessageMode, MessageHandler } from "./types"
+import { MessageMode, MessageHandler, APIResponse } from "./types"
 import { TaskQueue, sleep } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
 
 export const getOAuthToken = async (): Promise<string> => {
     return (await chrome.identity.getAuthToken({interactive: true})).token!
+}
+
+export const getUserProfileIcon = async (): Promise<APIResponse<string>> => {
+    let results;
+    try {
+        const url = 'https://www.googleapis.com/oauth2/v2/userinfo';
+        const response = await fetch(url, {
+            method: 'GET',
+            // async: true,
+            headers: {
+                Authorization: 'Bearer ' + await getOAuthToken(),
+                'Content-Type': 'application/json'
+            },
+            // 'contentType': 'json'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        results = await response.json();
+    } catch (error) {
+        return {
+            status: 'error',
+            message: (error as Error).message
+        }
+    }
+
+    return {
+        status: 'success',
+        data: results.picture,
+    };
 }
 
 const handleFactCheckMessage: MessageHandler = (request, sender, sendResponse) => {

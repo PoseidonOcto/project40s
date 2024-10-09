@@ -1,8 +1,9 @@
 import React, {Fragment, useEffect, useRef, useState} from "react";
 import { FactCheckIndex2 } from "../types";
 import { getStoredFacts } from "../factCheckApi";
-import { TaskQueue, getFaviconOfWebsite } from "../utils";
+import { TaskQueue } from "../utils";
 import FactDisplayTrigger from "./factDisplayTrigger";
+import FaviconDisplay from "./faviconDisplay";
 
 const FactDisplay = () => {
     const [facts, setFacts] = useState<FactCheckIndex2 | undefined>(undefined);
@@ -49,7 +50,7 @@ const FactDisplay = () => {
                                 <dl>
                                     <div id={"claim-container"}>
                                         <div id={"claim-icon-container"}>
-                                            <img id={"claim-icon"} src={getFaviconOfWebsite(fact.url)}/>
+                                            <img id={"claim-icon"} src={"IMAGE"}/>
                                         </div>
                                         <dt className='claim'>
                                             <i>{fact.claim}</i>

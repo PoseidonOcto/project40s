@@ -236,3 +236,9 @@ ol li {
 #selection-popup {
     background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom)) !important;
 }
+
+#profile {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}

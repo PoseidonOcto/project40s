@@ -3,13 +3,31 @@ import "../style.css"
 import {Outlet, Link, useLocation} from "react-router-dom";
 import set = chrome.cookies.set;
 import {MessageMode} from "../types";
+import { getUserProfileIcon } from "../background";
 
 // TODO Make side bar collapse on click on an icon
 const Sidebar = () => {
-    const [image, setImage] = useState<string>("");
+    const [image, setImage] = useState<string | undefined>(undefined);
     const [sideBarVisible, setSideBarClicked] = useState<boolean>(false);
     const location = useLocation();
     const [firstOpen, setFirstOpen] = useState<boolean>(location.pathname == "/");
+
+    useEffect(() => {
+        (async () => {
+            const response = await getUserProfileIcon();
+            if (response.status === 'error') {
+                console.error(response);
+                return;
+            }
+            console.log(response);
+
+            setImage(response.data);
+        })();
+
+
+
+    }, []);
+
     return (
         <>
             <div className="flexbox-container">
@@ -50,8 +68,14 @@ const Sidebar = () => {
                         </div>
                     </div>
                     <div id="profile-icon">
-                        {image === "" && <div className="loadingIcon"></div>}
-                        {image !== "" && <img id="profile" src="image"></img>}
+                        {image === undefined && <div className="loadingIcon"></div>}
+                        {image !== undefined && 
+                            <img id="profile" src={image} 
+                                onError={({ currentTarget }) => {
+                                    currentTarget.onerror = null; // prevents looping
+                                    // currentTarget.src="image_path_here";
+                                }}/>
+                            }
                     </div>
                 </div>
                 <div className="outlet">
