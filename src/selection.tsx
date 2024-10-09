@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+import "./cleanslate.css"
 import "./style.css"
 import "./selection.css"
 import { createRoot } from "react-dom/client";
 import { APIResponse, MessageMode } from "./types";
 
+/*
+ * If the website the script is injected into has existing css,
+ * it will conflict with the css of our component.
+ */
 const Selection = () => {
     const [queryResult, setQueryResult] = useState<APIResponse<number> | undefined>(undefined);
 
@@ -35,14 +40,6 @@ const Selection = () => {
         }));
     }
 
-    const selectionPopupStyle: React.CSSProperties = {
-    }
-
-    const textareaStyle: React.CSSProperties = {
-        width: "30vw",
-        height: "15vh",
-        padding: "5%",
-    }
     return (
         <>
             <div id="selection-popup">
@@ -64,6 +61,7 @@ if (existingSelectionPopup != null) {
 
 const rootTarget = document.createElement("div");
 rootTarget.id = SELECTION_ROOT_ID;
+rootTarget.className = 'cleanslate';
 
 document.documentElement.appendChild(rootTarget);
 

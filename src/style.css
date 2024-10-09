@@ -234,5 +234,5 @@ ol li {
 
 /* Selection popup */
 #selection-popup {
-    background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom));
+    background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom)) !important;
 }
