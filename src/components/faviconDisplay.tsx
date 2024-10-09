@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactElement } from "react";
+import React from "react";
 
 
 export const getFaviconOfWebsite = (url: string): string => {
@@ -12,10 +12,10 @@ export const getFaviconOfWebsite = (url: string): string => {
  * image property never triggers. Hence, catching this 404 error before it logs 
  * is suprisingly hard.
  */
-const FaviconDisplay = ( {url}: {url: string} ) => {
+const FaviconDisplay = ( {id, url}: {id: string, url: string} ) => {
     return (
         <>
-            <img src={getFaviconOfWebsite(url)}/>
+            <img id={id} src={getFaviconOfWebsite(url)}/>
         </>
     );
 };

@@ -50,7 +50,7 @@ const FactDisplay = () => {
                                 <dl>
                                     <div id={"claim-container"}>
                                         <div id={"claim-icon-container"}>
-                                            <img id={"claim-icon"} src={"IMAGE"}/>
+                                            <FaviconDisplay id={"claim-icon"} url={fact.url}/>
                                         </div>
                                         <dt className='claim'>
                                             <i>{fact.claim}</i>
