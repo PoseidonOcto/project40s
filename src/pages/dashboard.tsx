@@ -10,9 +10,9 @@ const Dashboard = () => {
         <>
             <h1>Dashboard</h1>
             <BarGraph />
-            <h4>Testing Test</h4>
             <hr/>
-            <h3>Here are some fact checks that may be relevant to you</h3>
+            <h2>Facts Checks</h2>
+            <h4>Here are some fact checks we found relating to the content you've viewed.</h4>
             <FactDisplay />
         </>
     );

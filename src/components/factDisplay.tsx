@@ -1,8 +1,8 @@
 import React, {Fragment, useEffect, useRef, useState} from "react";
 import { FactCheckIndex2 } from "../types";
 import { getStoredFacts } from "../factCheckApi";
-import { TaskQueue } from "../utils";
-import FactDisplayEntry from "./factDisplayEntry";
+import { TaskQueue, getFaviconOfWebsite } from "../utils";
+import FactDisplayTrigger from "./factDisplayTrigger";
 
 const FactDisplay = () => {
     const [facts, setFacts] = useState<FactCheckIndex2 | undefined>(undefined);
@@ -47,9 +47,11 @@ const FactDisplay = () => {
                         <Fragment key={i}>
                             <div id="fact-check">
                                 <dl>
-                                    <dt className='claim'>Claim:<br/>
+                                    <img src={getFaviconOfWebsite(fact.url)}/>
+                                    <dt className='claim'>
                                         <i>{fact.claim}</i>
                                     </dt>
+                                    <hr/>
                                     <div id="truth-author-container">
                                         <a className='truth-status'><strong>Truth Status:</strong> {fact.review}</a>
                                         <p className='author'>Author: {fact.author_name} | <a href={fact.url}>Source</a></p>
@@ -57,7 +59,7 @@ const FactDisplay = () => {
                                 </dl>
                             </div>
                             <div id="fact-display-entry-container">
-                                <FactDisplayEntry  data={fact}/>
+                                <FactDisplayTrigger triggers={fact.triggers}/>
                             </div>
                             <hr/>
                         </Fragment>
