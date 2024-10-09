@@ -20,8 +20,11 @@ const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData2['triggers']} 
                 {triggers.map((trigger, j) => {
                     return (
                         <Fragment key={j}>
-                            <img src={getFaviconOfWebsite(trigger.url)}/>
                             <a id={"triggering-fact"} href={getLinkToHightlight(trigger.url, trigger.text)}><i>{'"' + trigger.text + '"'}</i></a>
+                            <div id={"triggering-fact-author-holder"}>
+                                <a>Triggered by: </a>
+                                <img id={"triggering-fact-icon"} src={getFaviconOfWebsite(trigger.url)}/>
+                            </div>
                         </Fragment>
                     );
                 })}

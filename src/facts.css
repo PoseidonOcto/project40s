@@ -10,7 +10,7 @@ h2, h3, h4 {
 }
 
 #fact-check {
-    width: 70vw;
+    width: 50em;
     border-radius: 10px 10px 0 0;
     background-color: white;
 }
@@ -19,12 +19,18 @@ dl {
     margin: 0;
 }
 
+dt.claim {
+    padding: 10px 0 10px 0;
+}
+
 dt.claim, dd.truth-status {
-    padding: 10px 0 0 10px;
+    align-content: center;
+    padding: 10px 0 10px 0;
     font-weight: bold;
 }
 
 dt.claim, dt.triggering-fact{
+    width: 100%;
     text-align: center;
     text-wrap: balance;
 }
@@ -33,27 +39,37 @@ dt {
     font-size: 1.1rem;
 }
 
+dt.claim i {
+    margin: 0 auto;
+    text-align: center;
+}
+
 .truth-author-container {
     display: flex;
     flex-direction: row;
 }
 
 .truth-status {
+    width: 45%;
     float: left;
 }
 
 .author {
+    width: 45%;
     float: right;
+    text-align: right;
 }
 
 .truth-status, .author {
+    margin: 0;
     padding: 0 10px 0 10px;
+    font-size: .9em;
 }
 
 #triggering-fact-container {
     transition: 0.5s ease-in-out;
-    width: 50%;
-    padding: 10px;
+    width: 40em;
+    padding: 10px 10px 5px 10px;
     border-radius: 0 0 10px 10px;
     display: flex;
     flex-direction: column;
@@ -64,7 +80,7 @@ dt {
 #triggering-fact {
     text-align: center;
     width: 80%;
-    font-size: 1rem;
+    font-size: 0.8rem;
     border-radius: 10px;
     padding: 5px 0 5px 0;
     background-color: var(--triggered-claim-background)
@@ -72,10 +88,11 @@ dt {
 }
 
 #expand-fact-button {
+    padding: 5px 0 2.5px 0;
     font-size: 0.75rem;
     background-color: white;
     border: none;
-    width: 70vw;
+    width: 50em;
     border-radius: 0 0 10px 10px;
 }
 
@@ -84,4 +101,49 @@ dt {
     flex-direction: column;
     align-items: center;
     width: 100%;
+}
+
+#triggering-fact-icon {
+    width: 40px;
+    height: 40px;
+}
+
+#triggering-fact-author-holder {
+    padding: 10px 0 10px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#triggering-fact-author-holder a {
+    padding: 0 10px 0 10px;
+}
+
+#claim-container {
+    display: flex;
+    flex-direction: row;
+}
+
+#claim-icon-container {
+    border-radius: 10px 0 10px 0;
+    width: 50px;
+    height: 50px;
+    background-color: var(--triggered-background);
+}
+
+#claim-icon {
+    border-radius: 5px;
+    position: relative;
+    left: 5px;
+    top: 5px;
+    width: 40px;
+    height: 40px;
+}
+
+#claim {
+    padding: 10px 0 10px 0;
+}
+
+#truth-author-container {
+    padding: 0 10px 0 10px;
 }

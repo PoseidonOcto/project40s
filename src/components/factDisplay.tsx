@@ -47,10 +47,14 @@ const FactDisplay = () => {
                         <Fragment key={i}>
                             <div id="fact-check">
                                 <dl>
-                                    <img src={getFaviconOfWebsite(fact.url)}/>
-                                    <dt className='claim'>
-                                        <i>{fact.claim}</i>
-                                    </dt>
+                                    <div id={"claim-container"}>
+                                        <div id={"claim-icon-container"}>
+                                            <img id={"claim-icon"} src={getFaviconOfWebsite(fact.url)}/>
+                                        </div>
+                                        <dt className='claim'>
+                                            <i>{fact.claim}</i>
+                                        </dt>
+                                    </div>
                                     <hr/>
                                     <div id="truth-author-container">
                                         <a className='truth-status'><strong>Truth Status:</strong> {fact.review}</a>
