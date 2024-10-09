@@ -24,6 +24,9 @@ const handleFactCheckMessage: MessageHandler = (request, sender, __) => {
         if (oldNum != newNum) {
             await chrome.action.setBadgeText({text: `${newNum}`});
         }
+
+        // Change something in session storage to trigger FactDisplay's event listener.
+        await chrome.storage.session.set({'last_storage_update': Date.now()});
     });
 
     return false;

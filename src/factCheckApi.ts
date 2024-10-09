@@ -30,7 +30,7 @@ export const getStoredFacts = async (): Promise<APIResponse<FactCheckIndex2>> =>
 
     const data = new Map();
     for (const claim_with_results of response.data as any) {
-        data.set(claim_with_results['claim_id'], claim_with_results);
+        data.set(claim_with_results['id'], claim_with_results);
     }
     return {
         status: 'success',

@@ -5,9 +5,8 @@ import { TaskQueue } from "../utils";
 import FactDisplayEntry from "./factDisplayEntry";
 
 const FactDisplay = () => {
-    const [factChecks, setFactChecks] = useState<FactCheckIndex2>(new Map());
+    const [facts, setFacts] = useState<FactCheckIndex2 | undefined>(undefined);
     const taskQueue = useRef<TaskQueue>(new TaskQueue());
-    const [expandTriggeringFactDisplay, setTriggeringFactDisplay] = useState<boolean>(false);
 
     useEffect(() => {
         const updateData = () => taskQueue.current.enqueue((async () => {
@@ -17,7 +16,7 @@ const FactDisplay = () => {
             await chrome.action.setBadgeText({text: ""});
             const response = await getStoredFacts();
             if (response.status === 'success') {
-                setFactChecks(response.data);
+                setFacts(response.data);
             } else {
                 console.error(response);
             }
@@ -41,8 +40,9 @@ const FactDisplay = () => {
     return (
         <>
             <div id="fact-checks">
-                {factChecks.size === 0 && <p>None</p>}
-                {factChecks.size !== 0 && Array.from(factChecks.values()).map((fact, i) => {
+                {facts === undefined && <div className="loadingIcon"></div>}
+                {facts !== undefined && facts.size === 0 && <p>None</p>}
+                {facts !== undefined && facts.size !== 0 && Array.from(facts.values()).map((fact, i) => {
                     return (
                         <Fragment key={i}>
                             <div id="fact-check">
@@ -52,19 +52,13 @@ const FactDisplay = () => {
                                     </dt>
                                     <div id="truth-author-container">
                                         <a className='truth-status'><strong>Truth Status:</strong> {fact.review}</a>
-                                        <a className='author'>Author: {fact.author_name} | <a href={fact.url}>Source</a></a>
+                                        <p className='author'>Author: {fact.author_name} | <a href={fact.url}>Source</a></p>
                                     </div>
                                 </dl>
                             </div>
                             <div id="fact-display-entry-container">
                                 <FactDisplayEntry  data={fact}/>
                             </div>
-                            {/*<button id={"trigger-fact-display-button"} onClick={() => {setTriggeringFactDisplay(!expandTriggeringFactDisplay)}}></button>\*/}
-                            {/*<div id="triggering-fact-container">*/}
-                            {/*    {Array.from(fact.triggeringText.values())*/}
-                            {/*        .map((text, j) => <a id={"triggering-fact"}key={j}><i>"{text}"</i></a>)*/}
-                            {/*    }*/}
-                            {/*</div>*/}
                             <hr/>
                         </Fragment>
 
