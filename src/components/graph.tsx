@@ -214,8 +214,7 @@ const BarGraph = () => {
 
     return (
         <div id="graph-container">
-            <h2>Bar Chart of Website Interaction</h2>
-
+            <h3>Bar Chart of Website Interaction</h3>
             <br/>
             <div id="date-container">
                 <label>
@@ -239,20 +238,17 @@ const BarGraph = () => {
                     />&nbsp;
                 </label>
             </div>
-
-            <div style={{ width: '600px', height: '400px', margin: '0 auto' }}>
+            <br/>
+            <div id="graph">
                 <Bar data={chartData} options={options} />
             </div>
 
             <div id="graph-buttons-container">
                 {sites.map((site, index) => (
                     <button
-                        className="graph-button"
+                        className={site === siteUrl ? "selected-graph-button" : "graph-button"}
                         key={index}
                         onClick={() => handleSiteClick(site)}
-                        style={{
-                            backgroundColor: site === siteUrl ? 'var(--selected-graph-colour)' : 'transparent',
-                        }}
                     >
                         {getWebsiteName(site)}
                     </button>

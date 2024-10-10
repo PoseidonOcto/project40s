@@ -10,7 +10,8 @@
     --hover-sidebar-background: #EDEAEF;
     --triggered-background: #FEF7FF;
     --triggered-claim-background: #E8DEF8;
-    --selected-graph-colour: #C285FF;
+    --selected-graph-colour: rgba(194, 133, 255, 0.5);
+    --hover-graph-button-colour: #C285FF3F;
 }
 
 #root, body, html {

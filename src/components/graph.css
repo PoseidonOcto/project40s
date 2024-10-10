@@ -2,7 +2,23 @@
     margin: 0 15% 0 15%;
 }
 
+.selected-graph-button {
+    background-color: var(--selected-graph-colour);
+    color: white;
+    margin: 5px;
+    padding: 10px;
+    border: solid 1px white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+
+.graph-button:hover {
+    background-color: var(--hover-graph-button-colour);
+}
+
 button.graph-button {
+    background-color: transparent;
     color: white;
     margin: 5px;
     padding: 10px;
@@ -37,6 +53,13 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
 #graph-buttons-container {
     max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#graph {
+    width: 100%;
+    height: fit-content;
     margin-left: auto;
     margin-right: auto;
 }
