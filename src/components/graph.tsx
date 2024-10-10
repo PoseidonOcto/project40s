@@ -213,27 +213,13 @@ const BarGraph = () => {
     };
 
     return (
-        <div>
+        <div id="graph-container">
             <h2>Bar Chart of Website Interaction</h2>
 
-            <div>
-                {sites.map((site, index) => (
-                    <button
-                        className="graph-button"
-                        key={index}
-                        onClick={() => handleSiteClick(site)}
-                        style={{
-                            backgroundColor: site === siteUrl ? 'blue' : 'gray',
-                        }}
-                    >
-                        {getWebsiteName(site)}
-                    </button>
-                ))}
-            </div>
             <br/>
-            <div>
+            <div id="date-container">
                 <label>
-                    Start Date:&nbsp;
+                    FROM: &nbsp;
                     <input
                         className="date-select-input"
                         type="date"
@@ -243,7 +229,7 @@ const BarGraph = () => {
                     />&nbsp;
                 </label>
                 <label>
-                    End Date:&nbsp;
+                    TO: &nbsp;
                     <input
                         className="date-select-input"
                         type="date"
@@ -257,6 +243,22 @@ const BarGraph = () => {
             <div style={{ width: '600px', height: '400px', margin: '0 auto' }}>
                 <Bar data={chartData} options={options} />
             </div>
+
+            <div id="graph-buttons-container">
+                {sites.map((site, index) => (
+                    <button
+                        className="graph-button"
+                        key={index}
+                        onClick={() => handleSiteClick(site)}
+                        style={{
+                            backgroundColor: site === siteUrl ? 'var(--selected-graph-colour)' : 'transparent',
+                        }}
+                    >
+                        {getWebsiteName(site)}
+                    </button>
+                ))}
+            </div>
+
         </div>
     );
 };

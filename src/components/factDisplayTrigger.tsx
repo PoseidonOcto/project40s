@@ -14,7 +14,7 @@ const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData2['triggers']} 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     return (
         <>
-            <button id={"expand-fact-button"} onClick={() => setIsExpanded(!isExpanded)}><i>Show text that triggered this fact</i><br/>{isExpanded ? <strong>∧</strong> : <strong>∨</strong>}</button>
+            <button id={"expand-fact-button"} onClick={() => setIsExpanded(!isExpanded)}><i>Show text that triggered this fact</i><br/>{isExpanded ? <strong>&#8743;</strong> : <strong>&#8744;</strong>}</button>
             {isExpanded &&
                 <div id="triggering-fact-container">
                 {triggers.map((trigger, j) => {

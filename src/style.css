@@ -1,3 +1,7 @@
+* {
+    font-family: "Roboto", sans-serif;
+}
+
 :root {
     --side-bar-background: #F9F6FB;
     --dashboard-background-top: #ABCBED;
@@ -6,6 +10,7 @@
     --hover-sidebar-background: #EDEAEF;
     --triggered-background: #FEF7FF;
     --triggered-claim-background: #E8DEF8;
+    --selected-graph-colour: #C285FF;
 }
 
 #root, body, html {
