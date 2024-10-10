@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../style.css"
+import "./sidebar.css"
 import {Outlet, Link, useLocation} from "react-router-dom";
 import set = chrome.cookies.set;
 import {MessageMode} from "../types";
