@@ -42,15 +42,17 @@ DEADLINE: week 11
         Probably just a youtube video would be easiest.
         Popup will link to you this page as well.
 
-10. Miscellaneous
-    dashboard should be selected by default on sidebar
-    add user profile icon on the sidebar
-    create new OPENAI api key (last one is in commit history of a repo that might be public in future)
-    make image displayed in chrome extension bigger.
-
-11. Work on report
+11. Complete the report.
 
 12. Test extension on new fresh setup with new google account.
+
+13. Work on report
+    (a) Risk Matrix and Mitigations
+        Recommendation of future development.
+        TODO features
+        Security and Data privacy.
+
+14. Complete the video assessment.
 
 Optional: Publish extension to the chrome store
 
@@ -83,7 +85,14 @@ Unassigned (requiring other tasks to be complete): 7a, 8, 9
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Assigned Tasks (week 11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Jaspreet:           8
+Jaspreet:           8           
+Alex:               13
+Jackie:             3, 6b       (3 is due saturday night)
+Aryan:              4           (4 is due saturday night)
+Angela & Sunny:     11, 14
+
+After completing assigned tasks all members should help with the report.
+Unassigned: 7a 7b 12
 
 
 
@@ -148,9 +157,19 @@ Done list
         
 9. Update privacy policy
 
+10. Miscellaneous
+    dashboard should be selected by default on sidebar
+    add user profile icon on the sidebar
+    create new OPENAI api key (last one is in commit history of a repo that might be public in future)
+    make image displayed in chrome extension bigger.
+
+
 ~~~~~~~~~~~~~~~~~~~~~
 Giving up
 ~~~~~~~~~~~~~~~~~~~~~
     display recently found facts differently.
     allow user to consent to scraping of text but *not* storing of text.
     Button on settings page to revoke permission to store data (deleting all data in database).
+
+
+

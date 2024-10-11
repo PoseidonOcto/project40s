@@ -21,8 +21,8 @@ const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData2['triggers']} 
                     return (
                         <Fragment key={j}>
                             <div id="triggering-fact-container">
-                                <a id={"triggering-fact"} href={getLinkToHightlight(trigger.url, trigger.text)}><i>{'"' + trigger.text + '"'}</i></a>
-                                <div id={"triggering-fact-author-holder"} onClick={() => {window.location.href = trigger.url}}>
+                                <a id={"triggering-fact"} href={getLinkToHightlight(trigger.url, trigger.text)} target="_blank"><i>{'"' + trigger.text + '"'}</i></a>
+                                <div id={"triggering-fact-author-holder"} onClick={() => {window.open(trigger.url, "_blank")}}>
                                     <a>Triggered by visiting: </a>
                                     <FaviconDisplay id={"triggering-fact-icon"} url={trigger.url}/>
                                 </div>

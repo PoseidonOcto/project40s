@@ -59,7 +59,7 @@ const FactDisplay = () => {
                                     <hr/>
                                     <div id="truth-author-container">
                                         <a className='truth-status'><strong>Truth Status:</strong> {fact.review}</a>
-                                        <p className='author'>Author: {fact.author_name} | <a href={fact.url}>Source</a></p>
+                                        <p className='author'>Author: {fact.author_name} | <a href={fact.url} target="_blank">Source</a></p>
                                     </div>
                                 </dl>
                             </div>
