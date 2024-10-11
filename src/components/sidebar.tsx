@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../style.css"
+import "./sidebar.css"
 import {Outlet, Link, useLocation} from "react-router-dom";
 import set = chrome.cookies.set;
 import {MessageMode} from "../types";
@@ -58,7 +59,7 @@ const Sidebar = () => {
                     <div className="arrow-icon-container">
                         <div className="icon-holder" id={location.pathname === "/help" ? "selected" : "not-selected"}>
                             <Link to={`help`} id="help">
-                                <img src="../images/gear-icon.png" alt="help-icon" id="help-icon"></img>
+                                <img src="../images/info.png" alt="help-icon" id="help-icon"></img>
                                 {sideBarVisible ? (location.pathname === "/help" ? <p><strong>Help</strong></p> : <p>Help</p>) : <></>}
                             </Link>
                         </div>

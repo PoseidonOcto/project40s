@@ -14,7 +14,7 @@ const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData2['triggers']} 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     return (
         <>
-            <button id={"expand-fact-button"} onClick={() => setIsExpanded(!isExpanded)}><i>Show text that triggered this fact</i><br/>{isExpanded ? <strong>∧</strong> : <strong>∨</strong>}</button>
+            <button id={"expand-fact-button"} onClick={() => setIsExpanded(!isExpanded)}><i>Show text that triggered this fact</i><br/>{isExpanded ? <strong>&#8743;</strong> : <strong>&#8744;</strong>}</button>
             {isExpanded &&
                 <div id="triggering-fact-container">
                 {triggers.map((trigger, j) => {
@@ -22,7 +22,7 @@ const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData2['triggers']} 
                         <Fragment key={j}>
                             <div id="triggering-fact-container">
                                 <a id={"triggering-fact"} href={getLinkToHightlight(trigger.url, trigger.text)}><i>{'"' + trigger.text + '"'}</i></a>
-                                <div id={"triggering-fact-author-holder"}>
+                                <div id={"triggering-fact-author-holder"} onClick={() => {window.location.href = trigger.url}}>
                                     <a>Triggered by visiting: </a>
                                     <FaviconDisplay id={"triggering-fact-icon"} url={trigger.url}/>
                                 </div>

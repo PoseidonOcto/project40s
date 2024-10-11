@@ -120,6 +120,10 @@ dt.claim i {
     align-items: center;
 }
 
+#triggering-fact-author-holder:hover {
+    cursor: pointer;
+}
+
 #triggering-fact-author-holder a {
     padding: 0 10px 0 10px;
 }

@@ -143,27 +143,12 @@ const BarGraph = () => {
     };
 
     return (
-        <div>
-            <h2>Bar Chart of Website Interaction</h2>
-
-            <div>
-                {sites.map((site, index) => (
-                    <button
-                        className="graph-button"
-                        key={index}
-                        onClick={() => handleSiteClick(site)}
-                        style={{
-                            backgroundColor: site === siteUrl ? 'blue' : 'gray',
-                        }}
-                    >
-                        {site}
-                    </button>
-                ))}
-            </div>
+        <div id="graph-container">
+            <h3>Bar Chart of Website Interaction</h3>
             <br/>
-            <div>
+            <div id="date-container">
                 <label>
-                    Start Date:&nbsp;
+                    FROM: &nbsp;
                     <input
                         className="date-select-input"
                         type="date"
@@ -173,7 +158,7 @@ const BarGraph = () => {
                     />&nbsp;
                 </label>
                 <label>
-                    End Date:&nbsp;
+                    TO: &nbsp;
                     <input
                         className="date-select-input"
                         type="date"
@@ -183,10 +168,23 @@ const BarGraph = () => {
                     />&nbsp;
                 </label>
             </div>
-
-            <div style={{ width: '600px', height: '400px', margin: '0 auto' }}>
+            <br/>
+            <div id="graph">
                 <Bar data={chartData} options={options} />
             </div>
+
+            <div id="graph-buttons-container">
+                {sites.map((site, index) => (
+                    <button
+                        className={site === siteUrl ? "selected-graph-button" : "graph-button"}
+                        key={index}
+                        onClick={() => handleSiteClick(site)}
+                    >
+                        {site}
+                    </button>
+                ))}
+            </div>
+
         </div>
     );
 };
