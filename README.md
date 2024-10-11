@@ -10,28 +10,6 @@
 * dist: the output of the build (i.e. npm run ___). No need to change these files.
 * docs: images used for this readme
 
-## Data flow
-    ┌─────────────────────────┐                                                                        
-    │          Text           │                         ┌───────────────┐                  ┌──────────┐
-    │( Automatically scraped )│   ───────────────────►  │ Fact provider │ ───────────────► │ Database │
-    │(  or manually flagged  )│     ( broken into )     └───────────────┘  ( new facts )   └──────────┘
-    └─────────────────────────┘     (  sentences  )                                                    
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                             ( recently triggered facts )   ┌───────┐                                  
-                           ┌──────────────────────────────► │ Popup │                                  
-                           │                                └───────┘                                  
-          ┌──────────┐     │                                                                           
-          │ Database │ ────┤                                                                           
-          └──────────┘     │                                                                           
-                           │                                ┌───────────┐                              
-                           └──────────────────────────────► │ Dashboard │                              
-                                    ( all facts )           └───────────┘                              
-
 ## Setup
 
 [in the folder you wish the 'project40s' folder to be placed]
@@ -45,7 +23,12 @@ npm run build
 Load the extension in chrome - in the chrome extensions page, load `dist` directory.
 > (see https://betterprogramming.pub/creating-chrome-extensions-with-typescript-914873467b65#:~:text=5.%20Load%20the%20extension)
 
-## Build (Development)
+## Build (Production)
+```
+npm run build
+```
+
+## Build (Development) (for developers)
 
 ```
 npm run watch
@@ -68,11 +51,29 @@ After certain changes, you will need to reload the extension.
 
 NOTE: For the options page, you will still need to refresh the page.
 
+## Data flow (for developers)
+    ┌─────────────────────────┐                                                                        
+    │          Text           │                         ┌───────────────┐                  ┌──────────┐
+    │( Automatically scraped )│   ───────────────────►  │ Fact provider │ ───────────────► │ Database │
+    │(  or manually flagged  )│     ( broken into )     └───────────────┘  ( new facts )   └──────────┘
+    └─────────────────────────┘     (  sentences  )                                                    
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                    ( all facts )           ┌───────┐                                  
+                           ┌──────────────────────────────► │ Popup │                                  
+                           │                                └───────┘                                  
+          ┌──────────┐     │                                                                           
+          │ Database │ ────┤                                                                           
+          └──────────┘     │                                                                           
+                           │                                ┌───────────┐                              
+                           └──────────────────────────────► │ Dashboard │                              
+                                    ( all facts )           └───────────┘                              
 
-## Build (Production)
-```
-npm run build
-```
 
-## Other References
+
+## References
 Used the template 'https://github.com/chibat/chrome-extension-typescript-starter' (many thanks).
