@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "../style.css"
 import "./education.css"
 
@@ -108,59 +108,93 @@ const Education = () => {
                         </div>
                     </div>
                 </div>
-            <br/>
-            <cite>You can find more information on the above from <a href="https://www.mindtools.com/a0g6bjj/how-to-spot-real-and-fake-news ">Mind Tools</a></cite>
-            <br/>
-            <hr/>
-            <h2><i>Fake News Types</i></h2>
-            <div id="three-column-container">
-                <div id="column-one">
-                    <h4>Clickbait</h4>
-                    <ul><li>Stories or images distorted to increase traffic to a page</li></ul><br/>
-                    <h4>Propaganda</h4>
-                    <ul><li>Stories or images created to mislead audience to fit a political agenda or biased perspectives</li></ul>
+                <br/>
+                <cite>You can find more information on the above from <a
+                    href="https://www.mindtools.com/a0g6bjj/how-to-spot-real-and-fake-news ">Mind Tools</a></cite>
+                <br/>
+                <hr/>
+                <h2><i>Fake News Types</i></h2>
+                <div id="three-column-container">
+                    <div id="column-one">
+                        <h4>Clickbait</h4>
+                        <ul>
+                            <li>Stories or images distorted to increase traffic to a page</li>
+                        </ul>
+                        <br/>
+                        <h4>Propaganda</h4>
+                        <ul>
+                            <li>Stories or images created to mislead audience to fit a political agenda or biased
+                                perspectives
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="column-two">
+                        <h4>Misleading headlines</h4>
+                        <ul>
+                            <li>Exaggerated headlines that may only be referred to a small portion of a greater story
+                            </li>
+                        </ul>
+                        <br/>
+                        <h4>Imposter content</h4>
+                        <ul>
+                            <li>Genuine news sources being impersonated presenting untrue stories</li>
+                        </ul>
+                    </div>
+                    <div id="column-three">
+                        <h4>Satire or parody</h4>
+                        <ul>
+                            <li>Articles written for entertainment</li>
+                        </ul>
+                        <br/>
+                        <h4>Poor quality journalism</h4>
+                        <ul>
+                            <li>Can appear in many forms but can include lack of checking facts, biased takes on topics,
+                                plagiarism, etc
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div id="column-two">
-                    <h4>Misleading headlines</h4>
-                    <ul><li>Exaggerated headlines that may only be referred to a small portion of a greater story</li></ul><br/>
-                    <h4>Imposter content</h4>
-                    <ul><li>Genuine news sources being impersonated presenting untrue stories</li></ul>
-                </div>
-                <div id="column-three">
-                    <h4>Satire or parody</h4>
-                    <ul><li>Articles written for entertainment </li></ul><br/>
-                    <h4>Poor quality journalism</h4>
-                    <ul><li>Can appear in many forms but can include lack of checking facts, biased takes on topics, plagiarism, etc</li></ul>
+                <h2><i>Misinformation vs Disinformation</i></h2>
+                <table>
+                    <tr>
+                        <th>Misinformation</th>
+                        <th>Disinformation</th>
+                    </tr>
+                    <tr>
+                        <td>False or misleading stories that are <strong>created and spread on purpose</strong>, usually
+                            by someone with a financial or political reason for doing it.
+                        </td>
+                        <td>False or inaccurate stories that <strong>might not have been intentionally created or
+                            shared</strong> to deceive, but still end up spreading misinformation.
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <cite>You can find more information on the above from <a
+                    href={"https://www.kaspersky.com/resource-center/preemptive-safety/how-to-identify-fake-news"}>kapersky.com</a></cite>
+                <br/>
+                <hr/>
+                <h2><i>Fake News</i></h2>
+                <h4>What is Fake News?</h4>
+                <p>Fake news can be defined as any news that does not completely portray the truth.</p>
+                <p>Some features of fake news include:
+                    <ul>
+                        <li>Often include exaggerated claims or stories that induce a form of alarm or evoke emotion
+                        </li>
+                        <li>Involve the use of Deepfakes - fake videos created with software and machine learning to
+                            create footage of scenes or events that have never occurred
+                        </li>
+                    </ul>
+                </p>
+                <cite>You can find more information on the above from <a
+                    href={"https://www.kaspersky.com/resource-center/preemptive-safety/how-to-identify-fake-news"}>kapersky.com</a></cite>
+                <hr/>
+                <br/>
+                <div id="recommendations-container">
+                    CCNN :)
                 </div>
             </div>
-            <h2><i>Misinformation vs Disinformation</i></h2>
-            <table>
-                <tr>
-                    <th>Misinformation</th>
-                    <th>Disinformation</th>
-                </tr>
-                <tr>
-                    <td>False or misleading stories that are <strong>created and spread on purpose</strong>, usually by someone with a financial or political reason for doing it.</td>
-                    <td>False or inaccurate stories that <strong>might not have been intentionally created or shared</strong> to deceive, but still end up spreading misinformation. </td>
-                </tr>
-            </table>
-            <br/>
-            <cite>You can find more information on the above from <a href={"https://www.kaspersky.com/resource-center/preemptive-safety/how-to-identify-fake-news"}>kapersky.com</a></cite>
-            <br/>
-            <hr/>
-            <h2><i>Fake News</i></h2>
-            <h4>What is Fake News?</h4>
-            <p>Fake news can be defined as any news that does not completely portray the truth.</p>
-            <p>Some features of fake news include:
-            <ul>
-                <li>Often include exaggerated claims or stories that induce a form of alarm or evoke emotion</li>
-                <li>Involve the use of Deepfakes - fake videos created with software and machine learning to create footage of scenes or events that have never occurred</li>
-            </ul>
-            </p>
-            <cite>You can find more information on the above from <a href={"https://www.kaspersky.com/resource-center/preemptive-safety/how-to-identify-fake-news"}>kapersky.com</a></cite>
-            <hr/>
-            <br/>
-            </div>
+
         </>
     );
 };
