@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import "./graph.css"
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { WebsiteInteractionEntry } from '../types';
+import { WebsiteInteractionEntry, APIResponse } from '../types';
+import { fetchFromAPI } from '../utils';
+import { getOAuthToken } from '../background';
 
 // Register the necessary components for Chart.js
 ChartJS.register(
@@ -15,95 +17,7 @@ ChartJS.register(
 );
 
 const BarGraph = () => {
-    // Sample data for website interactions
-    const table1: WebsiteInteractionEntry[] = [
-        {
-            user_id: 1,
-            url: "https://www.bbc.com/",
-            duration: 100000,
-            date: 1727839283207, // Example timestamp
-            clicks: 5
-        },
-        {
-            user_id: 1,
-            url: "https://www.bbc.com/",
-            duration: 50000,
-            date: 1727839283207, 
-            clicks: 3
-        },
-        {
-            user_id: 1,
-            url: "https://www.bbc.com/",
-            duration: 200000,
-            date: 1727704800000, 
-            clicks: 10
-        },
-        {
-            user_id: 1,
-            url: "https://edition.cnn.com/",
-            duration: 150000,
-            date: 1727839283207,
-            clicks: 8
-        },
-        {
-            user_id: 1,
-            url: "https://edition.cnn.com/",
-            duration: 250000,
-            date: 1727704800000,
-            clicks: 12
-        },
-        {
-            user_id: 1,
-            url: "https://edition.cnn.com/",
-            duration: 300000,
-            date: 1727618400000,
-            clicks: 15
-        },
-        {
-            user_id: 1,
-            url: "https://www.news.com.au/",
-            duration: 180000,
-            date: 1727839283207,
-            clicks: 7
-        },
-        {
-            user_id: 1,
-            url: "https://www.news.com.au/",
-            duration: 220000,
-            date: 1727704800000,
-            clicks: 9
-        },
-        {
-            user_id: 1,
-            url: "https://www.news.com.au/",
-            duration: 270000,
-            date: 1727618400000,
-            clicks: 11
-        },
-        {
-            user_id: 1,
-            url: "https://www.9news.com.au/",
-            duration: 120000,
-            date: 1727839283207,
-            clicks: 6
-        },
-        {
-            user_id: 1,
-            url: "https://www.9news.com.au/",
-            duration: 160000,
-            date: 1727704800000,
-            clicks: 8
-        },
-        {
-            user_id: 1,
-            url: "https://www.9news.com.au/",
-            duration: 280000,
-            date: 1727618400000,
-            clicks: 13
-        }
-    ];
-
-    const [data, setData] = useState(table1);
+    const [interactions, setInteractions] = useState<WebsiteInteractionEntry[] | undefined>(undefined);
     const [sites, setSites] = useState<string[]>([]);
     const [siteUrl, setSiteUrl] = useState<string>("https://www.bbc.com/");
     const [startDate, setStartDate] = useState<Date>();
@@ -111,23 +25,35 @@ const BarGraph = () => {
 
     const currentDate = new Date().toISOString().split('T')[0];
 
+    // TODO add loading symbol
     // Update the list of unique sites from data
     useEffect(() => {
-        const sortedData = data.sort((a, b) => a.date - b.date);
-        setData(sortedData);
+        (async () => {
+            const response = await fetchInteractionData();
+            if (response.status === 'error') {
+                console.error(response);
+                return;
+            }
 
-        const uniqueSites = Array.from(new Set(data.map(entry => entry.url)));
-        setSites(uniqueSites);
-    }, [data]);
+            for (const entry of table1) {
+                response.data.push(entry);
+            }
 
-    const getWebsiteName = (url: string) => {
-        try {
-            return new URL(url).hostname;
-        } catch (error) {
-            console.error("Invalid URL:", url);
-            return url;
-        }
-    };
+            const sortedData = response.data.sort((a, b) => a.date - b.date);
+            const uniqueSites = Array.from(new Set(sortedData.map(entry => entry.url)));
+            setInteractions(sortedData);
+            setSites(uniqueSites);
+        })();
+    }, []);
+
+    // const getWebsiteName = (url: string) => {
+    //     try {
+    //         return new URL(url).hostname;
+    //     } catch (error) {
+    //         console.error("Invalid URL:", url);
+    //         return url;
+    //     }
+    // };
 
     // Handle site button click to change the site URL
     const handleSiteClick = (url: string) => {
@@ -141,7 +67,7 @@ const BarGraph = () => {
     };
 
     // Helper function to aggregate data by date for the selected site and date range
-    const aggregateDataByDate = (siteUrl: string) => {
+    const aggregateDataByDate = (data: WebsiteInteractionEntry[], siteUrl: string) => {
         const filteredData = data.filter(entry => entry.url === siteUrl);
 
         const aggregatedData: { [key: string]: number } = {};
@@ -161,7 +87,11 @@ const BarGraph = () => {
 
     // Function to dynamically include missing dates with 0 values
     const getProcessedData = (siteUrl: string) => {
-        const aggregatedData = aggregateDataByDate(siteUrl);
+        if (interactions === undefined) {
+            return [];
+        }
+
+        const aggregatedData = aggregateDataByDate(interactions, siteUrl);
         const processedData: { date: string, totalDuration: number }[] = [];
         let defaultStartDate = new Date();
         defaultStartDate.setDate(defaultStartDate.getDate() - 7);
@@ -226,7 +156,7 @@ const BarGraph = () => {
                             backgroundColor: site === siteUrl ? 'blue' : 'gray',
                         }}
                     >
-                        {getWebsiteName(site)}
+                        {site}
                     </button>
                 ))}
             </div>
@@ -260,5 +190,88 @@ const BarGraph = () => {
         </div>
     );
 };
+
+const fetchInteractionData = async (): Promise<APIResponse<WebsiteInteractionEntry[]>> => {
+    return await fetchFromAPI("user_interaction/get", {
+        oauth_token: await getOAuthToken(),
+    });
+}
+
+
+// Sample data for website interactions
+const table1: WebsiteInteractionEntry[] = [
+    {
+        url: "https://www.bbc.com/",
+        duration: 100000,
+        date: 1727839283207, // Example timestamp
+        clicks: 5
+    },
+    {
+        url: "https://www.bbc.com/",
+        duration: 50000,
+        date: 1727839283207, 
+        clicks: 3
+    },
+    {
+        url: "https://www.bbc.com/",
+        duration: 200000,
+        date: 1727704800000, 
+        clicks: 10
+    },
+    {
+        url: "https://edition.cnn.com/",
+        duration: 150000,
+        date: 1727839283207,
+        clicks: 8
+    },
+    {
+        url: "https://edition.cnn.com/",
+        duration: 250000,
+        date: 1727704800000,
+        clicks: 12
+    },
+    {
+        url: "https://edition.cnn.com/",
+        duration: 300000,
+        date: 1727618400000,
+        clicks: 15
+    },
+    {
+        url: "https://www.news.com.au/",
+        duration: 180000,
+        date: 1727839283207,
+        clicks: 7
+    },
+    {
+        url: "https://www.news.com.au/",
+        duration: 220000,
+        date: 1727704800000,
+        clicks: 9
+    },
+    {
+        url: "https://www.news.com.au/",
+        duration: 270000,
+        date: 1727618400000,
+        clicks: 11
+    },
+    {
+        url: "https://www.9news.com.au/",
+        duration: 120000,
+        date: 1727839283207,
+        clicks: 6
+    },
+    {
+        url: "https://www.9news.com.au/",
+        duration: 160000,
+        date: 1727704800000,
+        clicks: 8
+    },
+    {
+        url: "https://www.9news.com.au/",
+        duration: 280000,
+        date: 1727618400000,
+        clicks: 13
+    }
+];
 
 export default BarGraph;

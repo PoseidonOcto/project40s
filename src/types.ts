@@ -32,7 +32,6 @@ export type FactCheckData2 = {
 export type FactCheckIndex2 = Map<number, FactCheckData2>;
 
 export type WebsiteInteractionEntry = {
-    user_id: number,
     url: string,
     duration: number,
     date: number,

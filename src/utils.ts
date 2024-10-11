@@ -1,4 +1,5 @@
 import sentencize from "@stdlib/nlp-sentencize"
+import { FactCheckIndex2, APIResponse } from "./types"
 
 /*
  * Queue related code is written under the assumption
@@ -53,4 +54,35 @@ export const getClaims = (text: string): string[] => {
 const hasEnoughWords = (text: string): boolean => {
     const smallestSentenceLength = 5;
     return text.trim().split(/\s+/).length >= smallestSentenceLength;
+}
+
+export async function fetchFromAPI<T>(endpoint: string, data: Object): Promise<APIResponse<T>> {
+    let results;
+    try {
+        const url = `https://project40s-embedding-server-production.up.railway.app/${endpoint}`;
+        const response =  await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        results = await response.json();
+    } catch (error) {
+        return {
+            status: 'error',
+            message: (error as Error).message
+        }
+    }
+
+    if (results.status != 'success') {
+        return results;
+    }
+
+    return results;
 }

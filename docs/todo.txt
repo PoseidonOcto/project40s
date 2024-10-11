@@ -3,50 +3,11 @@ Everything that needs to be done
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DEADLINE: week 11
 
-1. Finish the misinformation detection:
-    (a) update manual detection 
-            (note: should display the new fact down bottom right, otherwise adds no utility).
-        change to pull from database and store to database.
-        Add url of triggering text.
-
-    (b) display recently found differently
-        display facts found as the hi fidelity design describes.
-
-    (c) [time allowing]
-        allow user to consent to scraping of text but *not* storing of text.
-        In this case we simply don't save or display the triggering text / triggering urls.
-
-
-2. Complete the database:
-    store all fields necessary for misinformation detection:
-
-        Table 1 (fact data):                    COMPOSITE_KEY: "id of user", "id of claim", "url", and "text"
-            id of user that detected claim  (number)
-            id of claim in vector database  (number)
-            url of triggering text          (string [can be huge])
-            triggering text                 (string [can be huge])
-            last date text was triggered    (number: milliseconds past epoch)
-
-        Table 2 (user interaction data):        COMPOSITE_KEY: "id of user", "url" and "date".
-            id of user                      (number)
-            url of website                  (string)
-                // url will be clipped to host site i.e. "www.cnn.com" not "www.cnn.com/politics"
-            duration spent on that website  (number)
-            date spent duration on website  (number: milliseconds past epoch)
-                // yes this means a seperate entry each time they flick back
-                // could decide only get database entry if more than 30 seconds spent
-            clicks during duration          (number)
-
-        Table 3 (political leaning data):       PRIMARY_KEY: "url"
-            url of website                  (string)
-            political leaning of website    (ENUM)
-
 3. Complete the user interaction data collection:
     Accurately track duration user spent on website and clicks.
     Send data to database (when pushing a new url, also push the political leaning read from csv)
 
 4. Complete the dashboard:
-    (a) Complete the hifi design
     (b) Complete the graphs
         
         Graph 1 [the graph shown in hifi dashboard]:
@@ -65,13 +26,7 @@ DEADLINE: week 11
 
                         If a block is too small just add to 'other' block.
                             
-5. Miscellaneous css:
-    change education page to match hifi design
-    fix up popup
-    make the css scale well (it is going to be displayed on a monitor at the expo)
-
 6. Complete user surveys:
-    (a) Complete interview questions regarding usability
     (b) Conduct interviews (requires 1-5 done)
 
 7. Website recommendation page:
@@ -85,12 +40,7 @@ DEADLINE: week 11
     A video explaining how to use the extension (requires 1-7 done).
         Will be opened upon extension installation.
         Probably just a youtube video would be easiest.
-    User must consent to data being tracked.
-        To do this, add a useEffect to every page that redirects you to a consent page if you haven't consented yet.
         Popup will link to you this page as well.
-    Button on settings page to revoke permission to store data (deleting all data in database).
-
-9. Update privacy policy
 
 10. Miscellaneous
     dashboard should be selected by default on sidebar
@@ -172,6 +122,35 @@ On 1b
 Done list
 ~~~~~~~~~~~~~~~~~~~
 1.
-        allow setting fact check sensitivity in options
-        remove any claims referencing 'videos' or 'images'.
-        finish settings page
+    allow setting fact check sensitivity in options
+    remove any claims referencing 'videos' or 'images'.
+    finish settings page
+    update manual detection 
+    change to pull from database and store to database.
+    Add url of triggering text.
+    display facts found as the hi fidelity design describes.
+2. 
+    done
+4. 
+    (a) Complete the hifi design
+
+5. Miscellaneous css:
+    change education page to match hifi design
+    fix up popup
+    make the css scale well (it is going to be displayed on a monitor at the expo)
+6. 
+    (a) Complete interview questions regarding usability
+
+8. Onboarding:
+    
+    User must consent to data being tracked.
+        To do this, add a useEffect to every page that redirects you to a consent page if you haven't consented yet.
+        
+9. Update privacy policy
+
+~~~~~~~~~~~~~~~~~~~~~
+Giving up
+~~~~~~~~~~~~~~~~~~~~~
+    display recently found facts differently.
+    allow user to consent to scraping of text but *not* storing of text.
+    Button on settings page to revoke permission to store data (deleting all data in database).

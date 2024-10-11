@@ -1,5 +1,6 @@
 import { FactCheckIndex2, APIResponse } from "./types"
 import { getOAuthToken } from "./background";
+import { fetchFromAPI } from "./utils";
 
 export const MINIMUM_SIMILARITY_THRESHOLD = 0.5;
 export const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
@@ -55,35 +56,4 @@ export const sendText = async (claims: string[], url_of_trigger: string, similar
         data: claims, 
         similarity_threshold: similarityThreshold
     });
-}
-
-async function fetchFromAPI<T>(endpoint: string, data: Object): Promise<APIResponse<T>> {
-    let results;
-    try {
-        const url = `https://project40s-embedding-server-production.up.railway.app/${endpoint}`;
-        const response =  await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-
-        results = await response.json();
-    } catch (error) {
-        return {
-            status: 'error',
-            message: (error as Error).message
-        }
-    }
-
-    if (results.status != 'success') {
-        return results;
-    }
-
-    return results;
 }
