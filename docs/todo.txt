@@ -52,6 +52,8 @@ DEADLINE: week 11
         TODO features
         Security and Data privacy.
 
+    (b) Small section on choice to use postgres db.
+
 14. Complete the video assessment.
 
 Optional: Publish extension to the chrome store
@@ -87,7 +89,7 @@ Assigned Tasks (week 11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Jaspreet:           8           
 Alex:               13
-Jackie:             3, 6b       (3 is due saturday night)
+Jackie:             3, 6b, 13b  (3 is due saturday night)
 Aryan:              4           (4 is due monday night)
 Angela & Sunny:     11, 14
 
