@@ -88,7 +88,7 @@ Unassigned (requiring other tasks to be complete): 7a, 8, 9
 Assigned Tasks (week 11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Jaspreet:           8           
-Alex:               13
+Alex:               13a
 Jackie:             3, 6b, 13b  (3 is due saturday night)
 Aryan:              4           (4 is due monday night)
 Angela & Sunny:     11, 14
