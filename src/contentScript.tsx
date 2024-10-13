@@ -90,11 +90,6 @@ document.addEventListener('click', () => {
     })();
 });
 
-
-
-
-
-
 /* 
  * The following set operations were copied from the following url.
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set#instance_methods

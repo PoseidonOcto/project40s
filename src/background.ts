@@ -130,17 +130,27 @@ const handleLogClick: MessageHandler = (request, sender, sendResponse) => {
     return true;
 }
 
-// Print when we change urls for debugging.
 const handleUrlChange: MessageHandler = (request, sender, sendResponse) => {
-    console.log("URL change");
+    console.log("URL changed to:", request.newUrl);
 
     (async () => {
         await sleep(1000);
-        sendResponse("URL change 1000ms ago");
+        sendResponse(`URL changed to ${request.newUrl} 1000ms ago`);
     })();
-
-    return false;
+    return true;
 }
+
+// Listen for URL changes.
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.url) {
+        chrome.runtime.sendMessage({
+            mode: MessageMode.UrlChange,
+            newUrl: changeInfo.url
+        });
+    }
+});
+
+
 
 /*
  * If multiple event listeners, only the first listener to send a

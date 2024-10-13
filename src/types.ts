@@ -9,8 +9,8 @@ export enum MessageMode {
     AddingToDatabase,
     OpenOptionsPage,
     LogClick,
-    UrlChange,
     DeleteUserData,
+    UrlChange,
 }
 
 // Message handlers should return a boolean with value
