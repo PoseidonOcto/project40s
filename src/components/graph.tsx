@@ -6,6 +6,13 @@ import { WebsiteInteractionEntry, APIResponse } from '../types';
 import { fetchFromAPI } from '../utils';
 import { getOAuthToken } from '../background';
 
+
+const fetchInteractionData = async (): Promise<APIResponse<WebsiteInteractionEntry[]>> => {
+    return await fetchFromAPI("user_interaction/get", {
+        oauth_token: await getOAuthToken(),
+    });
+}
+
 // Register the necessary components for Chart.js
 ChartJS.register(
     CategoryScale,
@@ -45,15 +52,6 @@ const BarGraph = () => {
             setSites(uniqueSites);
         })();
     }, []);
-
-    // const getWebsiteName = (url: string) => {
-    //     try {
-    //         return new URL(url).hostname;
-    //     } catch (error) {
-    //         console.error("Invalid URL:", url);
-    //         return url;
-    //     }
-    // };
 
     // Handle site button click to change the site URL
     const handleSiteClick = (url: string) => {
@@ -189,86 +187,91 @@ const BarGraph = () => {
     );
 };
 
-const fetchInteractionData = async (): Promise<APIResponse<WebsiteInteractionEntry[]>> => {
-    return await fetchFromAPI("user_interaction/get", {
-        oauth_token: await getOAuthToken(),
-    });
-}
-
-
 // Sample data for website interactions
 const table1: WebsiteInteractionEntry[] = [
     {
         url: "https://www.bbc.com/",
         duration: 100000,
         date: 1727839283207, // Example timestamp
-        clicks: 5
+        clicks: 5,
+        leaning: "LEFT",
     },
     {
         url: "https://www.bbc.com/",
         duration: 50000,
         date: 1727839283207, 
-        clicks: 3
+        clicks: 3,
+        leaning: "LEFT",
     },
     {
         url: "https://www.bbc.com/",
         duration: 200000,
         date: 1727704800000, 
-        clicks: 10
+        clicks: 10,
+        leaning: "LEFT",
     },
     {
         url: "https://edition.cnn.com/",
         duration: 150000,
         date: 1727839283207,
-        clicks: 8
+        clicks: 8,
+        leaning: "LEFT",
     },
     {
         url: "https://edition.cnn.com/",
         duration: 250000,
         date: 1727704800000,
-        clicks: 12
+        clicks: 12,
+        leaning: "LEFT",
     },
     {
         url: "https://edition.cnn.com/",
         duration: 300000,
         date: 1727618400000,
-        clicks: 15
+        clicks: 15,
+        leaning: "LEFT",
     },
     {
         url: "https://www.news.com.au/",
         duration: 180000,
         date: 1727839283207,
-        clicks: 7
+        clicks: 7,
+        leaning: "LEFT",
     },
     {
         url: "https://www.news.com.au/",
         duration: 220000,
         date: 1727704800000,
-        clicks: 9
+        clicks: 9,
+        leaning: "LEFT",
     },
     {
         url: "https://www.news.com.au/",
         duration: 270000,
         date: 1727618400000,
-        clicks: 11
+        clicks: 11,
+        leaning: "LEFT",
     },
     {
         url: "https://www.9news.com.au/",
         duration: 120000,
         date: 1727839283207,
-        clicks: 6
+        clicks: 6,
+        leaning: "LEFT",
     },
     {
         url: "https://www.9news.com.au/",
         duration: 160000,
         date: 1727704800000,
-        clicks: 8
+        clicks: 8,
+        leaning: "LEFT",
     },
     {
         url: "https://www.9news.com.au/",
         duration: 280000,
         date: 1727618400000,
-        clicks: 13
+        clicks: 13,
+        leaning: "LEFT",
     }
 ];
 

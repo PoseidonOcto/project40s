@@ -37,6 +37,7 @@ export type WebsiteInteractionEntry = {
     duration: number,
     date: number,
     clicks: number
+    leaning: string | null,
 };
 
 export type APIResponse<T> = {
