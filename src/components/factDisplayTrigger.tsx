@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from "react";
-import { FactCheckData2 } from "../types";
+import { FactCheckData } from "../types";
 import FaviconDisplay from "./faviconDisplay";
 
 /* 
@@ -10,7 +10,7 @@ const getLinkToHightlight = (url: string, text: string) => {
     return `${url}#:~:text=${encodeURIComponent(text)}`;
 }
 
-const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData2['triggers']} ) => {
+const FactDisplayTrigger = ( {triggers}: {triggers: FactCheckData['triggers']} ) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     return (
         <>

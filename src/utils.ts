@@ -1,5 +1,5 @@
 import sentencize from "@stdlib/nlp-sentencize"
-import { FactCheckIndex2, APIResponse } from "./types"
+import { FactCheckIndex, APIResponse } from "./types"
 
 
 export const DATA_USAGE_MESSAGE = (isHtml: boolean) => "The 'Stop the cap' extension will " +

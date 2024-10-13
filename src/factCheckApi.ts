@@ -1,4 +1,4 @@
-import { FactCheckIndex2, APIResponse } from "./types"
+import { FactCheckIndex, APIResponse } from "./types"
 import { getOAuthToken } from "./background";
 import { fetchFromAPI } from "./utils";
 
@@ -20,7 +20,7 @@ export const getSimilarityThreshold = async (): Promise<number> => {
     return threshold;
 }
 
-export const getStoredFacts = async (): Promise<APIResponse<FactCheckIndex2>> => {
+export const getStoredFacts = async (): Promise<APIResponse<FactCheckIndex>> => {
     const response = await fetchFromAPI("facts/get", {
         oauth_token: await getOAuthToken(),
     });

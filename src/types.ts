@@ -17,7 +17,7 @@ export enum MessageMode {
 // true if and only if they will call sendResponse asynchronously.
 export type MessageHandler = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => boolean;
 
-export type FactCheckData2 = {
+export type FactCheckData = {
     claim: string,
     triggers: {
         text: string,
@@ -30,7 +30,7 @@ export type FactCheckData2 = {
     url: string,
 }
 
-export type FactCheckIndex2 = Map<number, FactCheckData2>;
+export type FactCheckIndex = Map<number, FactCheckData>;
 
 export type WebsiteInteractionEntry = {
     url: string,

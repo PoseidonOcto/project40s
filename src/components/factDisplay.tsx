@@ -1,12 +1,12 @@
 import React, {Fragment, useEffect, useRef, useState} from "react";
-import { FactCheckIndex2 } from "../types";
+import { FactCheckIndex } from "../types";
 import { getStoredFacts } from "../factCheckApi";
 import { TaskQueue } from "../utils";
 import FactDisplayTrigger from "./factDisplayTrigger";
 import FaviconDisplay from "./faviconDisplay";
 
 const FactDisplay = () => {
-    const [facts, setFacts] = useState<FactCheckIndex2 | undefined>(undefined);
+    const [facts, setFacts] = useState<FactCheckIndex | undefined>(undefined);
     const taskQueue = useRef<TaskQueue>(new TaskQueue());
 
     useEffect(() => {
