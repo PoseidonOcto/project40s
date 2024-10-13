@@ -1,8 +1,9 @@
 import { getSimilarityThreshold, sendText } from "./factCheckApi";
 import { MessageMode, MessageHandler, APIResponse } from "./types"
-import { TaskQueue, sleep } from "./utils";
+import { TaskQueue, fetchFromAPI, sleep } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
+
 
 export const getOAuthToken = async (): Promise<string> => {
     return (await chrome.identity.getAuthToken({interactive: true})).token!
@@ -40,6 +41,26 @@ export const getUserProfileIcon = async (): Promise<APIResponse<string>> => {
     };
 }
 
+const updateFactDisplays = async () => {
+    // Change something in session storage to trigger FactDisplay's event listener.
+    await chrome.storage.session.set({'last_storage_update': Date.now()});
+}
+
+const handleDeleteUserData: MessageHandler = (_, __, ___) => {
+    const deleteUserData = async () => {
+        await fetchFromAPI("delete", {
+            oauth_token: await getOAuthToken(),
+        });
+
+        await updateFactDisplays();
+        return
+    }
+
+    TASK_QUEUE.enqueue(deleteUserData);
+    
+    return false;
+}
+
 const handleFactCheckMessage: MessageHandler = (request, sender, sendResponse) => {
     TASK_QUEUE.enqueue(async () => {
         console.assert(sender.url !== undefined);
@@ -58,8 +79,7 @@ const handleFactCheckMessage: MessageHandler = (request, sender, sendResponse) =
             await chrome.action.setBadgeText({text: `${newNum}`});
         }
 
-        // Change something in session storage to trigger FactDisplay's event listener.
-        await chrome.storage.session.set({'last_storage_update': Date.now()});
+        await updateFactDisplays();
     });
 
     return true;
@@ -151,6 +171,8 @@ chrome.runtime.onMessage.addListener(
                 return false;
             case MessageMode.LogClick:
                 return handleLogClick(request, sender, sendResponse);
+            case MessageMode.DeleteUserData:
+                return handleDeleteUserData(request, sender, sendResponse);
             default:
                 // These messages are not for us.
                 return false;

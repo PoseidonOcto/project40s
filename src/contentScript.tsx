@@ -1,5 +1,5 @@
 import { MessageMode } from "./types";
-import { getClaims } from "./utils";
+import { getClaims, DATA_USAGE_MESSAGE } from "./utils";
 
 
 /* 
@@ -55,7 +55,10 @@ const getPermission = async (): Promise<boolean> => {
         return;
     }
 
-    const response = confirm("The 'Stop the cap' extension will scrape your screen for text, and will store this text in a database. Press OK to to grant permission.");
+    const dataUsageMessage = DATA_USAGE_MESSAGE(false) + " Upon uninstalling the extension, " +
+        "all data collected related to you will be deleted from the database. Press 'Cancel' " +
+        "and uninstall the extension if you do not wish for your data to be stored. "
+    const response = confirm(dataUsageMessage);
     if (response) {
         await setPermission(true);
         setInterval(factCheckPageContents, 3000)

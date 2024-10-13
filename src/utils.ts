@@ -1,6 +1,16 @@
 import sentencize from "@stdlib/nlp-sentencize"
 import { FactCheckIndex2, APIResponse } from "./types"
 
+
+export const DATA_USAGE_MESSAGE = (isHtml: boolean) => "The 'Stop the cap' extension will " +
+    "scrape your screen for text, " +
+    "track the websites you visit, and the duration you spend on these websites. " +
+    "All of this data may be stored in our database. " +
+    (isHtml ? "<strong>" : "") + 
+    "Every bit of data we store is displayed to you on the dashboard. " +
+    "No user data is ever provided to any third parties." +
+    (isHtml ? "</strong>" : "")
+
 /*
  * Queue related code is written under the assumption
  * that there is only one thread handling this code.

@@ -10,6 +10,7 @@ export enum MessageMode {
     OpenOptionsPage,
     LogClick,
     UrlChange,
+    DeleteUserData,
 }
 
 // Message handlers should return a boolean with value

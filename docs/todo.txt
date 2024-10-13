@@ -48,9 +48,6 @@ DEADLINE: week 11
 
 13. Work on report
     (a) Risk Matrix and Mitigations
-        Recommendation of future development.
-        TODO features
-        Security and Data privacy.
 
     (b) Small section on choice to use postgres db.
 
@@ -164,6 +161,12 @@ Done list
     add user profile icon on the sidebar
     create new OPENAI api key (last one is in commit history of a repo that might be public in future)
     make image displayed in chrome extension bigger.
+
+13.
+    (a) TODO features
+        Project Responsibilities
+        Recommendation of future development.
+        Security and Data privacy.
 
 
 ~~~~~~~~~~~~~~~~~~~~~

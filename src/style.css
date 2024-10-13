@@ -101,6 +101,29 @@ ol li {
     line-height: 1.75rem;
 }
 
+/* Delete button */
+
+#delete-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Dashboard */
+
+#data-usage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 48em;
+    padding: 1em;
+    border-radius: 10px 10px 10px 10px;
+    background-color: white;
+}
+
+
+
 /* Selection popup */
 
 #selection-popup {
