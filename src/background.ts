@@ -1,5 +1,5 @@
 import { getSimilarityThreshold, sendText } from "./factCheckApi";
-import { MessageMode, MessageHandler, APIResponse } from "./types"
+import { MessageMode, MessageHandler, APIResponse, WebsiteInteractionEntry } from "./types"
 import { TaskQueue, fetchFromAPI, sleep } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
@@ -129,7 +129,6 @@ const handleLogClick: MessageHandler = (request, sender, sendResponse) => {
     // i.e. indicating we are async
     return true;
 }
-
 const handleUrlChange: MessageHandler = (request, sender, sendResponse) => {
     console.log("URL changed to:", request.newUrl);
 
@@ -140,17 +139,53 @@ const handleUrlChange: MessageHandler = (request, sender, sendResponse) => {
     return true;
 }
 
-// Listen for URL changes.
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.url) {
-        chrome.runtime.sendMessage({
-            mode: MessageMode.UrlChange,
-            newUrl: changeInfo.url
-        });
+let userInteractions: WebsiteInteractionEntry = {
+    url: "",
+    duration: 0,
+    date: 0,
+    clicks: 0,
+    leaning: null,
+};
+
+const trackUserInteractions = async (request?: { mode: string; } | null, changeInfo?: chrome.tabs.TabChangeInfo | undefined) => {
+    const currentTime = Date.now();
+
+    if (request) {
+        if (request.mode === 'LogClick') {
+            userInteractions.clicks++;
+        }
     }
+
+    if (changeInfo && changeInfo.url) {
+        if (userInteractions.url) {
+            console.log(`Data logged:`, {
+                ...userInteractions,
+                duration: (currentTime - userInteractions.date) / 1000
+            });
+        }
+
+        // Reset interactions data for new URL
+        userInteractions = {
+            url: changeInfo.url,
+            duration: 0,
+            date: currentTime,
+            clicks: 0,
+            leaning: null,
+        };
+        
+        console.log(`URL changed to: ${userInteractions.url}`);
+    }
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    trackUserInteractions(null, changeInfo);
 });
 
-
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    trackUserInteractions(request);
+    sendResponse(`Tracked: ${request.mode}`);
+    return true;
+})
 
 /*
  * If multiple event listeners, only the first listener to send a
@@ -174,13 +209,9 @@ chrome.runtime.onMessage.addListener(
                 // request.data
                 // Jackie do your fetch here.
                 return false; 
-            case MessageMode.UrlChange:
-                return handleUrlChange(request, sender, sendResponse);
             case MessageMode.OpenOptionsPage:
                 chrome.runtime.openOptionsPage();
                 return false;
-            case MessageMode.LogClick:
-                return handleLogClick(request, sender, sendResponse);
             case MessageMode.DeleteUserData:
                 return handleDeleteUserData(request, sender, sendResponse);
             default:
