@@ -181,14 +181,14 @@ const trackUserInteractions = async (request?: { mode: string; } | null, changeI
             leaning: null,
         };
         
-        // // Send this data to the server
-        // await fetchFromAPI("user_interaction/add", { 
-        //     oauth_token: await getOAuthToken(),
-        //     url: userInteractions.url,
-        //     duration_spent: userInteractions.duration,
-        //     date_spent: userInteractions.date,
-        //     clicks: userInteractions.clicks
-        // });
+        // Send this data to the server
+        await fetchFromAPI("user_interaction/add", { 
+            oauth_token: await getOAuthToken(),
+            url: userInteractions.url,
+            duration_spent: userInteractions.duration,
+            date_spent: userInteractions.date,
+            clicks: userInteractions.clicks
+        });
     }
 }
 
