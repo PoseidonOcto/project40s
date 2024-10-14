@@ -84,10 +84,7 @@ async function factCheckPageContents() {
 }
 
 document.addEventListener('click', () => {
-    (async () => {
-        const response = await chrome.runtime.sendMessage({mode: MessageMode.LogClick}); 
-        console.log(response);
-    })();
+    chrome.runtime.sendMessage({mode: 'LogClick'}); 
 });
 
 /* 

@@ -147,9 +147,17 @@ let userInteractions: WebsiteInteractionEntry = {
     leaning: null,
 };
 
+interface Request {
+    mode?: string;
+}
+
+interface ChangeInfo {
+    url?: string;
+}
+
 const trackUserInteractions = async (request?: { mode: string; } | null, changeInfo?: chrome.tabs.TabChangeInfo | undefined) => {
     const currentTime = Date.now();
-
+    
     if (request) {
         if (request.mode === 'LogClick') {
             userInteractions.clicks++;
@@ -173,7 +181,14 @@ const trackUserInteractions = async (request?: { mode: string; } | null, changeI
             leaning: null,
         };
         
-        console.log(`URL changed to: ${userInteractions.url}`);
+        // // Send this data to the server
+        // await fetchFromAPI("user_interaction/add", { 
+        //     oauth_token: await getOAuthToken(),
+        //     url: userInteractions.url,
+        //     duration_spent: userInteractions.duration,
+        //     date_spent: userInteractions.date,
+        //     clicks: userInteractions.clicks
+        // });
     }
 }
 
