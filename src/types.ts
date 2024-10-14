@@ -40,6 +40,12 @@ export type WebsiteInteractionEntry = {
     leaning: string | null,
 };
 
+export type GraphEntry = {
+    date: number,
+    consumption: Map<string, number>,
+    political_leanings: Map<string, string>
+};
+
 export type APIResponse<T> = {
     status: 'success',
     data: T
