@@ -166,13 +166,23 @@ const trackUserInteractions = async (request?: { mode: string; } | null, changeI
 
     if (changeInfo && changeInfo.url) {
         if (userInteractions.url) {
-            console.log(`Data logged:`, {
+            const duration = (currentTime - userInteractions.date) / 1000;
+            console.log(`Data collected:`, {
                 ...userInteractions,
-                duration: (currentTime - userInteractions.date) / 1000
+                duration
+            });
+            
+            // Send this data to the server
+            await fetchFromAPI("user_interaction/add", { 
+                oauth_token: await getOAuthToken(),
+                url: userInteractions.url,
+                duration_spent: duration,
+                date_spent: userInteractions.date,
+                clicks: userInteractions.clicks
             });
         }
 
-        // Reset interactions data for new URL
+        // Reset the interactions data after sending it to the server
         userInteractions = {
             url: changeInfo.url,
             duration: 0,
@@ -180,15 +190,6 @@ const trackUserInteractions = async (request?: { mode: string; } | null, changeI
             clicks: 0,
             leaning: null,
         };
-        
-        // Send this data to the server
-        await fetchFromAPI("user_interaction/add", { 
-            oauth_token: await getOAuthToken(),
-            url: userInteractions.url,
-            duration_spent: userInteractions.duration,
-            date_spent: userInteractions.date,
-            clicks: userInteractions.clicks
-        });
     }
 }
 
