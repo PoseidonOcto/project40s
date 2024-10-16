@@ -151,7 +151,7 @@ const BarGraph = () => {
           }
 
           // Aggregate durations over period
-          const durationInMins = duration / 60000;
+          const durationInMins = duration / 60;
           if (acc[dateKey].consumption.get(url) === undefined) {
             acc[dateKey].consumption.set(url, durationInMins);
           } else {
@@ -374,87 +374,108 @@ const BarGraph = () => {
 const table1: WebsiteInteractionEntry[] = [
     {
       url: "bbc.com",
-      duration: 100000,
+      duration: 100,
       date: 1727839283207,
       clicks: 5,
       leaning: "LEFT",
     },
     {
       url: "bbc.com",
-      duration: 50000,
+      duration: 50,
       date: 1727839283207,
       clicks: 3,
       leaning: "LEFT",
     },
     {
       url: "bbc.com",
-      duration: 200000,
+      duration: 200,
       date: 1727704800000,
       clicks: 10,
       leaning: "LEFT",
     },
     {
       url: "cnn.com",
-      duration: 150000,
+      duration: 150,
       date: 1727839283207,
       clicks: 8,
       leaning: "EXTREME-LEFT",
     },
     {
       url: "cnn.com",
-      duration: 250000,
+      duration: 250,
       date: 1727704800000,
       clicks: 12,
       leaning: "EXTREME-LEFT",
     },
     {
       url: "cnn.com",
-      duration: 300000,
+      duration: 300,
       date: 1727618400000,
       clicks: 15,
       leaning: "EXTREME-LEFT",
     },
     {
       url: "news.com.au",
-      duration: 180000,
+      duration: 180,
       date: 1727839283207,
       clicks: 7,
       leaning: "CONSPIRACY",
     },
     {
       url: "news.com.au",
-      duration: 220000,
+      duration: 220,
       date: 1727704800000,
       clicks: 9,
       leaning: "CONSPIRACY",
     },
     {
       url: "news.com.au",
-      duration: 270000,
+      duration: 270,
       date: 1727618400000,
       clicks: 11,
       leaning: "CONSPIRACY",
     },
     {
       url: "9news.com.au",
-      duration: 120000,
+      duration: 120,
       date: 1727839283207,
       clicks: 6,
       leaning: "RIGHT-CENTER",
     },
     {
       url: "9news.com.au",
-      duration: 160000,
-      date: 1727704800000,
+      duration: 160,
+      date: 1728624787777,
       clicks: 8,
       leaning: "RIGHT-CENTER",
     },
     {
       url: "9news.com.au",
-      duration: 280000,
+      duration: 280,
       date: 1727618400000,
       clicks: 13,
       leaning: "RIGHT-CENTER",
+    },
+    {
+      url: "cnn.com",
+      duration: 330,
+      date: 1728451980000,
+      clicks: 9,
+      leaning: "EXTREME-LEFT",
+    },
+    {
+      url: "news.com.au",
+      duration: 220,
+      date: 1728451980000,
+      clicks: 9,
+      leaning: "CONSPIRACY",
+    },
+    {
+      url: "cnn.com",
+      duration: 330,
+      date: 1728711180000,
+      clicks: 9,
+      leaning: "EXTREME-LEFT",
     },
   ];
 
