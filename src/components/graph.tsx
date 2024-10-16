@@ -151,13 +151,12 @@ const BarGraph = () => {
           }
 
           // Aggregate durations over period
-          let newDuration;
+          const durationInMins = duration / 60000;
           if (acc[dateKey].consumption.get(url) === undefined) {
-            newDuration = duration / 60000;
+            acc[dateKey].consumption.set(url, durationInMins);
           } else {
-            newDuration = acc[dateKey].consumption.get(url);
+            acc[dateKey].consumption.set(url, durationInMins + acc[dateKey].consumption.get(url)!);
           }
-          acc[dateKey].consumption.set(url, newDuration!);
 
           acc[dateKey].political_leanings.set(url, leaning || "UNKNOWN");
         }
