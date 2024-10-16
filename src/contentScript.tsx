@@ -55,9 +55,9 @@ const getPermission = async (): Promise<boolean> => {
         return;
     }
 
-    const dataUsageMessage = DATA_USAGE_MESSAGE(false) + " Upon uninstalling the extension, " +
-        "all data collected related to you will be deleted from the database. Press 'Cancel' " +
-        "and uninstall the extension if you do not wish for your data to be stored. "
+    const dataUsageMessage = DATA_USAGE_MESSAGE(false) + " You will have the option, at any time, " +
+        "to press a button removing all the data we ever collected from our database. " +
+        "Press 'Cancel' and uninstall the extension if you do not wish for your data to be stored. "
     const response = confirm(dataUsageMessage);
     if (response) {
         await setPermission(true);

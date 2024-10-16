@@ -6,7 +6,7 @@ import FactDisplay from "../components/factDisplay";
 import DeleteUserDataButton from "../components/deleteUserDataButton";
 import { DATA_USAGE_MESSAGE } from "../utils";
 
-const SPECIFIC_DATA_USAGE_MESSAGE = DATA_USAGE_MESSAGE(true) + " Upon uninstalling the extension, or pressing " +
+const SPECIFIC_DATA_USAGE_MESSAGE = DATA_USAGE_MESSAGE(true) + " Upon pressing " +
     "the button below, all data collected related to you will be deleted from the database."
 
 const Dashboard = () => {
