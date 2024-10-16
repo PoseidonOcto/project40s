@@ -150,7 +150,15 @@ const BarGraph = () => {
             };
           }
 
-          acc[dateKey].consumption.set(url, duration / 60000);
+          // Aggregate durations over period
+          let newDuration;
+          if (acc[dateKey].consumption.get(url) === undefined) {
+            newDuration = duration / 60000;
+          } else {
+            newDuration = acc[dateKey].consumption.get(url);
+          }
+          acc[dateKey].consumption.set(url, newDuration!);
+
           acc[dateKey].political_leanings.set(url, leaning || "UNKNOWN");
         }
         return acc;
@@ -366,102 +374,88 @@ const BarGraph = () => {
 // Sample data for website interactions
 const table1: WebsiteInteractionEntry[] = [
     {
-      url: "https://www.bbc.com/",
+      url: "bbc.com",
       duration: 100000,
-      date: 1727839283207, // Example timestamp
+      date: 1727839283207,
       clicks: 5,
       leaning: "LEFT",
     },
     {
-      url: "https://www.bbc.com/",
+      url: "bbc.com",
       duration: 50000,
       date: 1727839283207,
       clicks: 3,
       leaning: "LEFT",
     },
     {
-      url: "https://www.bbc.com/",
+      url: "bbc.com",
       duration: 200000,
       date: 1727704800000,
       clicks: 10,
       leaning: "LEFT",
     },
     {
-      url: "https://edition.cnn.com/",
+      url: "cnn.com",
       duration: 150000,
       date: 1727839283207,
       clicks: 8,
       leaning: "EXTREME-LEFT",
     },
     {
-      url: "https://edition.cnn.com/",
+      url: "cnn.com",
       duration: 250000,
       date: 1727704800000,
       clicks: 12,
       leaning: "EXTREME-LEFT",
     },
     {
-      url: "https://edition.cnn.com/",
+      url: "cnn.com",
       duration: 300000,
       date: 1727618400000,
       clicks: 15,
       leaning: "EXTREME-LEFT",
     },
     {
-      url: "https://www.news.com.au/",
+      url: "news.com.au",
       duration: 180000,
       date: 1727839283207,
       clicks: 7,
       leaning: "CONSPIRACY",
     },
     {
-      url: "https://www.news.com.au/",
+      url: "news.com.au",
       duration: 220000,
       date: 1727704800000,
       clicks: 9,
       leaning: "CONSPIRACY",
     },
     {
-      url: "https://www.news.com.au/",
+      url: "news.com.au",
       duration: 270000,
       date: 1727618400000,
       clicks: 11,
       leaning: "CONSPIRACY",
     },
     {
-      url: "https://www.9news.com.au/",
+      url: "9news.com.au",
       duration: 120000,
       date: 1727839283207,
       clicks: 6,
       leaning: "RIGHT-CENTER",
     },
     {
-      url: "https://www.9news.com.au/",
+      url: "9news.com.au",
       duration: 160000,
       date: 1727704800000,
       clicks: 8,
       leaning: "RIGHT-CENTER",
     },
     {
-      url: "https://www.9news.com.au/",
+      url: "9news.com.au",
       duration: 280000,
       date: 1727618400000,
       clicks: 13,
       leaning: "RIGHT-CENTER",
-    },
-    {
-      url: "asdfaf",
-      duration: 50000,
-      date: 1727839283207,
-      clicks: 10,
-      leaning: "CENTER",
-    },
-    {
-      url: "aqwr",
-      duration: 10000,
-      date: 1727839283207,
-      clicks: 10,
-      leaning: "CONSPIRACY",
     },
   ];
 
