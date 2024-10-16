@@ -10,11 +10,13 @@ const FactDisplay = () => {
     const taskQueue = useRef<TaskQueue>(new TaskQueue());
 
     useEffect(() => {
-        const updateData = () => taskQueue.current.enqueue((async () => {
+        const updateData = (clearBadge: boolean) => taskQueue.current.enqueue((async () => {
             // This is potentially unsynchronous (service worker could be setting badge text at same time),
             // however fixing this would require enqueuing this task in the service workers task queue
             // instead, and the notification number being a bit out of sync isn't too bad.
-            await chrome.action.setBadgeText({text: ""});
+            if (clearBadge) {
+                await chrome.action.setBadgeText({text: ""});
+            }
             const response = await getStoredFacts();
             if (response.status === 'success') {
                 setFacts(response.data);
@@ -23,7 +25,7 @@ const FactDisplay = () => {
             }
         }));
 
-        updateData();
+        updateData(true);
 
         /*
          * To communicate back and forth with the service worker,
@@ -33,7 +35,7 @@ const FactDisplay = () => {
          */
         chrome.storage.onChanged.addListener((_, type) => {
             if (type === 'session') {
-                updateData();
+                updateData(false);
             }
         });
     }, []);
