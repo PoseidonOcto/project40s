@@ -172,14 +172,16 @@ const trackUserInteractions = async (request?: { mode: string; } | null, changeI
                 duration
             });
             
-            // Send this data to the server
-            await fetchFromAPI("user_interaction/add", { 
-                oauth_token: await getOAuthToken(),
-                url: userInteractions.url,
-                duration_spent: duration,
-                date_spent: userInteractions.date,
-                clicks: userInteractions.clicks
-            });
+            // Only send data to the server if the URL is not empty
+            if (userInteractions.url.trim() !== "") {
+                await fetchFromAPI("user_interaction/add", { 
+                    oauth_token: await getOAuthToken(),
+                    url: userInteractions.url,
+                    duration_spent: duration,
+                    date_spent: userInteractions.date,
+                    clicks: userInteractions.clicks
+                });
+            }
         }
 
         // Reset the interactions data after sending it to the server
