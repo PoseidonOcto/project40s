@@ -33,8 +33,8 @@ const FactDisplay = () => {
          * to the popup from the background script requires a
          * handshake first - see: https://tinyurl.com/ynmtyy44
          */
-        chrome.storage.onChanged.addListener((_, type) => {
-            if (type === 'session') {
+        chrome.storage.onChanged.addListener((changed, type) => {
+            if (type === 'session' && changed['last_storage_update'] !== undefined) {
                 updateData(false);
             }
         });

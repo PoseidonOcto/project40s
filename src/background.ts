@@ -12,7 +12,7 @@ const getCurrentTab = async (): Promise<chrome.tabs.Tab | undefined> => {
 }
 
 /* 
- * This code polls for the currently active tab, sending data do the database every second.
+ * This code polls for the currently active tab, sending data do the database every three seconds.
  * This function should later be updated to utilize event listeners to minimize the data
  * send to the database.
  *
@@ -22,7 +22,7 @@ const handleUserInteractions = async () => {
     let currentTab: chrome.tabs.Tab | undefined = await getCurrentTab();
 
     while (true) {
-        await sleep(1000);
+        await sleep(3000);
         if (currentTab !== undefined && currentTab.url !== undefined) {
             console.assert(currentTab.url.trim() !== ""); // Is this possible?
             /* Sending empty url logs as a chrome page */
@@ -31,7 +31,7 @@ const handleUserInteractions = async () => {
             await fetchFromAPI("user_interaction/add", { 
                 oauth_token: await getOAuthToken(),
                 url: url,
-                duration_spent: 1,
+                duration_spent: 3,
                 date_spent: Date.now(),
                 clicks: 0
             });
