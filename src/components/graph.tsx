@@ -304,14 +304,14 @@ const BarGraph = () => {
 
             const formattedValue = `${Math.round(value * 100) / 100} minutes`;
 
-            if (datasetLabel.toLowerCase() === "other" && dataSet) {
+            if (datasetLabel.toLowerCase() === "other websites" && dataSet) {
               const dateIndex = tooltipItem.dataIndex;
               const otherWebsitesForDate =
                 Array.from(dataSet[dateIndex]?.consumption.entries() || [])
                   .filter(([url]) => otherWebsites.includes(url))
-                  .map(([url, duration]) =>
-                    `${url}: ${Math.round(duration * 100) / 100} mins`
-                  );
+                  .map(([url, duration]) => {
+                    return `${url !== "" ? url : "Google Chrome Pages"}: ${Math.round(duration * 100) / 100} mins`
+                  });
 
               return [`Other Websites: ${formattedValue}`, '----------------------', ...otherWebsitesForDate];
             }
