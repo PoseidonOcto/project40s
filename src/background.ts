@@ -4,6 +4,42 @@ import { TaskQueue, fetchFromAPI, sleep } from "./utils";
 
 const TASK_QUEUE = new TaskQueue();
 
+const getCurrentTab = async (): Promise<chrome.tabs.Tab | undefined> => {
+    const queryOptions = { active: true, lastFocusedWindow: true };
+    // `tab` will either be a `tabs.Tab` instance or `undefined`.
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+}
+
+/* 
+ * This code polls for the currently active tab, sending data do the database every second.
+ * This function should later be updated to utilize event listeners to minimize the data
+ * send to the database.
+ *
+ * Note the duration spent may be inaccurate, however in most cases this difference will be negligible.
+ */
+const handleUserInteractions = async () => {
+    let currentTab: chrome.tabs.Tab | undefined = await getCurrentTab();
+
+    while (true) {
+        await sleep(1000);
+        if (currentTab !== undefined && currentTab.url !== undefined) {
+            console.assert(currentTab.url.trim() !== ""); // Is this possible?
+            /* Sending empty url logs as a chrome page */
+            const url = !currentTab.url.startsWith('chrome') ? currentTab.url : "";
+
+            await fetchFromAPI("user_interaction/add", { 
+                oauth_token: await getOAuthToken(),
+                url: url,
+                duration_spent: 1,
+                date_spent: Date.now(),
+                clicks: 0
+            });
+        }
+
+        currentTab = await getCurrentTab();
+    }
+}
 
 export const getOAuthToken = async (): Promise<string> => {
     return (await chrome.identity.getAuthToken({interactive: true})).token!
@@ -116,95 +152,6 @@ const handleTestingMessage: MessageHandler = (request, __, ___) => {
     return false;
 }
 
-const handleLogClick: MessageHandler = (request, sender, sendResponse) => {
-    console.log("User clicked");
-    
-    // Put any async code in here
-    (async () => {
-        await sleep(1000);
-        sendResponse("User clicked 1000ms ago");
-    })();
-
-    // We return true to indicate we are going to send a response later, but its not ready right now!
-    // i.e. indicating we are async
-    return true;
-}
-const handleUrlChange: MessageHandler = (request, sender, sendResponse) => {
-    console.log("URL changed to:", request.newUrl);
-
-    (async () => {
-        await sleep(1000);
-        sendResponse(`URL changed to ${request.newUrl} 1000ms ago`);
-    })();
-    return true;
-}
-
-let userInteractions: WebsiteInteractionEntry = {
-    url: "",
-    duration: 0,
-    date: 0,
-    clicks: 0,
-    leaning: null,
-};
-
-interface Request {
-    mode?: string;
-}
-
-interface ChangeInfo {
-    url?: string;
-}
-
-const trackUserInteractions = async (request?: { mode: string; } | null, changeInfo?: chrome.tabs.TabChangeInfo | undefined) => {
-    const currentTime = Date.now();
-    
-    if (request) {
-        if (request.mode === 'LogClick') {
-            userInteractions.clicks++;
-        }
-    }
-
-    if (changeInfo && changeInfo.url) {
-        if (userInteractions.url) {
-            const duration = (currentTime - userInteractions.date) / 1000;
-            console.log(`Data collected:`, {
-                ...userInteractions,
-                duration
-            });
-            
-            // Only send data to the server if the URL is not empty
-            if (userInteractions.url.trim() !== "") {
-                await fetchFromAPI("user_interaction/add", { 
-                    oauth_token: await getOAuthToken(),
-                    url: userInteractions.url,
-                    duration_spent: duration,
-                    date_spent: userInteractions.date,
-                    clicks: userInteractions.clicks
-                });
-            }
-        }
-
-        // Reset the interactions data after sending it to the server
-        userInteractions = {
-            url: changeInfo.url,
-            duration: 0,
-            date: currentTime,
-            clicks: 0,
-            leaning: null,
-        };
-    }
-}
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    trackUserInteractions(null, changeInfo);
-});
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    trackUserInteractions(request);
-    sendResponse(`Tracked: ${request.mode}`);
-    return true;
-})
-
 /*
  * If multiple event listeners, only the first listener to send a
  * response will have their response received. So we keep
@@ -223,10 +170,6 @@ chrome.runtime.onMessage.addListener(
                 return handleFactCheckMessage(request, sender, sendResponse);
             case MessageMode.Testing:
                 return handleTestingMessage(request, sender, sendResponse);
-            case MessageMode.AddingToDatabase:
-                // request.data
-                // Jackie do your fetch here.
-                return false; 
             case MessageMode.OpenOptionsPage:
                 chrome.runtime.openOptionsPage();
                 return false;
@@ -289,3 +232,6 @@ chrome.runtime.onInstalled.addListener((details) => {
         });
     }
 });
+
+// Handle tracking the users media consumption.
+handleUserInteractions();
