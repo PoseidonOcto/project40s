@@ -201,7 +201,7 @@ const BarGraph = () => {
       otherWebsites = sortedWebsites.slice(4);
 
       const datasets = topWebsites.map((website) => ({
-        label: website,
+        label: website !== "" ? website : "Google Chrome Pages",
         data: dataSet.map((entry) => entry.consumption.get(website) || 0),
         backgroundColor: colorMap.get(website) || "#000000DD",
         borderColor: "rgba(0, 0, 0, 0.1)",
@@ -209,7 +209,7 @@ const BarGraph = () => {
       }));
 
       const otherDataset = {
-        label: "Other",
+        label: "Other Websites",
         data: dataSet.map((entry) => {
           let otherTotal = 0;
           entry.consumption.forEach((duration, url) => {
@@ -298,12 +298,13 @@ const BarGraph = () => {
       tooltip: {
         callbacks: {
           label: (tooltipItem: any) => {
-            const datasetLabel = tooltipItem.dataset.label.toLowerCase() || "";
+            const datasetLabel = tooltipItem.dataset.label || "";
+            console.assert(datasetLabel !== "");  // Why would this happen?
             const value = tooltipItem.raw;
 
             const formattedValue = `${Math.round(value * 100) / 100} minutes`;
 
-            if (datasetLabel === "other" && dataSet) {
+            if (datasetLabel.toLowerCase() === "other" && dataSet) {
               const dateIndex = tooltipItem.dataIndex;
               const otherWebsitesForDate =
                 Array.from(dataSet[dateIndex]?.consumption.entries() || [])
@@ -312,10 +313,10 @@ const BarGraph = () => {
                     `${url}: ${Math.round(duration * 100) / 100} mins`
                   );
 
-              return [`Other: ${formattedValue}`, ...otherWebsitesForDate];
+              return [`Other Websites: ${formattedValue}`, '----------------------', ...otherWebsitesForDate];
             }
 
-            return [`${mode}: ${datasetLabel}`, formattedValue];
+            return [`${datasetLabel}: ${formattedValue}`];
           },
         },
       },
