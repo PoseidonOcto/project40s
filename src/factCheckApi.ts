@@ -2,7 +2,7 @@ import { FactCheckIndex, APIResponse } from "./types"
 import { getOAuthToken } from "./background";
 import { fetchFromAPI } from "./utils";
 
-export const MINIMUM_SIMILARITY_THRESHOLD = 0.5;
+export const MINIMUM_SIMILARITY_THRESHOLD = 0.7;
 export const DEFAULT_SIMILARITY_THRESHOLD = 0.9;
 export const MAXIMUM_SIMILARITY_THRESHOLD = 0.95;
 

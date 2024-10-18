@@ -47,6 +47,10 @@ const BarGraph = () => {
                 return;
             }
 
+            for (const entry of dataForDemo) {
+                response.data.push(entry);
+            }
+
             const sortedData = response.data.sort((a, b) => a.date - b.date);
             setMinDate(sortedData[0].date);
             setInteractions(sortedData);
@@ -370,5 +374,15 @@ const BarGraph = () => {
         </>
     );
 };
+
+const dataForDemo: WebsiteInteractionEntry[] = [
+    {
+        url: "cnn.com",
+        duration: 220,
+        date: 1728451980000,
+        clicks: 9,
+        leaning: "LEFT",
+    },
+];
 
 export default BarGraph;

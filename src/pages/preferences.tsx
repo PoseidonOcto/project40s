@@ -4,7 +4,6 @@ import "./preferences.css"
 import { DEFAULT_SIMILARITY_THRESHOLD, MAXIMUM_SIMILARITY_THRESHOLD, MINIMUM_SIMILARITY_THRESHOLD, getSimilarityThreshold, setSimilarityThreshold } from "../factCheckApi";
 import { Slider } from "@mui/material";
 import { TaskQueue } from "../utils";
-import { sleep } from "../utils";
 
 const SLIDER_STEP = 0.05
 
