@@ -189,55 +189,68 @@ const BarGraph = () => {
 
     const getStackedBarChartData = () => {
         if (!dataSet) return { labels: [], datasets: [] };
-
+    
         if (mode === "Website") {
-            const websiteDurations = new Map<string, number>();
-            dataSet.forEach((entry) => {
-                entry.consumption.forEach((duration, url) => {
-                    websiteDurations.set(url, (websiteDurations.get(url) || 0) + duration);
+            const datasets: any[] = [];
+            const allLabels = dataSet.map((entry) =>
+                `${new Date(entry.date).getDate()} ${new Date(entry.date).toLocaleDateString("en-us", { month: "short", })}`
+            );
+    
+            // Create a Map to hold the dataset entries for each website
+            const siteData: Record<string, number[]> = {};
+            const otherData: number[] = [];
+    
+            dataSet.forEach((entry, dateIndex) => {
+                // Sort the websites by duration for this specific date
+                const sortedWebsites = Array.from(entry.consumption.entries())
+                    .sort((a, b) => b[1] - a[1]); // Sort by duration (descending)
+
+                // Extract URLs for the top websites
+                const topWebsites = sortedWebsites.slice(0, 4);
+                const topWebsiteURLs = topWebsites.map(([url]) => url); // Extract just the URLs for the top websites
+
+                // Extract URLs for the remaining websites (i.e., other websites)
+                const otherWebsites = sortedWebsites.slice(4);
+                const otherWebsiteURLs = otherWebsites.map(([url]) => url); // Extract just the URLs for other websites
+
+    
+                // Store the top 4 websites' data
+                topWebsites.forEach(([url, duration]) => {
+                    if (!siteData[url]) {
+                        siteData[url] = new Array(dataSet.length).fill(0); // Create an array filled with 0 for each date
+                    }
+                    siteData[url][dateIndex] = duration;
+                });
+    
+                // Aggregate the remaining websites into "Other Websites"
+                const otherTotal = otherWebsites.reduce((total, [url, duration]) => total + duration, 0);
+                otherData[dateIndex] = otherTotal;
+            });
+    
+            // Convert the siteData map into datasets for each website
+            Object.entries(siteData).forEach(([url, data]) => {
+                datasets.push({
+                    label: url !== "" ? url : "Google Chrome Pages",
+                    data,
+                    backgroundColor: colorMap.get(url) || "#000000DD",
+                    borderColor: "rgba(0, 0, 0, 0.1)",
+                    borderWidth: 1,
                 });
             });
-
-            const sortedWebsites = Array.from(websiteDurations.entries())
-            .sort((a, b) => b[1] - a[1])
-            .map(([url]) => url);
-
-            const topWebsites = sortedWebsites.slice(0, 4);
-            otherWebsites = sortedWebsites.slice(4);
-
-            const datasets = topWebsites.map((website) => ({
-                label: website !== "" ? website : "Google Chrome Pages",
-                data: dataSet.map((entry) => entry.consumption.get(website) || 0),
-                backgroundColor: colorMap.get(website) || "#000000DD",
-                borderColor: "rgba(0, 0, 0, 0.1)",
-                borderWidth: 1,
-            }));
-
-            const otherDataset = {
+    
+            // Add the "Other Websites" dataset
+            datasets.push({
                 label: "Other Websites",
-                data: dataSet.map((entry) => {
-                    let otherTotal = 0;
-                    entry.consumption.forEach((duration, url) => {
-                        if (otherWebsites.includes(url)) {
-                            otherTotal += duration;
-                        }
-                    });
-                    return otherTotal;
-                }),
+                data: otherData,
                 backgroundColor: "#A9A9A9DD",
                 borderColor: "rgba(0, 0, 0, 0.1)",
                 borderWidth: 1,
+            });
+    
+            return {
+                labels: allLabels,
+                datasets,
             };
-
-            if (otherWebsites.length > 0) {
-                datasets.push(otherDataset);
-            }
-
-            const labels = dataSet.map((entry) =>
-                `${new Date(entry.date).getDate()} ${new Date(entry.date).toLocaleDateString("en-us", { month: "short", })}`
-            );
-
-            return { labels, datasets };
         } else {
             const politicalLeanings = [
                 "EXTREME-LEFT",
@@ -377,12 +390,300 @@ const BarGraph = () => {
 
 const dataForDemo: WebsiteInteractionEntry[] = [
     {
-        url: "cnn.com",
-        duration: 220,
-        date: 1728451980000,
+        url: "foxbusiness.com",
+        duration: 167,
+        date: 1728927903651,
+        clicks: 9,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "billingsgazette.com",
+        duration: 310,
+        date: 1729086963651,
+        clicks: 10,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "foxkansas.com",
+        duration: 215,
+        date: 1728206463651,
+        clicks: 11,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "jacobin.com",
+        duration: 320,
+        date: 1728607863651,
         clicks: 9,
         leaning: "LEFT",
     },
+    {
+        url: "michiganadvance.com",
+        duration: 386,
+        date: 1728460863651,
+        clicks: 9,
+        leaning: "LEFT",
+    },
+    {
+        url: "fitsnews.com",
+        duration: 206,
+        date: 1728356463651,
+        clicks: 13,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "eclecticobserver.com",
+        duration: 364,
+        date: 1728412863651,
+        clicks: 12,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "guardianlv.com",
+        duration: 208,
+        date: 1728376863651,
+        clicks: 11,
+        leaning: "LEFT",
+    },
+    {
+        url: "cnn.com",
+        duration: 317,
+        date: 1728670863651,
+        clicks: 14,
+        leaning: "LEFT",
+    },
+    {
+        url: "newrepublic.com",
+        duration: 207,
+        date: 1728802263651,
+        clicks: 8,
+        leaning: "LEFT",
+    },
+    {
+        url: "newrepublic.com",
+        duration: 360,
+        date: 1728369603651,
+        clicks: 10,
+        leaning: "LEFT",
+    },
+    {
+        url: "foxkansas.com",
+        duration: 329,
+        date: 1728288663651,
+        clicks: 8,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "foxbusiness.com",
+        duration: 270,
+        date: 1728251163651,
+        clicks: 7,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "financialexpress.com",
+        duration: 263,
+        date: 1728685263651,
+        clicks: 13,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "freedomnews.org.uk",
+        duration: 254,
+        date: 1728710763651,
+        clicks: 5,
+        leaning: "LEFT",
+    },
+    {
+        url: "breakingdefense.com",
+        duration: 390,
+        date: 1728642663651,
+        clicks: 9,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "justfacts.com",
+        duration: 199,
+        date: 1728292863651,
+        clicks: 8,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "detroitnews.com",
+        duration: 152,
+        date: 1728322263651,
+        clicks: 13,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "michiganadvance.com",
+        duration: 380,
+        date: 1728213663651,
+        clicks: 11,
+        leaning: "LEFT",
+    },
+    {
+        url: "guardianlv.com",
+        duration: 295,
+        date: 1728698463651,
+        clicks: 13,
+        leaning: "LEFT",
+    },
+    {
+        url: "foxbusiness.com",
+        duration: 263,
+        date: 1728475263651,
+        clicks: 7,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "alternet.org",
+        duration: 305,
+        date: 1728710763651,
+        clicks: 11,
+        leaning: "LEFT",
+    },
+    {
+        url: "alternet.org",
+        duration: 388,
+        date: 1728846663651,
+        clicks: 7,
+        leaning: "LEFT",
+    },
+    {
+        url: "guardianlv.com",
+        duration: 224,
+        date: 1728751263651,
+        clicks: 6,
+        leaning: "LEFT",
+    },
+    {
+        url: "californiaglobe.com",
+        duration: 280,
+        date: 1728364863651,
+        clicks: 8,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "boingboing.net",
+        duration: 256,
+        date: 1728719863651,
+        clicks: 9,
+        leaning: "LEFT",
+    },
+    {
+        url: "jacobin.com",
+        duration: 319,
+        date: 1728252663651,
+        clicks: 10,
+        leaning: "LEFT",
+    },
+    {
+        url: "foxbusiness.com",
+        duration: 232,
+        date: 1728472063651,
+        clicks: 14,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "foxkansas.com",
+        duration: 221,
+        date: 1728630663651,
+        clicks: 8,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "freedomnews.org.uk",
+        duration: 328,
+        date: 1728380463651,
+        clicks: 13,
+        leaning: "LEFT",
+    },
+    {
+        url: "californiaglobe.com",
+        duration: 216,
+        date: 1728398463651,
+        clicks: 9,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "guardianlv.com",
+        duration: 338,
+        date: 1728306063651,
+        clicks: 9,
+        leaning: "LEFT",
+    },
+    {
+        url: "justfacts.com",
+        duration: 375,
+        date: 1728393063651,
+        clicks: 7,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "freedomnews.org.uk",
+        duration: 312,
+        date: 1728714463651,
+        clicks: 6,
+        leaning: "LEFT",
+    },
+    {
+        url: "jacobin.com",
+        duration: 182,
+        date: 1728296463651,
+        clicks: 12,
+        leaning: "LEFT",
+    },
+    {
+        url: "cnn.com",
+        duration: 391,
+        date: 1728859863651,
+        clicks: 9,
+        leaning: "LEFT",
+    },
+    {
+        url: "californiaglobe.com",
+        duration: 341,
+        date: 1728497463651,
+        clicks: 10,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "boingboing.net",
+        duration: 160,
+        date: 1728216063651,
+        clicks: 6,
+        leaning: "LEFT",
+    },
+    {
+        url: "cnn.com",
+        duration: 204,
+        date: 1728765663651,
+        clicks: 13,
+        leaning: "LEFT",
+    },
+    {
+        url: "foxbusiness.com",
+        duration: 285,
+        date: 1728586263651,
+        clicks: 12,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "fitsnews.com",
+        duration: 213,
+        date: 1728523863651,
+        clicks: 9,
+        leaning: "RIGHT-CENTER",
+    },
+    {
+        url: "freedomnews.org.uk",
+        duration: 154,
+        date: 1728490263651,
+        clicks: 10,
+        leaning: "LEFT",
+    },
 ];
+
 
 export default BarGraph;
