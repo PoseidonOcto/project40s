@@ -199,20 +199,16 @@ const BarGraph = () => {
             // Create a Map to hold the dataset entries for each website
             const siteData: Record<string, number[]> = {};
             const otherData: number[] = [];
+            const otherWebsitesPerDate: Record<number, [string, number][]> = {}; // Store other websites with duration for each date
     
             dataSet.forEach((entry, dateIndex) => {
                 // Sort the websites by duration for this specific date
                 const sortedWebsites = Array.from(entry.consumption.entries())
                     .sort((a, b) => b[1] - a[1]); // Sort by duration (descending)
-
-                // Extract URLs for the top websites
-                const topWebsites = sortedWebsites.slice(0, 4);
-                const topWebsiteURLs = topWebsites.map(([url]) => url); // Extract just the URLs for the top websites
-
-                // Extract URLs for the remaining websites (i.e., other websites)
-                const otherWebsites = sortedWebsites.slice(4);
-                const otherWebsiteURLs = otherWebsites.map(([url]) => url); // Extract just the URLs for other websites
-
+    
+                // Get the top 4 websites for this date (if more than 5 websites)
+                const topWebsites = sortedWebsites.length > 5 ? sortedWebsites.slice(0, 4): sortedWebsites.slice(0, 5);
+                const topWebsiteURLs = topWebsites.map(([url]) => url); // Extract just the URLs
     
                 // Store the top 4 websites' data
                 topWebsites.forEach(([url, duration]) => {
@@ -223,8 +219,12 @@ const BarGraph = () => {
                 });
     
                 // Aggregate the remaining websites into "Other Websites"
+                const otherWebsites = sortedWebsites.length > 5 ? sortedWebsites.slice(4): sortedWebsites.slice(5);
                 const otherTotal = otherWebsites.reduce((total, [url, duration]) => total + duration, 0);
                 otherData[dateIndex] = otherTotal;
+    
+                // Store the other websites and their durations for this date to be accessed later in the tooltip
+                otherWebsitesPerDate[dateIndex] = otherWebsites.map(([url, duration]) => [url, duration]);
             });
     
             // Convert the siteData map into datasets for each website
@@ -250,6 +250,7 @@ const BarGraph = () => {
             return {
                 labels: allLabels,
                 datasets,
+                otherWebsitesPerDate, // Return this so we can access it in the tooltip
             };
         } else {
             const politicalLeanings = [
@@ -313,23 +314,28 @@ const BarGraph = () => {
                 callbacks: {
                     label: (tooltipItem: any) => {
                         const datasetLabel = tooltipItem.dataset.label || "";
-                        console.assert(datasetLabel !== "");  // Why would this happen?
                         const value = tooltipItem.raw;
-
+                        const dateIndex = tooltipItem.dataIndex;
+    
                         const formattedValue = `${Math.round(value * 100) / 100} minutes`;
-
-                        if (datasetLabel.toLowerCase() === "other websites" && dataSet) {
-                            const dateIndex = tooltipItem.dataIndex;
-                            const otherWebsitesForDate =
-                            Array.from(dataSet[dateIndex]?.consumption.entries() || [])
-                            .filter(([url]) => otherWebsites.includes(url))
-                            .map(([url, duration]) => {
-                                return `${url !== "" ? url : "Google Chrome Pages"}: ${Math.round(duration * 100) / 100} mins`
+    
+                        const chartData = getStackedBarChartData(); // Call the function to get the latest data
+                        const otherWebsitesPerDate = chartData.otherWebsitesPerDate;
+    
+                        if (datasetLabel.toLowerCase() === "other websites" && otherWebsitesPerDate) {
+                            // Safely check if otherWebsitesPerDate exists before accessing
+                            const otherWebsitesForDate = otherWebsitesPerDate[dateIndex] || [];
+    
+                            // Map each other website to its duration in minutes
+                            const otherWebsitesWithDuration = otherWebsitesForDate.map(([url, duration]) => {
+                                const durationInMinutes = `${Math.round(duration * 100) / 100} mins`;
+                                return `${url !== "" ? url : "Google Chrome Pages"}: ${durationInMinutes}`;
                             });
-
-                            return [`Other Websites: ${formattedValue}`, '----------------------', ...otherWebsitesForDate];
+    
+                            // Return the list of other websites and their duration
+                            return [`Other Websites: ${formattedValue}`, '----------------------', ...otherWebsitesWithDuration];
                         }
-
+    
                         return [`${datasetLabel}: ${formattedValue}`];
                     },
                 },
@@ -340,6 +346,9 @@ const BarGraph = () => {
             y: { title: { display: true, text: "Duration (mins)" }, stacked: true, beginAtZero: true },
         },
     };
+    
+    
+    
 
     const handleDateChange = (event: Event, newVal: any) => {
         setStartDate(new Date(newVal[0]));
