@@ -129,3 +129,12 @@ ol li {
 #selection-popup {
     background-image: linear-gradient(var(--dashboard-background-top), var(--dashboard-background-bottom)) !important;
 }
+
+/* Graph */
+
+#graph-loading-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+

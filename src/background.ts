@@ -82,6 +82,11 @@ const updateFactDisplays = async () => {
     await chrome.storage.session.set({'last_storage_update': Date.now()});
 }
 
+const updateGraphDisplays = async () => {
+    // Change something in session storage to trigger FactDisplay's event listener.
+    await chrome.storage.session.set({'data_deleted': Date.now()});
+}
+
 const handleDeleteUserData: MessageHandler = (_, __, ___) => {
     const deleteUserData = async () => {
         await fetchFromAPI("delete", {
@@ -89,6 +94,7 @@ const handleDeleteUserData: MessageHandler = (_, __, ___) => {
         });
 
         await updateFactDisplays();
+        await updateGraphDisplays();
         return
     }
 

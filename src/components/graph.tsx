@@ -19,9 +19,7 @@ import { getOAuthToken } from "../background";
 // Register the necessary components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const fetchInteractionData = async (): Promise<
-APIResponse<WebsiteInteractionEntry[]>
-> => {
+const fetchInteractionData = async (): Promise< APIResponse<WebsiteInteractionEntry[]> > => {
     return await fetchFromAPI("user_interaction/get", {
         oauth_token: await getOAuthToken(),
     });
@@ -32,10 +30,8 @@ const BarGraph = () => {
     let defaultStartDate = new Date(new Date().setHours(0, 0, 0, 0));
     defaultStartDate.setDate(defaultStartDate.getDate() - 7);
 
-    const [interactions, setInteractions] = useState<
-    WebsiteInteractionEntry[] | undefined
->(undefined);
-    const [dataSet, setDataSet] = useState<GraphEntry[] | undefined>();
+    const [interactions, setInteractions] = useState< WebsiteInteractionEntry[] | undefined >(undefined);
+    const [dataSet, setDataSet] = useState<GraphEntry[] | undefined>(undefined);
     const [startDate, setStartDate] = useState<Date>(defaultStartDate);
     const [endDate, setEndDate] = useState<Date>(new Date());
     const [minDate, setMinDate] = useState<number>();
@@ -49,10 +45,6 @@ const BarGraph = () => {
             if (response.status === "error") {
                 console.error(response);
                 return;
-            }
-
-            for (const entry of table1) {
-                response.data.push(entry);
             }
 
             const sortedData = response.data.sort((a, b) => a.date - b.date);
@@ -72,6 +64,12 @@ const BarGraph = () => {
 
         chrome.tabs.onActivated.addListener(() => {
             updateData();
+        });
+
+        chrome.storage.onChanged.addListener((changed, type) => {
+            if (type === 'session' && changed['data_deleted'] !== undefined) {
+                updateData();
+            }
         });
     }, []);
 
@@ -332,149 +330,45 @@ const BarGraph = () => {
     };
 
     return (
-        <div id="graph-container">
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={mode === "Bias"}
-                        onChange={() => setMode(mode === "Website" ? "Bias" : "Website")}
-                        color="primary"
+        <>
+            {dataSet === undefined && <div id="graph-loading-icon" className="loadingIcon"></div>}
+            {dataSet !== undefined &&
+                <div id="graph-container">
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={mode === "Bias"}
+                                onChange={() => setMode(mode === "Website" ? "Bias" : "Website")}
+                                color="primary"
+                            />
+                        }
+                        label={mode === "Website" ? "Website Mode" : "Bias Mode"}
                     />
-                }
-                label={mode === "Website" ? "Website Mode" : "Bias Mode"}
-            />
-            <br />
-            <div id="graph">
-                <Bar data={getStackedBarChartData()} options={chartOptions} />
-            </div>
-            <div id="date-container">
-                <div id="date-picker">
-                    <Typography>Start date: {`${startDate.getDate()} ${startDate.toLocaleDateString("en-us", { month: "short" })}`}</Typography>
-                    <Typography>End date: {`${endDate.getDate()} ${endDate.toLocaleDateString("en-us", { month: "short" })}`}</Typography>
+                    <br />
+                    <div id="graph">
+                        <Bar data={getStackedBarChartData()} options={chartOptions} />
+                    </div>
+                    <div id="date-container">
+                        <div id="date-picker">
+                            <Typography>Start date: {`${startDate.getDate()} ${startDate.toLocaleDateString("en-us", { month: "short" })}`}</Typography>
+                            <Typography>End date: {`${endDate.getDate()} ${endDate.toLocaleDateString("en-us", { month: "short" })}`}</Typography>
+                        </div>
+                        <Slider
+                            value={[startDate.getTime(), endDate.getTime()]}
+                            onChange={(event, newVal) => handleDateChange(event, newVal)}
+                            valueLabelDisplay="auto"
+                            min={minDate}
+                            step={86400000}
+                            max={new Date(new Date().setHours(0, 0, 0, 0)).getTime()}
+                            valueLabelFormat={(val) =>
+                                `${new Date(val).getDate()} ${new Date(val).toLocaleDateString("en-us", { month: "short", })}`
+                            }
+                        />
+                    </div>
                 </div>
-                <Slider
-                    value={[startDate.getTime(), endDate.getTime()]}
-                    onChange={(event, newVal) => handleDateChange(event, newVal)}
-                    valueLabelDisplay="auto"
-                    min={minDate}
-                    step={86400000}
-                    max={new Date(new Date().setHours(0, 0, 0, 0)).getTime()}
-                    valueLabelFormat={(val) =>
-                        `${new Date(val).getDate()} ${new Date(val).toLocaleDateString("en-us", { month: "short", })}`
-                    }
-                />
-            </div>
-        </div>
+            }
+        </>
     );
 };
-
-// Sample data for website interactions
-const table1: WebsiteInteractionEntry[] = [
-    {
-        url: "bbc.com",
-        duration: 100,
-        date: 1727839283207,
-        clicks: 5,
-        leaning: "LEFT",
-    },
-    {
-        url: "bbc.com",
-        duration: 50,
-        date: 1727839283207,
-        clicks: 3,
-        leaning: "LEFT",
-    },
-    {
-        url: "bbc.com",
-        duration: 200,
-        date: 1727704800000,
-        clicks: 10,
-        leaning: "LEFT",
-    },
-    {
-        url: "cnn.com",
-        duration: 150,
-        date: 1727839283207,
-        clicks: 8,
-        leaning: "EXTREME-LEFT",
-    },
-    {
-        url: "cnn.com",
-        duration: 250,
-        date: 1727704800000,
-        clicks: 12,
-        leaning: "EXTREME-LEFT",
-    },
-    {
-        url: "cnn.com",
-        duration: 300,
-        date: 1727618400000,
-        clicks: 15,
-        leaning: "EXTREME-LEFT",
-    },
-    {
-        url: "news.com.au",
-        duration: 180,
-        date: 1727839283207,
-        clicks: 7,
-        leaning: "CONSPIRACY",
-    },
-    {
-        url: "news.com.au",
-        duration: 220,
-        date: 1727704800000,
-        clicks: 9,
-        leaning: "CONSPIRACY",
-    },
-    {
-        url: "news.com.au",
-        duration: 270,
-        date: 1727618400000,
-        clicks: 11,
-        leaning: "CONSPIRACY",
-    },
-    {
-        url: "9news.com.au",
-        duration: 120,
-        date: 1727839283207,
-        clicks: 6,
-        leaning: "RIGHT-CENTER",
-    },
-    {
-        url: "9news.com.au",
-        duration: 160,
-        date: 1728624787777,
-        clicks: 8,
-        leaning: "RIGHT-CENTER",
-    },
-    {
-        url: "9news.com.au",
-        duration: 280,
-        date: 1727618400000,
-        clicks: 13,
-        leaning: "RIGHT-CENTER",
-    },
-    {
-        url: "cnn.com",
-        duration: 330,
-        date: 1728451980000,
-        clicks: 9,
-        leaning: "EXTREME-LEFT",
-    },
-    {
-        url: "news.com.au",
-        duration: 220,
-        date: 1728451980000,
-        clicks: 9,
-        leaning: "CONSPIRACY",
-    },
-    {
-        url: "cnn.com",
-        duration: 330,
-        date: 1728711180000,
-        clicks: 9,
-        leaning: "EXTREME-LEFT",
-    },
-];
 
 export default BarGraph;
