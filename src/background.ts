@@ -51,12 +51,10 @@ export const getUserProfileIcon = async (): Promise<APIResponse<string>> => {
         const url = 'https://www.googleapis.com/oauth2/v2/userinfo';
         const response = await fetch(url, {
             method: 'GET',
-            // async: true,
             headers: {
                 Authorization: 'Bearer ' + await getOAuthToken(),
                 'Content-Type': 'application/json'
             },
-            // 'contentType': 'json'
         });
 
         if (!response.ok) {

@@ -70,7 +70,6 @@ const Sidebar = () => {
                             <img id="profile" src={image} 
                                 onError={({ currentTarget }) => {
                                     currentTarget.onerror = null; // prevents looping
-                                    // currentTarget.src="image_path_here";
                                 }}/>
                             }
                     </div>
